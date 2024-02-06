@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_app/services/auth_service.dart';
 
 class MyHomePage extends StatefulWidget {
   final String title;
@@ -11,25 +11,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _auth = FirebaseAuth.instance;
-  late User loggedinUser;
-
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
-  }
-
-  //using this function you can use the credentials of the user
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedinUser = user;
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override
@@ -45,10 +29,9 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              _auth.signOut();
+              AuthService().signOut();
               Navigator.pop(context);
               Navigator.pop(context);
-              //Implement logout functionality
             }),
       ),
       body: Column(
@@ -57,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
             decoration: const BoxDecoration(
               color: Colors.red,
             ),
-            // margin: const EdgeInsets.only(top: 20),
             child: const Center(
               child: Text(
                 'Welcome to the Quiz App!',
@@ -67,11 +49,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Center(
             child: Text(
-              'You are logged in as ${loggedinUser.email}',
+              'You are logged in as ${AuthService().getCurrentUserEmail()}',
               style: const TextStyle(fontSize: 20),
             ),
           ),
-          // Procceed to quiz
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, '/quiz_page');

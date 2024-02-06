@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/screens/auth/login_page.dart';
-import 'package:quiz_app/screens/auth/registration_page.dart';
-import 'package:quiz_app/screens/home_page.dart';
+import 'package:quiz_app/screens/auth/login_screen.dart';
+import 'package:quiz_app/screens/auth/registration_screen.dart';
+import 'package:quiz_app/screens/home_screen.dart';
 import 'package:quiz_app/screens/quiz/quiz.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
-import 'package:quiz_app/screens/welcome_screen.dart';
+import 'package:quiz_app/screens/auth/welcome_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
@@ -29,7 +30,6 @@ class MyApp extends StatelessWidget {
         '/home_page': (BuildContext context) =>
             const MyHomePage(title: 'Flutter Demo Home Page'),
         '/welcome_page': (BuildContext context) => const WelcomePage(),
-
       },
     );
   }

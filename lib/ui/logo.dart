@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Logo extends StatelessWidget {
   const Logo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -23,20 +24,35 @@ class Logo extends StatelessWidget {
                   ),
                 ),
               ))),
-          Container(
-            color: Colors.white,
-            child: const Center(
-              child: Text(
-                "Exam Planner App",
-                style: TextStyle(
-                    // color: Colors.deepPurple[800],
-                    color: Colors.black,
-                    fontSize: 36.0,
-                    fontWeight: FontWeight.w700,
-                    decoration: TextDecoration.none,
-                    fontFamily: "Roboto"),
+          Column(
+            children: [
+              Container(
+                color: Colors.white,
+                child: Center(
+                  child: Text(
+                    "MK",
+                    style: GoogleFonts.merriweather(
+                      fontSize: 36.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.yellow[800],
+                    ),
+                  ),
+                ),
               ),
-            ),
+              Container(
+                color: Colors.white,
+                child: Center(
+                  child: Text(
+                    "LEARNER",
+                    style: GoogleFonts.merriweather(
+                      fontSize: 36.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red[800],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
         ],
       ),
