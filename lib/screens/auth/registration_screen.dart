@@ -68,7 +68,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   });
                   try {
                     AuthService().register(email, password);
-                    Navigator.pushNamed(context, '/home_page');
+                    Navigator.pushNamed(context, '/home_screen');
                   } catch (e) {
                     print(e);
                   }

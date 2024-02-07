@@ -17,9 +17,11 @@ class _SplashscreenState extends State<Splashscreen> {
     super.initState();
 
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/welcome_page');
+      Navigator.pushReplacementNamed(context, '/welcome_screen');
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -37,7 +37,12 @@ class _QuizState extends State<Quiz> {
   void restartQuiz() {
     setState(() {
       _activeScreen = 'questions-screen';
+      _selectedAnswers.clear();
     });
+  }
+
+  void goToHome() {
+    Navigator.of(context).pushReplacementNamed('/home_screen');
   }
 
   @override
@@ -54,22 +59,13 @@ class _QuizState extends State<Quiz> {
       screenWidget = ResultsScreen(
         chosenAnswers: _selectedAnswers,
         onRestart: restartQuiz,
+        goToHome: goToHome,
       );
     }
 
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          // decoration: const BoxDecoration(
-          //   gradient: LinearGradient(
-          //     colors: [
-          //       Color.fromARGB(255, 78, 13, 151),
-          //       Color.fromARGB(255, 107, 15, 168),
-          //     ],
-          //     begin: Alignment.topLeft,
-          //     end: Alignment.bottomRight,
-          //   ),
-          // ),
           child: screenWidget,
         ),
       ),

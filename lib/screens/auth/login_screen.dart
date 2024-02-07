@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     });
                     try {
                       AuthService().login(email, password);
-                      Navigator.pushNamed(context, '/home_page');
+                      Navigator.pushNamed(context, '/home_screen');
                     } catch (e) {
                       print(e);
                     }

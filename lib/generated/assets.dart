@@ -5,5 +5,18 @@ class Assets {
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesQuizLogo1 = 'assets/images/quiz_logo_1.jpg';
   static const String imagesQuizLogo2 = 'assets/images/quiz_logo_2.jpg';
+  static const String levelMapAstronomy = 'assets/level_map/Astronomy.png';
+  static const String levelMapAtom = 'assets/level_map/Atom.png';
+  static const String levelMapBoy Graduation = 'assets/level_map/BoyGraduation.png';
+  static const String levelMapBoy Study = 'assets/level_map/BoyStudy.png';
+  static const String levelMapCertificate = 'assets/level_map/Certificate.png';
+  static const String levelMapCompletedBlack = 'assets/level_map/completed_black.png';
+  static const String levelMapCurrentBlack = 'assets/level_map/current_black.png';
+  static const String levelMapEnergy equivalency = 'assets/level_map/EnergyEquivalency.png';
+  static const String levelMapGeology = 'assets/level_map/Geology.png';
+  static const String levelMapGraduation Cap = 'assets/level_map/GraduationCap.png';
+  static const String levelMapLockedBlack = 'assets/level_map/locked_black.png';
+  static const String levelMapMath = 'assets/level_map/Math.png';
+  static const String levelMapNotes = 'assets/level_map/Notes.png';
 
 }
