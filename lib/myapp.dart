@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/screens/add_quiz/quiz_form_page.dart';
+
 import 'package:quiz_app/screens/auth/login_screen.dart';
 import 'package:quiz_app/screens/auth/registration_screen.dart';
 import 'package:quiz_app/screens/home_screen.dart';
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/home_screen': (BuildContext context) =>
             const MyHomePage(title: 'Flutter Demo Home Page'),
         '/welcome_screen': (BuildContext context) => const WelcomePage(),
+        '/add_quiz': (BuildContext context) => const QuizFormPage(),
       },
     );
   }

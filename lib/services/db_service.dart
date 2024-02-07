@@ -1,15 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/quiz_question.dart';
-
 class DBService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final String uid;
+  final CollectionReference userCollection;
 
-  Future<void> addUserQuizStats(String userId, int level, int points,
-      int correctAnswers, int incorrectAnswers) async {
+  DBService(this.uid)
+      : userCollection = FirebaseFirestore.instance.collection('users');
+
+  Stream<DocumentSnapshot> get userData {
+    return userCollection.doc(uid).snapshots();
+  }
+
+  Future<void> addUserQuizStats(
+      int level, int points, int correctAnswers, int incorrectAnswers) async {
+    int currentLevel = await getCurrentLevel();
+
     try {
-      await _firestore.collection('users').doc(userId).set({
-        'level': level + 1,
+      await userCollection.doc(uid).set({
+        'level': currentLevel + 1,
         'points': points,
         'correct_answers': correctAnswers,
         'incorrect_answers': incorrectAnswers,
@@ -20,15 +28,23 @@ class DBService {
     }
   }
 
-  // get current level
-  Future<int> getCurrentLevel(String userId) async {
+  Future<int> getCurrentLevel() async {
     try {
-      final DocumentSnapshot userDoc =
-      await _firestore.collection('users').doc(userId).get();
+      final DocumentSnapshot userDoc = await userCollection.doc(uid).get();
       return userDoc.get('level');
     } catch (e) {
       print("Error getting current level: $e");
-      throw e;
+      rethrow;
+    }
+  }
+
+  Future<int> getCurrentPoints() async {
+    try {
+      final DocumentSnapshot userDoc = await userCollection.doc(uid).get();
+      return userDoc.get('points');
+    } catch (e) {
+      print("Error getting current points: $e");
+      rethrow;
     }
   }
 }

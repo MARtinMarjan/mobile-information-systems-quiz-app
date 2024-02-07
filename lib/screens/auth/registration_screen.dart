@@ -14,10 +14,11 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
   bool showSpinner = false;
+
+  final AuthService auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -62,25 +63,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
               RoundedButton(
                 colour: Colors.red,
                 title: 'Register',
-                onPressed: () async {
-                  setState(() {
-                    showSpinner = true;
-                  });
-                  try {
-                    AuthService().register(email, password);
-                    Navigator.pushNamed(context, '/home_screen');
-                  } catch (e) {
-                    print(e);
-                  }
-                  setState(() {
-                    showSpinner = false;
-                  });
-                },
+                onPressed: _register,
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _register() async {
+    setState(() {
+      showSpinner = true;
+    });
+    try {
+      await auth.register(email, password);
+      if (context.mounted) {
+        Navigator.pushNamed(context, '/home_screen');
+      }
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      showSpinner = false;
+    });
   }
 }

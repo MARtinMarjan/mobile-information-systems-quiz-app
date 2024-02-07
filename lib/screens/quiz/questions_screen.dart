@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:quiz_app/models/question.dart';
 import 'package:quiz_app/services/db_service.dart';
 
 import '../../ui/answer_button.dart';
-import '../../data/questions.dart';
+
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({
+  List<Question> questions;
+
+  QuestionsScreen({
     super.key,
-    required this.onSelectAnswer,
+    required this.onSelectAnswer, required this.questions,
   });
 
   final void Function(String answer) onSelectAnswer;
@@ -32,7 +35,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   @override
   Widget build(context) {
-    final currentQuestion = questions[currentQuestionIndex];
+    final currentQuestion = widget.questions[currentQuestionIndex];
 
     return Column(
       children: [
@@ -41,7 +44,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           child: LinearPercentIndicator(
             width: MediaQuery.of(context).size.width,
             lineHeight: 20.0,
-            percent: (currentQuestionIndex) / questions.length,
+            percent: (currentQuestionIndex) /  widget.questions.length,
             backgroundColor: Colors.grey,
             progressColor: Colors.green,
             barRadius: const Radius.circular(16),
@@ -56,7 +59,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  currentQuestion.text,
+                  currentQuestion.questionText,
                   style: GoogleFonts.lato(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,

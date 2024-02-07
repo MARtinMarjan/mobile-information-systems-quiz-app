@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   late String email;
   late String password;
   bool showSpinner = false;
+  final AuthService auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -55,26 +56,28 @@ class _LoginPageState extends State<LoginPage> {
                 height: 24.0,
               ),
               RoundedButton(
-                  colour: Colors.red,
-                  title: 'Log In',
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      AuthService().login(email, password);
-                      Navigator.pushNamed(context, '/home_screen');
-                    } catch (e) {
-                      print(e);
-                    }
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  }),
+                  colour: Colors.red, title: 'Log In', onPressed: _login),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _login() async {
+    setState(() {
+      showSpinner = true;
+    });
+    try {
+      await auth.login(email, password);
+      if (context.mounted) {
+        Navigator.pushNamed(context, '/home_screen');
+      }
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      showSpinner = false;
+    });
   }
 }

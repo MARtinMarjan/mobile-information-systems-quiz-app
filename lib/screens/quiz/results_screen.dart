@@ -1,25 +1,27 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:quiz_app/models/question.dart';
 import 'package:quiz_app/questions_summary/questions_summary.dart';
 import 'package:quiz_app/services/auth_service.dart';
 import 'package:quiz_app/services/db_service.dart';
 
-import '../../data/questions.dart';
-
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen({
+  List<Question> questions;
+
+  ResultsScreen({
     super.key,
     required this.chosenAnswers,
     required this.onRestart,
     required this.goToHome,
+    required this.questions,
   });
 
   final void Function() onRestart;
   final void Function() goToHome;
+
+  final AuthService auth = AuthService();
 
   final List<String> chosenAnswers;
 
@@ -30,7 +32,7 @@ class ResultsScreen extends StatelessWidget {
       summary.add(
         {
           'question_index': i,
-          'question': questions[i].text,
+          'question': questions[i].questionText,
           'correct_answer': questions[i].answers[0],
           'user_answer': chosenAnswers[i]
         },
@@ -41,26 +43,23 @@ class ResultsScreen extends StatelessWidget {
     return summary;
   }
 
-  void saveResults() async {
-    final userId = AuthService().getCurrentUser().uid;
-    try {
-      final currentLevel = await DBService().getCurrentLevel(userId);
-      DBService().addUserQuizStats(
-        userId,
-        currentLevel,
-        0,
-        summaryData
-            .where((data) => data['user_answer'] == data['correct_answer'])
-            .length,
-        summaryData.length -
-            summaryData
-                .where((data) => data['user_answer'] == data['correct_answer'])
-                .length,
-      );
-    } catch (e) {
-      print("Error saving results: $e");
-      // Handle the error gracefully, maybe show a message to the user.
-    }
+  void saveResults() {
+    final user = auth.getCurrentUser();
+    final db = DBService(user.uid);
+
+    final numTotalQuestions = questions.length;
+    final numCorrectQuestions = summaryData
+        .where(
+          (data) => data['user_answer'] == data['correct_answer'],
+        )
+        .length;
+
+    db.addUserQuizStats(
+      1,
+      numCorrectQuestions,
+      numCorrectQuestions,
+      numTotalQuestions - numCorrectQuestions,
+    );
   }
 
   @override
@@ -117,7 +116,7 @@ class ResultsScreen extends StatelessWidget {
                   label: const Text('Restart Quiz!'),
                 ),
                 TextButton.icon(
-                  onPressed: (){
+                  onPressed: () {
                     saveResults();
                     goToHome();
                   },

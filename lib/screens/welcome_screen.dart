@@ -12,11 +12,13 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  final AuthService auth = AuthService();
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {
-      if (await AuthService().isUserLoggedIn()) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (auth.isLoggedIn()) {
         Navigator.pushNamed(context, '/home_screen');
       }
     });

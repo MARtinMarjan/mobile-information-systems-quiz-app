@@ -45,12 +45,7 @@ class AuthService {
   }
 
   Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      print("Sign Out Error: $e");
-      rethrow;
-    }
+    await _auth.signOut();
   }
 
   User getCurrentUser() {
@@ -69,14 +64,8 @@ class AuthService {
     return _auth.currentUser?.email;
   }
 
-  Future<bool> isUserLoggedIn() async {
-    User? user = await _auth.authStateChanges().first;
-    if (user == null) {
-      print('User is currently signed out!');
-      return false;
-    } else {
-      print('User is signed in!');
-      return true;
-    }
+  // check if user is logged in
+  bool isLoggedIn() {
+    return _auth.currentUser != null;
   }
 }

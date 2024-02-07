@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/models/question.dart';
 
 class StartScreen extends StatelessWidget {
-  const StartScreen(this.startQuiz, {super.key});
+  List<Question> questions;
+
+  StartScreen(this.startQuiz, this.questions, {super.key});
 
   final void Function() startQuiz;
 
@@ -28,8 +31,8 @@ class StartScreen extends StatelessWidget {
           OutlinedButton.icon(
             onPressed: startQuiz,
             style: OutlinedButton.styleFrom(
-              // foregroundColor: Colors.white,
-            ),
+                // foregroundColor: Colors.white,
+                ),
             icon: const Icon(Icons.arrow_right_alt),
             label: const Text('Start Quiz'),
           )
