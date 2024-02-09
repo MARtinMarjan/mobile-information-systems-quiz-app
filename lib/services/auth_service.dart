@@ -18,7 +18,7 @@ class AuthService {
     }
   }
 
-  Future<UserCredential> register(String email, String password) async {
+  Future<UserCredential> register(String email, String password, String username) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -28,9 +28,11 @@ class AuthService {
 
       // Create a user document in Firestore
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
         'email': email,
         'created_at': FieldValue.serverTimestamp(),
-        // quiz stats
+        'username': username,
+
         'level': 1,
         'points': 0,
         'correct_answers': 0,

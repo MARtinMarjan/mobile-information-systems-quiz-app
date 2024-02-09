@@ -16,6 +16,7 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   late String email;
   late String password;
+  late String username = 'N/A';
   bool showSpinner = false;
 
   final AuthService auth = AuthService();
@@ -29,19 +30,26 @@ class _RegistrationPageState extends State<RegistrationPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: ListView(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Logo(),
               const SizedBox(
                 height: 48.0,
               ),
               TextField(
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    username = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter your username')),
+              const SizedBox(
+                height: 8.0,
+              ),
+              TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     email = value;
-                    //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your email')),
@@ -53,7 +61,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     password = value;
-                    //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your password')),
@@ -77,7 +84,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       showSpinner = true;
     });
     try {
-      await auth.register(email, password);
+      await auth.register(email, password, username);
       if (context.mounted) {
         Navigator.pushNamed(context, '/home_screen');
       }

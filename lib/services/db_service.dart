@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/user.dart';
+
 class DBService {
   final String uid;
   final CollectionReference userCollection;
@@ -44,6 +46,16 @@ class DBService {
       return userDoc.get('points');
     } catch (e) {
       print("Error getting current points: $e");
+      rethrow;
+    }
+  }
+
+  Future<QuizUserData> getUserData() async {
+    try {
+      final DocumentSnapshot userDoc = await userCollection.doc(uid).get();
+      return QuizUserData.fromMap(userDoc.data() as Map<String, dynamic>);
+    } catch (e) {
+      print("Error getting user data: $e");
       rethrow;
     }
   }

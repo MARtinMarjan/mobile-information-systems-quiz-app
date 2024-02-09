@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:level_map/level_map.dart';
+import 'package:quiz_app/screens/profile_screen.dart';
 import 'package:quiz_app/services/auth_service.dart';
 
 import '../services/db_service.dart';
@@ -67,12 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 decoration: const BoxDecoration(
                   color: Colors.red,
                 ),
-                // child: const Center(
-                //   child: Text(
-                //     'Welcome to the Quiz App!',
-                //     style: TextStyle(fontSize: 20),
-                //   ),
-                // ),
               ),
               Expanded(
                 child: Stack(
@@ -138,23 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const Center(
             child: Text('Notifications'),
           ),
-          const Center(
-            child: Column(
-              children: [
-                Text('Profile'),
-                Column(
-                  children: [
-                    Text("Example User Profile"),
-                    Text('Name: John Doe'),
-                    Text('Level: 1'),
-                    Text('Points: 0'),
-                    Text('Correct Answers: 0'),
-                    Text('Incorrect Answers: 0'),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          const ProfileScreen(),
         ][currentPageIndex],
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
