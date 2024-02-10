@@ -53,7 +53,7 @@ class Logo extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

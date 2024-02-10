@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/models/question.dart';
-import 'package:quiz_app/models/quiz.dart';
 
 class QuizFormPage extends StatefulWidget {
-  const QuizFormPage({Key? key}) : super(key: key);
+  const QuizFormPage({super.key});
 
   @override
   _QuizFormPageState createState() => _QuizFormPageState();

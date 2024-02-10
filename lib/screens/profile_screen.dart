@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/models/quiz.dart';
 import 'package:quiz_app/models/user.dart';
 import 'package:quiz_app/services/auth_service.dart';
 import 'package:quiz_app/services/db_service.dart';
@@ -28,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    db = DBService(auth.getCurrentUser().uid);
+    db = DBService(auth.getCurrentUser()!.uid);
     db.getUserData().then((value) {
       setState(() {
         userData = value;

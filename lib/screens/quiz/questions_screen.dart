@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:quiz_app/models/question.dart';
-import 'package:quiz_app/services/db_service.dart';
 
 import '../../ui/answer_button.dart';
 

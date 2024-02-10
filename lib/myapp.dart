@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         '/registration_screen': (BuildContext context) =>
             const RegistrationPage(),
         '/home_screen': (BuildContext context) =>
-            const MyHomePage(title: 'Flutter Demo Home Page'),
+            const MyHomePage(title: 'MKLearner App Home Page'),
         '/welcome_screen': (BuildContext context) => const WelcomePage(),
         '/add_quiz': (BuildContext context) => const QuizFormPage(),
       },

@@ -45,7 +45,7 @@ class ResultsScreen extends StatelessWidget {
 
   void saveResults() {
     final user = auth.getCurrentUser();
-    final db = DBService(user.uid);
+    final db = DBService(user!.uid);
 
     final numTotalQuestions = questions.length;
     final numCorrectQuestions = summaryData

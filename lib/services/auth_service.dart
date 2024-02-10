@@ -50,7 +50,7 @@ class AuthService {
     await _auth.signOut();
   }
 
-  User getCurrentUser() {
+  User? getCurrentUser() {
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -59,7 +59,7 @@ class AuthService {
     } catch (e) {
       print(e);
     }
-    return _auth.currentUser!;
+    return null;
   }
 
   String? getCurrentUserEmail() {

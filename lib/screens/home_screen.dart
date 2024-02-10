@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    userId = auth.getCurrentUser().uid;
+    userId = auth.getCurrentUser()!.uid;
     _loadCurrentLevel();
   }
 
@@ -49,8 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
           leading: IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                auth.signOut();
-                Navigator.pushNamed(context, '/welcome_screen');
+                if (auth.getCurrentUser() != null) {
+                  auth.signOut();
+                } else{
+                  Navigator.pushNamed(context, '/welcome_screen');
+                }
+
               }),
           actions: [
             IconButton(

@@ -28,7 +28,7 @@ class _QuizState extends State<Quiz> {
   void initState() {
     super.initState();
 
-    final db = DBService(auth.getCurrentUser().uid);
+    final db = DBService(auth.getCurrentUser()!.uid);
     db.getCurrentLevel().then((level) {
       setState(() {
         _level = level;
