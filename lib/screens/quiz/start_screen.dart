@@ -14,9 +14,9 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  late var level;
+  late int level = 1;
 
-  late String quizLevelTitle;
+  late String quizLevelTitle = 'Welcome to the Quiz!';
 
   @override
   void initState() {
@@ -29,8 +29,8 @@ class _QuizState extends State<Quiz> {
     level = userViewModel.userData!.level;
     userViewModel.loadUserData().then((_) {
       quizViewModel.getQuestionsByLevel(level);
+      quizLevelTitle = quizViewModel.quizLevelTitle;
     });
-    quizLevelTitle = quizViewModel.quizLevelTitle;
   }
 
   @override
@@ -41,27 +41,25 @@ class _QuizState extends State<Quiz> {
       child: Consumer<QuizViewModel>(
         builder: (context, quizData, child) {
           return Scaffold(
-              body: Container(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(quizLevelTitle),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const QuestionsScreen(),
-                          ),
-                        );
-                      },
-                      child: Text('Start Level ${level}'),
-                    ),
+              body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(quizLevelTitle),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const QuestionsScreen(),
+                        ),
+                      );
+                    },
+                    child: Text('Start Level $level'),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ));
         },
