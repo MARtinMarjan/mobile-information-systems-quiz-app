@@ -5,7 +5,7 @@ class DBService {
   final CollectionReference userCollection;
 
   DBService() : userCollection = FirebaseFirestore.instance.collection('users');
-
+  
   Stream<DocumentSnapshot> userData(String uid) {
     return userCollection.doc(uid).snapshots();
   }

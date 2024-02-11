@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:quiz_app/ui/rounded_button.dart';
+import 'package:quiz_app/services/add_data.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key, this.image});
+  UpdateProfileScreen({super.key, this.image});
 
   final Uint8List? image;
 
@@ -17,6 +18,7 @@ class UpdateProfileScreen extends StatefulWidget {
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Uint8List? _image;
 
+  final TextEditingController usernameController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -41,6 +43,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         _image = img;
       });
     }
+  }
+
+  void saveProfile() async {
+    String username = usernameController.text;
+    String resp = await StoreData().saveData(username: username, file: _image!);
   }
 
   @override
@@ -104,31 +111,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 child: Column(
                   children: [
                     TextFormField(
+                      controller: usernameController,
                       decoration: kTextFieldDecoration.copyWith(
                           hintText: 'Change your username'),
-                    ),
-                    const SizedBox(height: 50),
-                    TextFormField(
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Change your email'),
-                    ),
-                    const SizedBox(height: 50),
-                    TextFormField(
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Change your password'),
                     ),
                     const SizedBox(height: 50),
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () =>
-                            Get.to(() => const UpdateProfileScreen()),
+                        onPressed: saveProfile,
                         style: ElevatedButton.styleFrom(
                             backgroundColor: zolta,
                             side: BorderSide.none,
                             shape: const StadiumBorder()),
-                        child: const Text("Edit Profile",
+                        child: const Text("Save Changes",
                             style: TextStyle(color: Colors.black)),
                       ),
                     ),

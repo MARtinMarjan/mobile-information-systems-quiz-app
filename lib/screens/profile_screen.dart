@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => Get.to(() => const UpdateProfileScreen()),
+                    onPressed: () => Get.to(() => UpdateProfileScreen()),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: zolta,
                         side: BorderSide.none,
