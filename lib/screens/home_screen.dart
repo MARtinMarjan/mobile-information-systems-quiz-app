@@ -51,10 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 if (auth.getCurrentUser() != null) {
                   auth.signOut();
-                } else{
-                  Navigator.pushNamed(context, '/welcome_screen');
-                }
-
+                } 
+                Navigator.pushNamed(context, '/welcome_screen');
               }),
           actions: [
             IconButton(

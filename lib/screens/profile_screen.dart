@@ -109,9 +109,8 @@ Widget build(BuildContext context){
             ProfileMenuWidget(title: "Logout",icon: LineAwesomeIcons.alternate_sign_out,onPress: (){
               if (auth.getCurrentUser() != null) {
                   auth.signOut();
-                } else{
-                  Navigator.pushNamed(context, '/welcome_screen');
-                }
+                } 
+                Navigator.pushNamed(context, '/welcome_screen');
             }, endIcon: false, color: Colors.red
             ),
           ],
