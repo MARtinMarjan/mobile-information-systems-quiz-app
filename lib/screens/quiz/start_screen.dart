@@ -1,41 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:quiz_app/models/question.dart';
+import 'package:provider/provider.dart';
+import 'package:quiz_app/screens/quiz/questions_screen.dart';
+import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 
 class StartScreen extends StatelessWidget {
-  List<Question> questions;
-
-  StartScreen(this.startQuiz, this.questions, {super.key});
-
-  final void Function() startQuiz;
+  const StartScreen({super.key});
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
+    final quizViewModel = Provider.of<QuizViewModel>(context);
+
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/quiz_logo_2.jpg',
-            width: 300,
-          ),
-          const SizedBox(height: 80),
-          Text(
-            'Learn Flutter the fun way!',
-            style: GoogleFonts.lato(
-              // color: const Color.fromARGB(255, 237, 223, 252),
-              fontSize: 24,
+          Text(quizViewModel.quizLevelTitle),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                quizViewModel.getQuestionsByLevel(quizViewModel.level);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const QuestionsScreen(),
+                  ),
+                );
+              },
+              child: Text('Start Level ${quizViewModel.level}'),
             ),
           ),
-          const SizedBox(height: 30),
-          OutlinedButton.icon(
-            onPressed: startQuiz,
-            style: OutlinedButton.styleFrom(
-                // foregroundColor: Colors.white,
-                ),
-            icon: const Icon(Icons.arrow_right_alt),
-            label: const Text('Start Quiz'),
-          )
         ],
       ),
     );

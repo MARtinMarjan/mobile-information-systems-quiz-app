@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:level_map/level_map.dart';
 import 'package:quiz_app/screens/profile_screen.dart';
-import 'package:quiz_app/services/auth_service.dart';
+import 'package:quiz_app/viewmodels/user.viewmodel.dart';
+import 'package:quiz_app/screens/welcome_screen.dart';
 
-import '../services/db_service.dart';
-
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   final String title;
 
   const MyHomePage({required this.title, super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return Consumer<UserViewModel>(
+      builder: (context, userViewModel, _) {
+        return userViewModel.user != null
+            ? _AuthenticatedHomePage()
+            : const WelcomePage();
+      },
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _AuthenticatedHomePage extends StatefulWidget {
+  @override
+  State<_AuthenticatedHomePage> createState() => _AuthenticatedHomePageState();
+}
+
+class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
   double currentLevel = 1;
   late String userId;
-  final AuthService auth = AuthService();
 
   @override
   void initState() {
     super.initState();
-    userId = auth.getCurrentUser()!.uid;
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    userId = userViewModel.user!.uid;
     _loadCurrentLevel();
   }
 
   Future<void> _loadCurrentLevel() async {
-    final DBService db = DBService(userId);
-    final level = await db.getCurrentLevel();
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    await userViewModel.loadUserData();
     setState(() {
-      currentLevel = level.toDouble();
+      currentLevel = userViewModel.userData!.level.toDouble();
     });
   }
 
@@ -47,13 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(color: Colors.white),
           ),
           leading: IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () {
-                if (auth.getCurrentUser() != null) {
-                  auth.signOut();
-                } 
-                Navigator.pushNamed(context, '/welcome_screen');
-              }),
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              final userViewModel =
+                  Provider.of<UserViewModel>(context, listen: false);
+              userViewModel.signOut();
+            },
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.add_comment_sharp),
@@ -120,11 +133,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       alignment: Alignment.bottomCenter,
                       margin: const EdgeInsets.only(bottom: 20),
-                      child: ElevatedButton(
-                        onPressed: () {
+                      child: GestureDetector(
+                        onTap: () {
                           Navigator.pushNamed(context, '/quiz_screen');
                         },
-                        child: const Text('Start Level'),
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          margin: const EdgeInsets.only(bottom: 20),
+                          child: const ElevatedButton(
+                            onPressed: null,
+                            child: Text('Start Level'),
+                          ),
+                        ),
                       ),
                     ),
                   ],

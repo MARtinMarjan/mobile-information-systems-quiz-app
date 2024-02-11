@@ -1,21 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../models/user.dart';
 
 class DBService {
-  final String uid;
   final CollectionReference userCollection;
 
-  DBService(this.uid)
-      : userCollection = FirebaseFirestore.instance.collection('users');
+  DBService() : userCollection = FirebaseFirestore.instance.collection('users');
 
-  Stream<DocumentSnapshot> get userData {
+  Stream<DocumentSnapshot> userData(String uid) {
     return userCollection.doc(uid).snapshots();
   }
 
-  Future<void> addUserQuizStats(
-      int level, int points, int correctAnswers, int incorrectAnswers) async {
-    int currentLevel = await getCurrentLevel();
+  Future<void> addUserQuizStats(String uid, int level, int points,
+      int correctAnswers, int incorrectAnswers) async {
+    int currentLevel = await getCurrentLevel(uid);
 
     try {
       await userCollection.doc(uid).set({
@@ -30,7 +27,7 @@ class DBService {
     }
   }
 
-  Future<int> getCurrentLevel() async {
+  Future<int> getCurrentLevel(String uid) async {
     try {
       final DocumentSnapshot userDoc = await userCollection.doc(uid).get();
       return userDoc.get('level');
@@ -40,7 +37,7 @@ class DBService {
     }
   }
 
-  Future<int> getCurrentPoints() async {
+  Future<int> getCurrentPoints(String uid) async {
     try {
       final DocumentSnapshot userDoc = await userCollection.doc(uid).get();
       return userDoc.get('points');
@@ -50,7 +47,7 @@ class DBService {
     }
   }
 
-  Future<QuizUserData> getUserData() async {
+  Future<QuizUserData> getUserData(String uid) async {
     try {
       final DocumentSnapshot userDoc = await userCollection.doc(uid).get();
       return QuizUserData.fromMap(userDoc.data() as Map<String, dynamic>);

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
 
-import '../../services/auth_service.dart';
 import '../../ui/logo.dart';
 import '../../ui/rounded_button.dart';
+import '../../viewmodels/user.viewmodel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +17,13 @@ class _LoginPageState extends State<LoginPage> {
   late String email;
   late String password;
   bool showSpinner = false;
-  final AuthService auth = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    userViewModel.loadUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +76,8 @@ class _LoginPageState extends State<LoginPage> {
       showSpinner = true;
     });
     try {
-      await auth.login(email, password);
+      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+      await userViewModel.login(email, password);
       if (context.mounted) {
         Navigator.pushNamed(context, '/home_screen');
       }

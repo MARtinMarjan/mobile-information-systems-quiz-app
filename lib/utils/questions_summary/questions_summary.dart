@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/questions_summary/summary_item.dart';
-
+import 'package:quiz_app/utils/questions_summary/summary_item.dart';
 class QuestionsSummary extends StatelessWidget {
   const QuestionsSummary(this.summaryData, {super.key});
 

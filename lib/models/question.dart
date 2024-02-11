@@ -2,6 +2,7 @@ class Question {
   final String questionText;
   final List<String> answers;
   int correctAnswerIndex;
+
   Question(this.questionText, this.answers, this.correctAnswerIndex);
 
   List<String> get shuffledAnswers {

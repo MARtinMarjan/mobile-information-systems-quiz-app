@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:quiz_app/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 import '../../ui/logo.dart';
 import '../../ui/rounded_button.dart';
+import '../../viewmodels/user.viewmodel.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -18,7 +19,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late String username = 'N/A';
   bool showSpinner = false;
 
-  final AuthService auth = AuthService();
+  @override
+  void initState() {
+    super.initState();
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    userViewModel.loadUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +89,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
       showSpinner = true;
     });
     try {
-      await auth.register(email, password, username);
+      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+      await userViewModel.register(email, password, username);
       if (context.mounted) {
         Navigator.pushNamed(context, '/home_screen');
       }

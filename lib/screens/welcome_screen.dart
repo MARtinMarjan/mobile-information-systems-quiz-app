@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
-import '../services/auth_service.dart';
 import '../ui/logo.dart';
 import '../ui/rounded_button.dart';
 
@@ -12,16 +13,14 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  final AuthService auth = AuthService();
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (auth.isLoggedIn()) {
-        Navigator.pushNamed(context, '/home_screen');
-      }
-    });
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    userViewModel.loadUserData();
+    if (userViewModel.user != null) {
+      Navigator.pushNamed(context, '/home_screen');
+    }
   }
 
   @override

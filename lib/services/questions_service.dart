@@ -7,17 +7,28 @@ class QuestionService {
   Future<Quiz?> getQuizByLevel(int level) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
-          .collection('quizzes')
+          .collection(
+              'quizzes') // Make sure this matches your actual collection path
           .where('level', isEqualTo: level)
           .limit(1)
           .get();
 
       if (querySnapshot.docs.isEmpty) {
+        // No quiz found for the given level
         return null;
       }
 
-      // Get the first document and convert it to a Quiz object
-      Quiz quiz = Quiz.fromMap(querySnapshot.docs.first.data() as Map<String, dynamic>);
+      // Get the first document
+      var documentSnapshot = querySnapshot.docs.first;
+
+      // Check if document exists
+      if (!documentSnapshot.exists) {
+        // Document does not exist
+        return null;
+      }
+
+      // Convert document data to a Quiz object
+      Quiz quiz = Quiz.fromMap(documentSnapshot.data() as Map<String, dynamic>);
       return quiz;
     } catch (error) {
       // Handle errors
@@ -25,6 +36,4 @@ class QuestionService {
       return null;
     }
   }
-
-
 }
