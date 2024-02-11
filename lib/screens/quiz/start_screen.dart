@@ -27,10 +27,9 @@ class _QuizState extends State<Quiz> {
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
     final quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
     level = userViewModel.userData!.level;
-    userViewModel.loadUserData().then((_) {
-      quizViewModel.getQuestionsByLevel(level);
-      quizLevelTitle = quizViewModel.quizLevelTitle;
-    });
+    quizViewModel.getQuestionsByLevel(level);
+    quizLevelTitle = quizViewModel.quizLevelTitle;
+
   }
 
   @override

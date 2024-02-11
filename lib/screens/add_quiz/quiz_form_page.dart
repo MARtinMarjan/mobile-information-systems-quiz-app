@@ -156,7 +156,6 @@ class _QuizFormPageState extends State<QuizFormPage> {
                   ),
                 ],
               ),
-
             ),
           ),
         ],

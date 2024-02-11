@@ -27,7 +27,8 @@ class ResultsScreen extends StatelessWidget {
         {
           'question_index': i,
           'question': questions[i].questionText,
-          'correct_answer': questions[i].answers[0],
+          'correct_answer':
+              questions[i].answers[questions[i].correctAnswerIndex],
           'user_answer': chosenAnswers[i]
         },
       );
@@ -43,11 +44,10 @@ class ResultsScreen extends StatelessWidget {
 
     final questions = quizViewModel.questions;
     final numTotalQuestions = questions.length;
-    final numCorrectQuestions = quizViewModel.chosenAnswers
-        .where((answer) =>
-            answer ==
-            questions[quizViewModel.chosenAnswers.indexOf(answer)]
-                .correctAnswerIndex)
+    final numCorrectQuestions = getSummaryData(questions)
+        .where(
+          (data) => data['user_answer'] == data['correct_answer'],
+        )
         .length;
 
     userViewModel.addUserQuizStats(

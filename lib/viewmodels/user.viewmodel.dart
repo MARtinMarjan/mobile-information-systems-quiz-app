@@ -67,9 +67,9 @@ class UserViewModel extends ChangeNotifier {
       await _dbService.addUserQuizStats(
         _user!.uid,
         level,
-        points,
-        correctAnswers,
-        incorrectAnswers,
+        _userData!.points + points,
+        _userData!.correctAnswers + correctAnswers,
+        _userData!.incorrectAnswers + incorrectAnswers,
       );
       await loadUserData(); // Reload user data after updating stats
     }

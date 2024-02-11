@@ -14,9 +14,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  AuthService auth = AuthService();
-  late DBService db;
-
   QuizUserData? userData = QuizUserData(
     uid: '',
     email: '',
@@ -31,7 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    db = DBService();
     userViewModel.loadUserData();
     userData = userViewModel.userData;
   }
@@ -138,9 +134,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: "Logout",
                     icon: LineAwesomeIcons.alternate_sign_out,
                     onPress: () {
-                      if (auth.getCurrentUser() != null) {
-                        auth.signOut();
-                      }
+                      final userViewModel =
+                          Provider.of<UserViewModel>(context, listen: false);
+                      userViewModel.signOut();
                       Navigator.pushNamed(context, '/welcome_screen');
                     },
                     endIcon: false,
