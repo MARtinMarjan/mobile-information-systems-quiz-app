@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/models/user.dart';
+import 'package:quiz_app/screens/update_profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
-import 'package:quiz_app/services/auth_service.dart';
-import 'package:quiz_app/services/db_service.dart';
+import 'package:quiz_app/widgets/ProfileMenuWidget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -61,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => Navigator.pushNamed(context, '/home_screen'),
           icon: const Icon(LineAwesomeIcons.angle_left),
         ),
         title: Text(
@@ -79,15 +80,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
               children: [
-                SizedBox(
-                  width: 120,
-                  height: 120,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: const Image(
-                        image:
-                            AssetImage("assets/level_map/BoyGraduation.png")),
-                  ),
+                Stack(
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: const Image(
+                            image: AssetImage(
+                                "assets/level_map/BoyGraduation.png")),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: zolta,
+                        ),
+                        child: const Icon(LineAwesomeIcons.alternate_pencil,
+                            size: 20.0, color: Colors.black),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -104,9 +123,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  width: 500,
+                  width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Get.to(() => const UpdateProfileScreen()),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: zolta,
                         side: BorderSide.none,
@@ -144,55 +163,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             )),
       ),
-    );
-  }
-}
-
-class ProfileMenuWidget extends StatelessWidget {
-  const ProfileMenuWidget({
-    super.key,
-    required this.title,
-    required this.icon,
-    required this.onPress,
-    this.endIcon = true,
-    this.textColor,
-    required this.color,
-  });
-
-  final MaterialColor color;
-  final String title;
-  final IconData icon;
-  final VoidCallback onPress;
-  final bool endIcon;
-  final Color? textColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onPress,
-      leading: Container(
-        width: 45,
-        height: 45,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: color.withOpacity(0.1),
-        ),
-        child: Icon(icon),
-      ),
-      title: Text(title,
-          style:
-              Theme.of(context).textTheme.bodyMedium?.apply(color: textColor)),
-      trailing: endIcon
-          ? Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              child: const Icon(LineAwesomeIcons.angle_right,
-                  size: 18.0, color: Colors.grey))
-          : null,
     );
   }
 }
