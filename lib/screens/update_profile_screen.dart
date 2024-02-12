@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:quiz_app/ui/rounded_button.dart';
-import 'package:quiz_app/services/add_data.dart';
+import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  UpdateProfileScreen({super.key, this.image});
+  const UpdateProfileScreen({super.key, this.image});
 
   final Uint8List? image;
 
@@ -19,6 +20,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Uint8List? _image;
 
   final TextEditingController usernameController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +49,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   void saveProfile() async {
     String username = usernameController.text;
-    String resp = await StoreData().saveData(username: username, file: _image!);
+    UserViewModel userViewModel =
+        Provider.of<UserViewModel>(context, listen: false);
+    if (_image == null) {
+      Get.snackbar("Error", "Please select an image");
+      return;
+    }
+    if (username.isEmpty) {
+      Get.snackbar("Error", "Please enter a username");
+      return;
+    }
+    userViewModel.saveProfile(username, _image!).then((value) {
+      Get.back();
+    });
   }
 
   @override
@@ -63,7 +77,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           ),
           title: Text(
             "Edit Profile",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
       ),

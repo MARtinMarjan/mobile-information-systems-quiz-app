@@ -6,6 +6,7 @@ class QuizUserData {
   final int points;
   final int correctAnswers;
   final int incorrectAnswers;
+  final String imageLink;
 
   QuizUserData({
     required this.uid,
@@ -15,6 +16,7 @@ class QuizUserData {
     required this.points,
     required this.correctAnswers,
     required this.incorrectAnswers,
+    required this.imageLink,
   });
 
   factory QuizUserData.fromMap(Map<String, dynamic> data) {
@@ -26,6 +28,7 @@ class QuizUserData {
       points: data['points'] as int? ?? 0,
       correctAnswers: data['correct_answers'] as int? ?? 0,
       incorrectAnswers: data['incorrect_answers'] as int? ?? 0,
+      imageLink: data['image_link'] as String? ?? '',
     );
   }
 }

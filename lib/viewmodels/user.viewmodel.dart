@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -73,5 +75,18 @@ class UserViewModel extends ChangeNotifier {
       );
       await loadUserData(); // Reload user data after updating stats
     }
+    loadUserData();
+  }
+
+  Future<void> saveProfile(String newUsername, Uint8List image) async {
+    if (_user != null) {
+      String resp = await _dbService.saveData(
+          username: newUsername, file: image, uid: _user!.uid);
+      if (resp == "success") {
+        _userData = await _dbService.getUserData(_user!.uid);
+        notifyListeners();
+      }
+    }
+
   }
 }

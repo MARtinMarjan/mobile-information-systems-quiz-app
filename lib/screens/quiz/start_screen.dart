@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/screens/quiz/questions_screen.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
-import 'package:quiz_app/screens/quiz/start_screen.dart';
 
 import '../../viewmodels/user.viewmodel.dart';
 
@@ -14,27 +13,14 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  late int level = 1;
-
-  late String quizLevelTitle = 'Welcome to the Quiz!';
 
   @override
   void initState() {
     super.initState();
   }
 
-  setupLevel() {
-    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    final quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
-    level = userViewModel.userData!.level;
-    quizViewModel.getQuestionsByLevel(level);
-    quizLevelTitle = quizViewModel.quizLevelTitle;
-
-  }
-
   @override
   Widget build(BuildContext context) {
-    setupLevel();
     return ChangeNotifierProvider(
       create: (context) => QuizViewModel(),
       child: Consumer<QuizViewModel>(
@@ -44,7 +30,7 @@ class _QuizState extends State<Quiz> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(quizLevelTitle),
+                Text(context.watch<QuizViewModel>().quizLevelTitle),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -55,7 +41,8 @@ class _QuizState extends State<Quiz> {
                         ),
                       );
                     },
-                    child: Text('Start Level $level'),
+                    child: Text(
+                        'Start Level ${context.watch<UserViewModel>().userData?.level}'),
                   ),
                 ),
               ],

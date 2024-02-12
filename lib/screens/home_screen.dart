@@ -5,6 +5,9 @@ import 'package:quiz_app/screens/profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
 
+import '../ui/rounded_button.dart';
+import '../viewmodels/quiz.viewmodel.dart';
+
 class MyHomePage extends StatelessWidget {
   final String title;
 
@@ -41,10 +44,13 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
 
   Future<void> _loadCurrentLevel() async {
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    final quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
     await userViewModel.loadUserData();
+    quizViewModel.getQuestionsByLevel(userViewModel.userData!.level);
     setState(() {
       currentLevel = userViewModel.userData!.level.toDouble();
     });
+
   }
 
   int currentPageIndex = 0;
@@ -91,8 +97,15 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                     LevelMap(
                       backgroundColor: Colors.limeAccent,
                       levelMapParams: LevelMapParams(
+                        enableVariationBetweenCurves: false,
                         levelCount: 20,
-                        currentLevel: currentLevel,
+                        currentLevel: context
+                                    .watch<UserViewModel>()
+                                    .userData!
+                                    .level
+                                    .toDouble() +
+                                0.5 ??
+                            1,
                         pathColor: Colors.black,
                         currentLevelImage: ImageParams(
                           path: "assets/level_map/current_black.png",
@@ -100,11 +113,11 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                         ),
                         lockedLevelImage: ImageParams(
                           path: "assets/level_map/locked_black.png",
-                          size: const Size(40, 42),
+                          size: const Size(50, 50),
                         ),
                         completedLevelImage: ImageParams(
                           path: "assets/level_map/completed_black.png",
-                          size: const Size(40, 42),
+                          size: const Size(50, 50),
                         ),
                         startLevelImage: ImageParams(
                           path: "assets/level_map/BoyStudy.png",
@@ -135,16 +148,14 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                       margin: const EdgeInsets.only(bottom: 20),
                       child: GestureDetector(
                         onTap: () {
+                          _loadCurrentLevel();
                           Navigator.pushNamed(context, '/quiz_screen');
                         },
-                        child: Container(
-                          alignment: Alignment.bottomCenter,
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: const ElevatedButton(
-                            onPressed: null,
-                            child: Text('Start Level'),
-                          ),
-                        ),
+                        child: RoundedButton(
+                            colour: Colors.red,
+                            title:
+                                'Start Level ${context.watch<UserViewModel>().userData!.level.toString()}',
+                            onPressed: null),
                       ),
                     ),
                   ],

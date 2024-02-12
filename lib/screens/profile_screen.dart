@@ -23,6 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     points: 0,
     correctAnswers: 0,
     incorrectAnswers: 0,
+    imageLink: '',
   );
 
   @override
@@ -87,9 +88,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 120,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: const Image(
-                            image: AssetImage(
-                                "assets/level_map/BoyGraduation.png")),
+                        child: Image(
+                            image: NetworkImage(userData?.imageLink ?? ''),
+                            fit: BoxFit.cover),
                       ),
                     ),
                     Positioned(
@@ -125,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => Get.to(() => UpdateProfileScreen()),
+                    onPressed: () => Get.to(() => const UpdateProfileScreen()),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: zolta,
                         side: BorderSide.none,
