@@ -93,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 image: NetworkImage(userData!.imageLink),
                                 fit: BoxFit.cover,
                               )
-                            : Placeholder(), // Placeholder can be replaced with any default widget or loading indicator
+                            : const Placeholder(), // Placeholder can be replaced with any default widget or loading indicator
                       ),
                     ),
                     // Positioned(

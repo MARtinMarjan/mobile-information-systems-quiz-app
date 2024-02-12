@@ -95,7 +95,7 @@ class _StatsScreenState extends State<StatsScreen> {
           ),
         ],
       )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

@@ -32,24 +32,26 @@ class _AuthenticatedHomePage extends StatefulWidget {
 
 class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
   double currentLevel = 1;
-  late String userId;
+  late UserViewModel _userViewModel;
+  late QuizViewModel _quizViewModel;
 
   @override
   void initState() {
     super.initState();
-    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    userId = userViewModel.user!.uid;
+    _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    _quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
+    // userId = userViewModel.user!.uid;
     _loadCurrentLevel();
   }
 
   Future<void> _loadCurrentLevel() async {
-    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    final quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
-    await userViewModel.loadUserData();
-    quizViewModel.getQuestionsByLevel(userViewModel.userData!.level);
-    setState(() {
-      currentLevel = userViewModel.userData!.level.toDouble();
-    });
+    await _userViewModel.loadUserData().then((value) => {
+    _quizViewModel.getQuestionsByLevel(_userViewModel.userData!.level),
+    setState((){
+      currentLevel = _userViewModel.userData!.level.toDouble();
+        })
+  }
+    );
   }
 
   int currentPageIndex = 0;
@@ -58,29 +60,6 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Colors.red,
-        //   title: const Text(
-        //     "MKLearner",
-        //     style: TextStyle(color: Colors.white),
-        //   ),
-        //   leading: IconButton(
-        //     icon: const Icon(Icons.logout),
-        //     onPressed: () {
-        //       final userViewModel =
-        //           Provider.of<UserViewModel>(context, listen: false);
-        //       userViewModel.signOut();
-        //     },
-        //   ),
-        //   actions: [
-        //     IconButton(
-        //       icon: const Icon(Icons.add_comment_sharp),
-        //       onPressed: () {
-        //         Navigator.pushNamed(context, '/add_quiz');
-        //       },
-        //     ),
-        //   ],
-        // ),
         body: <Widget>[
           Column(
             children: [
@@ -98,15 +77,15 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                       levelMapParams: LevelMapParams(
                         pathStrokeWidth: 3,
                         firstCurveReferencePointOffsetFactor:
-                            const Offset(0.5, 0.5),
+                        const Offset(0.5, 0.5),
                         enableVariationBetweenCurves: false,
                         levelCount: 20,
                         currentLevel: context
-                                    .watch<UserViewModel>()
-                                    .userData!
-                                    .level
-                                    .toDouble() +
-                                0.5 ??
+                            .watch<UserViewModel>()
+                            .userData!
+                            .level
+                            .toDouble() -
+                            0.5 ??
                             1,
                         pathColor: Colors.black,
                         currentLevelImage: ImageParams(
@@ -131,12 +110,13 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                         ),
                         bgImagesToBePaintedRandomly: [
                           ImageParams(
-                              path: "assets/level_map/random_images/grass.png",
-                              size: const Size(30, 30),
-                              repeatCountPerLevel: 0.5,),
+                            path: "assets/level_map/random_images/grass.png",
+                            size: const Size(30, 30),
+                            repeatCountPerLevel: 0.5,
+                          ),
                           ImageParams(
                               path: "assets/level_map/random_images/grass2.png",
-                              size: const Size(30, 30),
+                              size: const Size(25, 25),
                               repeatCountPerLevel: 0.3),
                           ImageParams(
                               path: "assets/level_map/random_images/lake.png",
@@ -161,10 +141,10 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                               size: const Size(80, 80),
                               repeatCountPerLevel: 0.05,
                               imagePositionFactor: 0.4,
-                          side: Side.LEFT),
+                              side: Side.LEFT),
                           ImageParams(
                               path:
-                                  "assets/level_map/random_images/flag-on-pole.png",
+                              "assets/level_map/random_images/flag-on-pole.png",
                               size: const Size(80, 80),
                               repeatCountPerLevel: 0.1),
                         ],
@@ -181,7 +161,11 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                         child: RoundedButton(
                             colour: Colors.red,
                             title:
-                                'Start Level ${context.watch<UserViewModel>().userData!.level.toString()}',
+                            'Start Level ${context
+                                .watch<UserViewModel>()
+                                .userData
+                                ?.level
+                                .toString() ?? '?'}',
                             onPressed: null),
                       ),
                     ),
