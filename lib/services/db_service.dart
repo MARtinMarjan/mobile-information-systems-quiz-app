@@ -79,8 +79,8 @@ class DBService {
       if (username.isNotEmpty) {
         String imageUrl = await uploadImageToStorage("ProfileImage", file);
         await firestore.collection('users').doc(uid).set({
-          'name': username,
-          'imageLink': imageUrl,
+          'username': username,
+          'image_link': imageUrl,
         }, SetOptions(merge: true));
         resp = "success";
       }

@@ -88,34 +88,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 120,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image(
-                            image: NetworkImage(userData?.imageLink ?? ''),
-                            fit: BoxFit.cover),
+                        child: userData?.imageLink != null
+                            ? Image(
+                                image: NetworkImage(userData!.imageLink),
+                                fit: BoxFit.cover,
+                              )
+                            : Placeholder(), // Placeholder can be replaced with any default widget or loading indicator
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: zolta,
-                        ),
-                        child: const Icon(LineAwesomeIcons.alternate_pencil,
-                            size: 20.0, color: Colors.black),
-                      ),
-                    ),
+                    // Positioned(
+                    //   bottom: 0,
+                    //   right: 0,
+                    //   child: Container(
+                    //     width: 35,
+                    //     height: 35,
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(100),
+                    //       color: zolta,
+                    //     ),
+                    //     child: const Icon(LineAwesomeIcons.alternate_pencil,
+                    //         size: 20.0, color: Colors.black),
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Username: ${userData?.username}',
+                  '${userData?.username}',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 Text(
-                  'Email: ${userData?.email}',
+                  '${userData?.email}',
                   style: bodyText,
                 ),
                 Text(

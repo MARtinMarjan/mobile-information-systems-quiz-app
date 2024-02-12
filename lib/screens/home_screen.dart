@@ -122,18 +122,18 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                           size: const Size(45, 45),
                         ),
                         startLevelImage: ImageParams(
-                          path: "assets/level_map/start_level_image.png",
+                          path: "assets/level_map/start_quiz_image.png",
                           size: const Size(100, 100),
                         ),
                         pathEndImage: ImageParams(
-                          path: "assets/level_map/BoyGraduation.png",
-                          size: const Size(60, 60),
+                          path: "assets/level_map/end_quiz_image.png",
+                          size: const Size(100, 100),
                         ),
                         bgImagesToBePaintedRandomly: [
                           ImageParams(
                               path: "assets/level_map/random_images/grass.png",
                               size: const Size(30, 30),
-                              repeatCountPerLevel: 0.5),
+                              repeatCountPerLevel: 0.5,),
                           ImageParams(
                               path: "assets/level_map/random_images/grass2.png",
                               size: const Size(30, 30),
@@ -149,7 +149,9 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                           ImageParams(
                               path: "assets/level_map/random_images/church.png",
                               size: const Size(80, 80),
-                              repeatCountPerLevel: 0.1),
+                              repeatCountPerLevel: 0.05,
+                              imagePositionFactor: 0.4,
+                              side: Side.RIGHT),
                           ImageParams(
                               path: "assets/level_map/random_images/denar.png",
                               size: const Size(40, 40),
@@ -157,7 +159,9 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                           ImageParams(
                               path: "assets/level_map/random_images/bridge.png",
                               size: const Size(80, 80),
-                              repeatCountPerLevel: 0.05),
+                              repeatCountPerLevel: 0.05,
+                              imagePositionFactor: 0.4,
+                          side: Side.LEFT),
                           ImageParams(
                               path:
                                   "assets/level_map/random_images/flag-on-pole.png",
