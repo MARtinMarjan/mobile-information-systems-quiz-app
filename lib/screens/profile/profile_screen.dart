@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/models/user.dart';
-import 'package:quiz_app/screens/update_profile_screen.dart';
+import 'package:quiz_app/screens/profile/update_profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/widgets/ProfileMenuWidget.dart';
 
@@ -147,7 +147,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ProfileMenuWidget(
                     title: "Stats",
                     icon: LineAwesomeIcons.info,
-                    onPress: () {},
+                    // onPress:() => Get.to(() => const StatsScreen()),
+                    onPress: () {
+                      Navigator.pushNamed(context, '/stats_screen');
+                    },
                     color: zolta),
                 const SizedBox(height: 30),
                 ProfileMenuWidget(

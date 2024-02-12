@@ -5,18 +5,22 @@ class Assets {
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesQuizLogo1 = 'assets/images/quiz_logo_1.jpg';
   static const String imagesQuizLogo2 = 'assets/images/quiz_logo_2.jpg';
-  static const String levelMapAstronomy = 'assets/level_map/Astronomy.png';
-  static const String levelMapAtom = 'assets/level_map/Atom.png';
   static const String levelMapBoyGraduation = 'assets/level_map/BoyGraduation.png';
   static const String levelMapBoyStudy = 'assets/level_map/BoyStudy.png';
-  static const String levelMapCertificate = 'assets/level_map/Certificate.png';
-  static const String levelMapCompletedBlack = 'assets/level_map/completed_black.png';
-  static const String levelMapCurrentBlack = 'assets/level_map/current_black.png';
-  static const String levelMapEnergyEquivalency = 'assets/level_map/EnergyEquivalency.png';
-  static const String levelMapGeology = 'assets/level_map/Geology.png';
+  static const String levelMapCompletedLevel = 'assets/level_map/completed_level.png';
+  static const String levelMapCurrentLevel = 'assets/level_map/current_level.png';
   static const String levelMapGraduationCap = 'assets/level_map/GraduationCap.png';
-  static const String levelMapLockedBlack = 'assets/level_map/locked_black.png';
-  static const String levelMapMath = 'assets/level_map/Math.png';
-  static const String levelMapNotes = 'assets/level_map/Notes.png';
+  static const String levelMapLockedLevel = 'assets/level_map/locked_level.png';
+  static const String levelMapNorthMacedonia (2) = 'assets/level_map/north-macedonia (2).png';
+  static const String levelMapStartLevelImage = 'assets/level_map/start_level_image.png';
+  static const String randomImages7441425 = 'assets/level_map/random_images/lake.png';
+  static const String randomImagesBridge = 'assets/level_map/random_images/bridge.png';
+  static const String randomImagesChurch = 'assets/level_map/random_images/church.png';
+  static const String randomImagesDenar = 'assets/level_map/random_images/denar.png';
+  static const String randomImagesFlagOnPole = 'assets/level_map/random_images/flag-on-pole.png';
+  static const String randomImagesGrass = 'assets/level_map/random_images/grass.png';
+  static const String randomImagesGrass2 = 'assets/level_map/random_images/grass2.png';
+  static const String randomImagesMacedonia = 'assets/level_map/random_images/macedonia.png';
+  static const String randomImagesTree = 'assets/level_map/random_images/tree.png';
 
 }

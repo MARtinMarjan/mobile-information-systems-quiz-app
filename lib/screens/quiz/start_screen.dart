@@ -13,43 +13,34 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => QuizViewModel(),
-      child: Consumer<QuizViewModel>(
-        builder: (context, quizData, child) {
-          return Scaffold(
-              body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(context.watch<QuizViewModel>().quizLevelTitle),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const QuestionsScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                        'Start Level ${context.watch<UserViewModel>().userData?.level}'),
-                  ),
+    return Consumer<QuizViewModel>(
+      builder: (context, quizData, child) {
+        return Scaffold(
+            body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(context.watch<QuizViewModel>().quizLevelTitle),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const QuestionsScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                      'Start Level ${context.watch<UserViewModel>().userData?.level}'),
                 ),
-              ],
-            ),
-          ));
-        },
-      ),
+              ),
+            ],
+          ),
+        ));
+      },
     );
   }
 }

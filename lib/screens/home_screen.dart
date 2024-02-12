@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:level_map/level_map.dart';
-import 'package:quiz_app/screens/profile_screen.dart';
+import 'package:quiz_app/screens/profile/profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
 
@@ -50,7 +50,6 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
     setState(() {
       currentLevel = userViewModel.userData!.level.toDouble();
     });
-
   }
 
   int currentPageIndex = 0;
@@ -59,29 +58,29 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          title: const Text(
-            "MKLearner",
-            style: TextStyle(color: Colors.white),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              final userViewModel =
-                  Provider.of<UserViewModel>(context, listen: false);
-              userViewModel.signOut();
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add_comment_sharp),
-              onPressed: () {
-                Navigator.pushNamed(context, '/add_quiz');
-              },
-            ),
-          ],
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.red,
+        //   title: const Text(
+        //     "MKLearner",
+        //     style: TextStyle(color: Colors.white),
+        //   ),
+        //   leading: IconButton(
+        //     icon: const Icon(Icons.logout),
+        //     onPressed: () {
+        //       final userViewModel =
+        //           Provider.of<UserViewModel>(context, listen: false);
+        //       userViewModel.signOut();
+        //     },
+        //   ),
+        //   actions: [
+        //     IconButton(
+        //       icon: const Icon(Icons.add_comment_sharp),
+        //       onPressed: () {
+        //         Navigator.pushNamed(context, '/add_quiz');
+        //       },
+        //     ),
+        //   ],
+        // ),
         body: <Widget>[
           Column(
             children: [
@@ -95,8 +94,11 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                   alignment: Alignment.bottomCenter,
                   children: [
                     LevelMap(
-                      backgroundColor: Colors.limeAccent,
+                      backgroundColor: Colors.lightGreen,
                       levelMapParams: LevelMapParams(
+                        pathStrokeWidth: 3,
+                        firstCurveReferencePointOffsetFactor:
+                            const Offset(0.5, 0.5),
                         enableVariationBetweenCurves: false,
                         levelCount: 20,
                         currentLevel: context
@@ -108,20 +110,20 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                             1,
                         pathColor: Colors.black,
                         currentLevelImage: ImageParams(
-                          path: "assets/level_map/current_black.png",
-                          size: const Size(40, 47),
+                          path: "assets/level_map/current_level.png",
+                          size: const Size(40, 40),
                         ),
                         lockedLevelImage: ImageParams(
-                          path: "assets/level_map/locked_black.png",
-                          size: const Size(50, 50),
+                          path: "assets/level_map/locked_level.png",
+                          size: const Size(45, 45),
                         ),
                         completedLevelImage: ImageParams(
-                          path: "assets/level_map/completed_black.png",
-                          size: const Size(50, 50),
+                          path: "assets/level_map/completed_level.png",
+                          size: const Size(45, 45),
                         ),
                         startLevelImage: ImageParams(
-                          path: "assets/level_map/BoyStudy.png",
-                          size: const Size(60, 60),
+                          path: "assets/level_map/start_level_image.png",
+                          size: const Size(100, 100),
                         ),
                         pathEndImage: ImageParams(
                           path: "assets/level_map/BoyGraduation.png",
@@ -129,17 +131,38 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                         ),
                         bgImagesToBePaintedRandomly: [
                           ImageParams(
-                              path: "assets/level_map/Astronomy.png",
-                              size: const Size(80, 80),
-                              repeatCountPerLevel: 0.15),
+                              path: "assets/level_map/random_images/grass.png",
+                              size: const Size(30, 30),
+                              repeatCountPerLevel: 0.5),
                           ImageParams(
-                              path: "assets/level_map/Atom.png",
-                              size: const Size(80, 80),
-                              repeatCountPerLevel: 0.15),
+                              path: "assets/level_map/random_images/grass2.png",
+                              size: const Size(30, 30),
+                              repeatCountPerLevel: 0.3),
                           ImageParams(
-                              path: "assets/level_map/Certificate.png",
+                              path: "assets/level_map/random_images/lake.png",
                               size: const Size(80, 80),
-                              repeatCountPerLevel: 0.15),
+                              repeatCountPerLevel: 0.05),
+                          ImageParams(
+                              path: "assets/level_map/random_images/tree.png",
+                              size: const Size(50, 50),
+                              repeatCountPerLevel: 0.3),
+                          ImageParams(
+                              path: "assets/level_map/random_images/church.png",
+                              size: const Size(80, 80),
+                              repeatCountPerLevel: 0.1),
+                          ImageParams(
+                              path: "assets/level_map/random_images/denar.png",
+                              size: const Size(40, 40),
+                              repeatCountPerLevel: 0.1),
+                          ImageParams(
+                              path: "assets/level_map/random_images/bridge.png",
+                              size: const Size(80, 80),
+                              repeatCountPerLevel: 0.05),
+                          ImageParams(
+                              path:
+                                  "assets/level_map/random_images/flag-on-pole.png",
+                              size: const Size(80, 80),
+                              repeatCountPerLevel: 0.1),
                         ],
                       ),
                     ),
