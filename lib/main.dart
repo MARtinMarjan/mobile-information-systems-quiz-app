@@ -23,7 +23,9 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => QuizViewModel()),
-        ChangeNotifierProvider(create: (_) => UserViewModel(authService: authService, dbService: dbService)),
+        ChangeNotifierProvider(
+            create: (_) =>
+                UserViewModel(authService: authService, dbService: dbService)),
       ],
       child: const MyApp(),
     ),

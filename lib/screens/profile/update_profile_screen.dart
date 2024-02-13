@@ -9,7 +9,7 @@ import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import '../../widgets/ui/rounded_button.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key});
+  const UpdateProfileScreen({Key? key});
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -17,11 +17,8 @@ class UpdateProfileScreen extends StatefulWidget {
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Uint8List? _image;
-
   String previousImage = "";
-
   String previousUsername = "";
-
   final TextEditingController usernameController = TextEditingController();
 
   @override
@@ -35,23 +32,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
-  Future<Uint8List?> pickImage(ImageSource source) async {
+  Future<void> pickImage(ImageSource source) async {
     final ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: source);
     if (file != null) {
-      return await file.readAsBytes();
-    }
-
-    print("No Images Selected");
-    return null; // Return null if no image selected
-  }
-
-  void selectImage() async {
-    Uint8List? img = await pickImage(ImageSource.gallery);
-    if (img != null) {
+      Uint8List img = await file.readAsBytes();
       setState(() {
         _image = img;
       });
+    } else {
+      print("No Images Selected");
     }
   }
 
@@ -124,9 +114,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         color: Colors.yellow,
                         shape: BoxShape.circle,
                       ),
-                      child: IconButton(
-                        onPressed: selectImage,
-                        icon: const Icon(Icons.add_a_photo),
+                      child: PopupMenuButton<ImageSource>(
+                        offset: const Offset(0, 40),
+                        onSelected: pickImage,
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: ImageSource.camera,
+                            child: Text('Choose from Camera'),
+                          ),
+                          const PopupMenuItem(
+                            value: ImageSource.gallery,
+                            child: Text('Choose from Gallery'),
+                          ),
+                        ],
+                        child: IconButton(
+                          icon: const Icon(Icons.add_a_photo),
+                          color: Theme.of(context).primaryColor,
+                          onPressed: null,
+                        ),
                       ),
                     ),
                   ),
@@ -138,8 +143,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   children: [
                     TextFormField(
                       controller: usernameController,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Change your username'),
+                      decoration: const InputDecoration(
+                        hintText: 'Change your username',
+                      ),
                     ),
                     const SizedBox(height: 50),
                     const SizedBox(height: 20),
@@ -148,11 +154,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       child: ElevatedButton(
                         onPressed: saveProfile,
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: zolta,
-                            side: BorderSide.none,
-                            shape: const StadiumBorder()),
-                        child: const Text("Save Changes",
-                            style: TextStyle(color: Colors.black)),
+                          backgroundColor: zolta,
+                          side: BorderSide.none,
+                          shape: const StadiumBorder(),
+                        ),
+                        child: const Text(
+                          "Save Changes",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
                   ],
