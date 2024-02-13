@@ -89,6 +89,4 @@ class UserViewModel extends ChangeNotifier {
       }
     }
   }
-
-  void resetUserData() {}
 }
