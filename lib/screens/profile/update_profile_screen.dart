@@ -4,27 +4,35 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quiz_app/ui/rounded_button.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
-class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key, this.image});
+import '../../widgets/ui/rounded_button.dart';
 
-  final Uint8List? image;
+class UpdateProfileScreen extends StatefulWidget {
+  const UpdateProfileScreen({super.key});
 
   @override
-  _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Uint8List? _image;
+
+  String previousImage = "";
+
+  String previousUsername = "";
 
   final TextEditingController usernameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _image = widget.image;
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    previousImage = userViewModel.userData?.imageLink ?? '';
+    previousUsername = userViewModel.userData?.username ?? '';
+    if (previousUsername.isNotEmpty) {
+      usernameController.text = previousUsername;
+    }
   }
 
   Future<Uint8List?> pickImage(ImageSource source) async {
@@ -98,10 +106,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           height: 150,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: const Image(
-                              image: AssetImage(
-                                  "assets/level_map/BoyGraduation.png"),
-                            ),
+                            child: previousImage != ""
+                                ? Image(
+                                    image: NetworkImage(previousImage),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Image(
+                                    image: AssetImage(
+                                        "assets/level_map/BoyGraduation.png")),
                           ),
                         ),
                   Positioned(

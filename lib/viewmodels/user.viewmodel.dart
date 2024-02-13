@@ -23,11 +23,12 @@ class UserViewModel extends ChangeNotifier {
 
   QuizUserData? get userData => _userData;
 
-  Future<void> login(String email, String password) async {
+  Future<String> login(String email, String password) async {
     try {
       UserCredential userCredential = await _authService.login(email, password);
       _user = userCredential.user;
       notifyListeners();
+      return "success";
     } catch (e) {
       print("Login Error: $e");
       rethrow;

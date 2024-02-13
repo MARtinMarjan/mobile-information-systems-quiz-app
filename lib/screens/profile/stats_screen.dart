@@ -14,7 +14,6 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
-
   QuizUserData? userData = QuizUserData(
     uid: '',
     email: '',
@@ -29,8 +28,8 @@ class _StatsScreenState extends State<StatsScreen> {
   @override
   void initState() {
     super.initState();
-    UserViewModel userViewModel = Provider.of<UserViewModel>(
-        context, listen: false);
+    UserViewModel userViewModel =
+        Provider.of<UserViewModel>(context, listen: false);
     userViewModel.loadUserData();
     userData = userViewModel.userData;
   }
@@ -56,45 +55,51 @@ class _StatsScreenState extends State<StatsScreen> {
       ),
       body: userData != null
           ? ListView(
-        children: [
-          ProfileMenuWidget(
-            title: 'Name: ${userData!.username}',
-            icon: LineAwesomeIcons.user,
-            onPress: () {},
-            color: Colors.blue,
-          ),
-          ProfileMenuWidget(
-            title: 'Email: ${userData!.email}',
-            icon: LineAwesomeIcons.envelope,
-            onPress: () {},
-            color: Colors.green,
-          ),
-          ProfileMenuWidget(
-            title: 'Level: ${userData!.level}',
-            icon: LineAwesomeIcons.star,
-            onPress: () {},
-            color: Colors.yellow,
-          ),
-          ProfileMenuWidget(
-            title: 'Points: ${userData!.points}',
-            icon: LineAwesomeIcons.coins,
-            onPress: () {},
-            color: Colors.orange,
-          ),
-          ProfileMenuWidget(
-            title: 'Correct Answers: ${userData!.correctAnswers}',
-            icon: LineAwesomeIcons.check_circle,
-            onPress: () {},
-            color: Colors.teal,
-          ),
-          ProfileMenuWidget(
-            title: 'Incorrect Answers: ${userData!.incorrectAnswers}',
-            icon: LineAwesomeIcons.times_circle,
-            onPress: () {},
-            color: Colors.red,
-          ),
-        ],
-      )
+              children: [
+                ProfileMenuWidget(
+                  title: 'Name: ${userData!.username}',
+                  icon: LineAwesomeIcons.user,
+                  onPress: () {},
+                  color: Colors.blue,
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
+                  title: 'Email: ${userData!.email}',
+                  icon: LineAwesomeIcons.envelope,
+                  onPress: () {},
+                  color: Colors.green,
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
+                  title: 'Level: ${userData!.level}',
+                  icon: LineAwesomeIcons.star,
+                  onPress: () {},
+                  color: Colors.yellow,
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
+                  title: 'Points: ${userData!.points}',
+                  icon: LineAwesomeIcons.coins,
+                  onPress: () {},
+                  color: Colors.orange,
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
+                  title: 'Correct Answers: ${userData!.correctAnswers}',
+                  icon: LineAwesomeIcons.check_circle,
+                  onPress: () {},
+                  color: Colors.teal,
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
+                  title: 'Incorrect Answers: ${userData!.incorrectAnswers}',
+                  icon: LineAwesomeIcons.times_circle,
+                  onPress: () {},
+                  color: Colors.red,
+                  endIcon: false,
+                ),
+              ],
+            )
           : const Center(child: CircularProgressIndicator()),
     );
   }

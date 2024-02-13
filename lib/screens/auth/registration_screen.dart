@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../ui/logo.dart';
-import '../../ui/rounded_button.dart';
 import '../../viewmodels/user.viewmodel.dart';
+import '../../widgets/ui/logo.dart';
+import '../../widgets/ui/rounded_button.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});

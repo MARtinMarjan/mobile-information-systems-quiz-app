@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
-import '../ui/logo.dart';
-import '../ui/rounded_button.dart';
-
+import '../widgets/ui/logo.dart';
+import '../widgets/ui/rounded_button.dart';
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
 

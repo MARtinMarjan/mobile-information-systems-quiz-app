@@ -4,9 +4,8 @@ import 'package:level_map/level_map.dart';
 import 'package:quiz_app/screens/profile/profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
-
-import '../ui/rounded_button.dart';
 import '../viewmodels/quiz.viewmodel.dart';
+import '../widgets/ui/rounded_button.dart';
 
 class MyHomePage extends StatelessWidget {
   final String title;
@@ -40,18 +39,16 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
     super.initState();
     _userViewModel = Provider.of<UserViewModel>(context, listen: false);
     _quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
-    // userId = userViewModel.user!.uid;
     _loadCurrentLevel();
   }
 
   Future<void> _loadCurrentLevel() async {
     await _userViewModel.loadUserData().then((value) => {
-    _quizViewModel.getQuestionsByLevel(_userViewModel.userData!.level),
-    setState((){
-      currentLevel = _userViewModel.userData!.level.toDouble();
-        })
-  }
-    );
+          _quizViewModel.getQuestionsByLevel(_userViewModel.userData!.level),
+          setState(() {
+            currentLevel = _userViewModel.userData!.level.toDouble();
+          })
+        });
   }
 
   int currentPageIndex = 0;
@@ -77,16 +74,25 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                       levelMapParams: LevelMapParams(
                         pathStrokeWidth: 3,
                         firstCurveReferencePointOffsetFactor:
-                        const Offset(0.5, 0.5),
+                            const Offset(0.5, 0.5),
                         enableVariationBetweenCurves: false,
                         levelCount: 20,
-                        currentLevel: context
-                            .watch<UserViewModel>()
-                            .userData!
-                            .level
-                            .toDouble() -
-                            0.5 ??
-                            1,
+                        currentLevel: (context
+                                            .watch<UserViewModel>()
+                                            .userData
+                                            ?.level
+                                            .toDouble() ??
+                                        1.5) -
+                                    0.5 <=
+                                1
+                            ? 1
+                            : (context
+                                        .watch<UserViewModel>()
+                                        .userData
+                                        ?.level
+                                        .toDouble() ??
+                                    1.5) -
+                                0.5,
                         pathColor: Colors.black,
                         currentLevelImage: ImageParams(
                           path: "assets/level_map/current_level.png",
@@ -144,7 +150,7 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                               side: Side.LEFT),
                           ImageParams(
                               path:
-                              "assets/level_map/random_images/flag-on-pole.png",
+                                  "assets/level_map/random_images/flag-on-pole.png",
                               size: const Size(80, 80),
                               repeatCountPerLevel: 0.1),
                         ],
@@ -161,11 +167,7 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
                         child: RoundedButton(
                             colour: Colors.red,
                             title:
-                            'Start Level ${context
-                                .watch<UserViewModel>()
-                                .userData
-                                ?.level
-                                .toString() ?? '?'}',
+                                'Start Level ${context.watch<UserViewModel>().userData?.level.toString() ?? '?'}',
                             onPressed: null),
                       ),
                     ),

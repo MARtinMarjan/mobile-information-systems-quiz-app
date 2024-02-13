@@ -48,6 +48,7 @@ dependencies:
   get: ^4.6.6
   image_picker: ^1.0.7
   firebase_storage: ^11.6.0
+  confetti: ^0.7.0
 
 
 flutter_launcher_icons:

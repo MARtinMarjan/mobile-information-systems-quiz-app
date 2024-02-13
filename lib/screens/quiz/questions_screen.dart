@@ -4,7 +4,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/screens/quiz/results_screen.dart';
-import 'package:quiz_app/ui/answer_button.dart';
+
+import '../../widgets/ui/answer_button.dart';
 
 class QuestionsScreen extends StatelessWidget {
   const QuestionsScreen({super.key});
@@ -39,7 +40,7 @@ class QuestionsScreen extends StatelessWidget {
                 child: LinearPercentIndicator(
                   width: MediaQuery.of(context).size.width,
                   lineHeight: 20.0,
-                  percent: (currentQuestionIndex + 1) / questions.length,
+                  percent: (currentQuestionIndex) / questions.length,
                   backgroundColor: Colors.grey,
                   progressColor: Colors.green,
                   barRadius: const Radius.circular(16),

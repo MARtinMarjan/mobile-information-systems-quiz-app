@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../ui/logo.dart';
+import '../widgets/ui/logo.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
