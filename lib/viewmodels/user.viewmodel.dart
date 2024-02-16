@@ -77,6 +77,7 @@ class UserViewModel extends ChangeNotifier {
       await loadUserData(); // Reload user data after updating stats
     }
     loadUserData();
+    notifyListeners();
   }
 
   Future<void> saveProfile(String newUsername, Uint8List image) async {
@@ -87,6 +88,14 @@ class UserViewModel extends ChangeNotifier {
         _userData = await _dbService.getUserData(_user!.uid);
         notifyListeners();
       }
+    }
+  }
+
+  void resetProgress() {
+    if (_user != null) {
+      _dbService.resetProgress(_user!.uid);
+      loadUserData();
+      notifyListeners();
     }
   }
 }

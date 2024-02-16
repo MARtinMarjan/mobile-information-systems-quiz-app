@@ -22,6 +22,7 @@ class QuizViewModel extends ChangeNotifier {
 
   QuizViewModel() {
     getQuestionsByLevel(_level);
+    notifyListeners();
   }
 
   final QuestionService questionService = QuestionService();
@@ -57,9 +58,11 @@ class QuizViewModel extends ChangeNotifier {
 
   getChosenAnswers() {
     return _chosenAnswers;
+    notifyListeners();
   }
 
   getTitle() {
     return quizLevelTitle;
+    notifyListeners();
   }
 }

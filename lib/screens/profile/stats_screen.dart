@@ -39,7 +39,7 @@ class _StatsScreenState extends State<StatsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pushNamed(context, '/home_screen'),
+          onPressed: () => Navigator.pushNamed(context, '/profile_screen'),
           icon: const Icon(LineAwesomeIcons.angle_left),
         ),
         title: Text(

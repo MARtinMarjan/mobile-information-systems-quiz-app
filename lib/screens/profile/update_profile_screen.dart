@@ -6,10 +6,8 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
-import '../../widgets/ui/rounded_button.dart';
-
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({Key? key});
+  const UpdateProfileScreen({super.key});
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -103,7 +101,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   )
                                 : const Image(
                                     image: AssetImage(
-                                        "assets/level_map/BoyGraduation.png")),
+                                        "assets/level_map/BoyGraduation.png"),
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                   Positioned(

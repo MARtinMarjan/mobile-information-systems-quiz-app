@@ -89,4 +89,13 @@ class DBService {
     }
     return resp;
   }
+
+  void resetProgress(String uid) {
+    userCollection.doc(uid).set({
+      'level': 1,
+      'points': 0,
+      'correct_answers': 0,
+      'incorrect_answers': 0,
+    }, SetOptions(merge: true));
+  }
 }

@@ -93,7 +93,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
     return summary;
   }
 
+  bool isLoading = false;
   void saveResults(BuildContext context) {
+
+    isLoading = true;
+
     final quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
 
@@ -105,14 +109,18 @@ class _ResultsScreenState extends State<ResultsScreen> {
         )
         .length;
 
-    userViewModel.addUserQuizStats(
-      quizViewModel.level,
-      numCorrectQuestions * 5,
-      numCorrectQuestions,
-      numTotalQuestions - numCorrectQuestions,
-    );
-
-    quizViewModel.resetQuiz();
+    userViewModel
+        .addUserQuizStats(
+          quizViewModel.level,
+          numCorrectQuestions * 5,
+          numCorrectQuestions,
+          numTotalQuestions - numCorrectQuestions,
+        )
+        .then((value) => {
+              quizViewModel.resetQuiz(),
+              quizViewModel
+                  .getQuestionsByLevel(userViewModel.userData!.level)
+            });
   }
 
   @override
@@ -171,7 +179,6 @@ class _ResultsScreenState extends State<ResultsScreen> {
                       TextButton.icon(
                         onPressed: () {
                           saveResults(context);
-                          // navigate back to home screen
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
