@@ -18,7 +18,8 @@ class AuthService {
     }
   }
 
-  Future<UserCredential> register(String email, String password, String username) async {
+  Future<UserCredential> register(
+      String email, String password, String username) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -32,11 +33,12 @@ class AuthService {
         'email': email,
         'created_at': FieldValue.serverTimestamp(),
         'username': username,
-
+        'avatar': 'https://robohash.org/${userCredential.user!.uid}?set=set4',
         'level': 1,
         'points': 0,
         'correct_answers': 0,
         'incorrect_answers': 0,
+        'streak_count': 0,
       });
 
       return userCredential;
@@ -66,7 +68,6 @@ class AuthService {
     return _auth.currentUser?.email;
   }
 
-  // check if user is logged in
   bool isLoggedIn() {
     return _auth.currentUser != null;
   }

@@ -11,6 +11,7 @@ import 'package:quiz_app/screens/profile/stats_screen.dart';
 import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
+import 'package:quiz_app/widgets/streak_testing.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/stats_screen': (BuildContext context) => const StatsScreen(),
         '/settings_screen': (BuildContext context) => const SettingsScreen(),
         '/profile_screen': (BuildContext context) => const ProfileScreen(),
+        '/streak_screen': (BuildContext context) => const StreakApp(),
       },
     );
   }

@@ -96,6 +96,34 @@ class DBService {
       'points': 0,
       'correct_answers': 0,
       'incorrect_answers': 0,
+      'streak_count': 1,
+      'last_opened_date': DateTime.now(),
     }, SetOptions(merge: true));
+  }
+
+  //// Update streak count and last opened date in Firestore
+  //     await FirebaseFirestore.instance.collection('users').doc(_user!.uid).set({
+  //       'streak_count': _streakCount + 1,
+  //       'last_opened_date': DateTime.now(),
+  //     }, SetOptions(merge: true));
+
+  Future<void> updateStreakCount(String uid, int streakCount) {
+    return userCollection.doc(uid).set({
+      'streak_count': streakCount,
+      'last_opened_date': DateTime.now(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> resetStreakCount(String uid) {
+    return userCollection.doc(uid).set({
+      'streak_count': 0,
+      'last_opened_date': DateTime.now(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<DateTime> getLastOpenedDate(String uid) {
+    return userCollection.doc(uid).get().then((value) {
+      return value.get('last_opened_date').toDate();
+    });
   }
 }

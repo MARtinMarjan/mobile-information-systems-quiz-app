@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:quiz_app/models/question.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
@@ -93,10 +94,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
     return summary;
   }
 
-  bool isLoading = false;
   void saveResults(BuildContext context) {
-
-    isLoading = true;
+    _saving = true;
 
     final quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
@@ -118,13 +117,18 @@ class _ResultsScreenState extends State<ResultsScreen> {
         )
         .then((value) => {
               quizViewModel.resetQuiz(),
-              quizViewModel
-                  .getQuestionsByLevel(userViewModel.userData!.level)
+              quizViewModel.getQuestionsByLevel(userViewModel.userData!.level)
             });
+
+    userViewModel.updateStreak();
+    _saving = false;
   }
+
+  bool _saving = false;
 
   @override
   Widget build(BuildContext context) {
+    _saving = true;
     final quizData = Provider.of<QuizViewModel>(context);
     final questions = quizData.questions;
     final numTotalQuestions = questions.length;
@@ -134,95 +138,99 @@ class _ResultsScreenState extends State<ResultsScreen> {
         )
         .length;
 
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          body: Column(
-            children: [
-              const SizedBox(height: 40),
-              Center(
-                child: LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width,
-                  lineHeight: 20.0,
-                  percent: 1.0,
-                  backgroundColor: Colors.grey,
-                  progressColor: Colors.green,
-                  barRadius: const Radius.circular(16),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Container(
-                  margin: const EdgeInsets.all(40),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!',
-                        style: GoogleFonts.lato(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 30),
-                      QuestionsSummary(getSummaryData(questions)),
-                      const SizedBox(height: 30),
-                      TextButton.icon(
-                        onPressed: () {
-                          quizData.resetQuiz();
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('Restart Quiz!'),
-                      ),
-                      TextButton.icon(
-                        onPressed: () {
-                          saveResults(context);
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Icon(Icons.navigate_next),
-                        label: const Text('Continue!'),
-                      ),
-                    ],
+    _saving = false;
+
+    return ModalProgressHUD(
+        inAsyncCall: _saving,
+        child: Stack(
+          children: <Widget>[
+            Scaffold(
+              body: Column(
+                children: [
+                  const SizedBox(height: 40),
+                  Center(
+                    child: LinearPercentIndicator(
+                      width: MediaQuery.of(context).size.width,
+                      lineHeight: 20.0,
+                      percent: 1.0,
+                      backgroundColor: Colors.grey,
+                      progressColor: Colors.green,
+                      barRadius: const Radius.circular(16),
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Container(
+                      margin: const EdgeInsets.all(40),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!',
+                            style: GoogleFonts.lato(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 30),
+                          QuestionsSummary(getSummaryData(questions)),
+                          const SizedBox(height: 30),
+                          TextButton.icon(
+                            onPressed: () {
+                              quizData.resetQuiz();
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(Icons.refresh),
+                            label: const Text('Restart Quiz!'),
+                          ),
+                          TextButton.icon(
+                            onPressed: () {
+                              saveResults(context);
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(Icons.navigate_next),
+                            label: const Text('Continue!'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ConfettiWidget(
-              confettiController: _controllerBottomCenter,
-              blastDirectionality: BlastDirectionality.directional,
-              minBlastForce: 60,
-              maxBlastForce: 80,
-              blastDirection: -pi / 2,
-              particleDrag: 0.01,
-              // apply drag to the confetti
-              emissionFrequency: 0.02,
-              // how often it should emit
-              numberOfParticles: 20,
-              // number of particles to emit
-              gravity: 0.2,
-              // gravity - or fall speed
-              shouldLoop: false,
-              colors: const [
-                Colors.red,
-                Colors.yellowAccent,
-                Colors.pink,
-                Colors.yellow,
-                Colors.green
-              ],
-              // manually specify the colors to be used
-              strokeWidth: 1,
-              strokeColor: Colors.white,
-              createParticlePath: drawStar),
-        ),
-      ],
-    );
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ConfettiWidget(
+                  confettiController: _controllerBottomCenter,
+                  blastDirectionality: BlastDirectionality.directional,
+                  minBlastForce: 60,
+                  maxBlastForce: 80,
+                  blastDirection: -pi / 2,
+                  particleDrag: 0.01,
+                  // apply drag to the confetti
+                  emissionFrequency: 0.02,
+                  // how often it should emit
+                  numberOfParticles: 20,
+                  // number of particles to emit
+                  gravity: 0.2,
+                  // gravity - or fall speed
+                  shouldLoop: false,
+                  colors: const [
+                    Colors.red,
+                    Colors.yellowAccent,
+                    Colors.pink,
+                    Colors.yellow,
+                    Colors.green
+                  ],
+                  // manually specify the colors to be used
+                  strokeWidth: 1,
+                  strokeColor: Colors.white,
+                  createParticlePath: drawStar),
+            ),
+          ],
+        ));
   }
 }

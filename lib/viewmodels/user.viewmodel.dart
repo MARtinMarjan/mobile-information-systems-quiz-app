@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,15 +14,22 @@ class UserViewModel extends ChangeNotifier {
 
   User? _user;
   QuizUserData? _userData;
+  int _streakCount = 0;
+  late DateTime _lastOpenedDate;
 
-  UserViewModel(
-      {required AuthService authService, required DBService dbService})
-      : _authService = authService,
+  UserViewModel({
+    required AuthService authService,
+    required DBService dbService,
+  })  : _authService = authService,
         _dbService = dbService;
 
   User? get user => _user;
 
   QuizUserData? get userData => _userData;
+
+  int get streakCount => _streakCount;
+
+  DateTime get lastOpenedDate => _lastOpenedDate;
 
   Future<String> login(String email, String password) async {
     try {
@@ -94,8 +102,60 @@ class UserViewModel extends ChangeNotifier {
   void resetProgress() {
     if (_user != null) {
       _dbService.resetProgress(_user!.uid);
+      _dbService.updateStreakCount(_user!.uid, _streakCount + 1);
+      _streakCount = 0;
       loadUserData();
       notifyListeners();
     }
   }
+
+  Future<void> checkoutActivityStreak() async {
+    if (_user != null) {
+      _dbService.getLastOpenedDate(_user!.uid).then((value) {
+        _lastOpenedDate = value;
+        // Check if streak needs to be reset
+        if (!isYesterday(_lastOpenedDate, DateTime.now()) &&
+            !isToday(_lastOpenedDate, DateTime.now())) {
+          _dbService.resetStreakCount(_user!.uid);
+          _streakCount = 0;
+        }
+      });
+    }
+  }
+
+  Future<void> updateStreak() async {
+    if (_user != null) {
+      _dbService.getLastOpenedDate(_user!.uid).then((value) {
+        _lastOpenedDate = value;
+        // Check if streak needs to be reset
+        if (!isYesterday(_lastOpenedDate, DateTime.now()) &&
+            !isToday(_lastOpenedDate, DateTime.now())) {
+          _dbService.resetStreakCount(_user!.uid).then((value) => {
+                _dbService.updateStreakCount(_user!.uid, _streakCount + 1),
+              });
+          _streakCount = 0;
+        }
+        //if streak has been updated today, don't update it again
+        if (!isToday(_lastOpenedDate, DateTime.now())) {
+          _dbService.updateStreakCount(_user!.uid, _streakCount + 1);
+          _streakCount++;
+          _lastOpenedDate = DateTime.now();
+        }
+      });
+    }
+
+    notifyListeners();
+  }
+}
+
+bool isYesterday(DateTime date1, DateTime date2) {
+  return date1.day == date2.day - 1 &&
+      date1.month == date2.month &&
+      date1.year == date2.year;
+}
+
+bool isToday(DateTime date1, DateTime date2) {
+  return date1.day == date2.day &&
+      date1.month == date2.month &&
+      date1.year == date2.year;
 }

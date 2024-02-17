@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class QuizUserData {
   final String uid;
   final String email;
@@ -8,6 +10,10 @@ class QuizUserData {
   final int incorrectAnswers;
   final String imageLink;
 
+  final Timestamp lastOpenedDate;
+
+  final int streakCount;
+
   QuizUserData({
     required this.uid,
     required this.email,
@@ -17,6 +23,8 @@ class QuizUserData {
     required this.correctAnswers,
     required this.incorrectAnswers,
     required this.imageLink,
+    required this.lastOpenedDate,
+    required this.streakCount,
   });
 
   factory QuizUserData.fromMap(Map<String, dynamic> data) {
@@ -29,6 +37,8 @@ class QuizUserData {
       correctAnswers: data['correct_answers'] as int? ?? 0,
       incorrectAnswers: data['incorrect_answers'] as int? ?? 0,
       imageLink: data['image_link'] as String? ?? '',
+      lastOpenedDate: data['last_opened_date'] as Timestamp? ?? Timestamp.now(),
+      streakCount: data['streak_count'] as int? ?? 0,
     );
   }
 }

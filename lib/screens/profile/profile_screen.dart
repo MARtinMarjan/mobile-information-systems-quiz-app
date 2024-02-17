@@ -4,7 +4,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/screens/profile/update_profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
-import 'package:quiz_app/widgets/ProfileMenuWidget.dart';
+import 'package:quiz_app/widgets/profile_menu_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -63,23 +63,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       NetworkImage(value.userData!.imageLink),
                                   fit: BoxFit.cover,
                                 )
-                              : const Placeholder(), // Placeholder can be replaced with any default widget or loading indicator
+                              : const Placeholder(),
                         ),
                       ),
-                      // Positioned(
-                      //   bottom: 0,
-                      //   right: 0,
-                      //   child: Container(
-                      //     width: 35,
-                      //     height: 35,
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(100),
-                      //       color: zolta,
-                      //     ),
-                      //     child: const Icon(LineAwesomeIcons.alternate_pencil,
-                      //         size: 20.0, color: Colors.black),
-                      //   ),
-                      // ),
                     ],
                   ),
                   const SizedBox(height: 10),

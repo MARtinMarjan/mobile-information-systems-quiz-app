@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:level_map/level_map.dart';
 import 'package:quiz_app/screens/profile/profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
+import 'package:quiz_app/widgets/streak_testing.dart';
 import '../viewmodels/quiz.viewmodel.dart';
 import '../widgets/ui/rounded_button.dart';
+import 'level_map.dart';
 
 class MyHomePage extends StatelessWidget {
   final String title;
@@ -36,202 +40,79 @@ class _AuthenticatedHomePageState extends State<_AuthenticatedHomePage> {
   @override
   void initState() {
     super.initState();
+    _saving = true;
     _userViewModel = Provider.of<UserViewModel>(context, listen: false);
     _quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
+    _userViewModel.checkoutActivityStreak();
     _loadCurrentLevel();
   }
 
   Future<double> _loadCurrentLevel() async {
+    _saving = true;
     await _userViewModel.loadUserData().then((value) => {
           _quizViewModel.getQuestionsByLevel(_userViewModel.userData!.level),
         });
-    return _userViewModel.userData!.level.toDouble();
+    var level = _userViewModel.userData!.level.toDouble();
+    _saving = false;
+    return level;
   }
 
   int currentPageIndex = 0;
 
+  bool _saving = false;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return ModalProgressHUD(
+      inAsyncCall: _saving,
       child: Scaffold(
         body: <Widget>[
-          Consumer<UserViewModel>(
-            builder:
-                (BuildContext context, UserViewModel value, Widget? child) {
-              return Consumer<QuizViewModel>(
-                builder: (BuildContext context2, QuizViewModel value2,
-                    Widget? child2) {
-                  return Column(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                        ),
-                      ),
-                      Expanded(
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            LevelMap(
-                              backgroundColor: Colors.lightGreen,
-                              levelMapParams: LevelMapParams(
-                                pathStrokeWidth: 3,
-                                firstCurveReferencePointOffsetFactor:
-                                    const Offset(0.5, 0.5),
-                                enableVariationBetweenCurves: false,
-                                levelCount: 20,
-                                currentLevel:
-                                    (value.userData?.level.toDouble() ?? 1.5) -
-                                                0.5 <=
-                                            1
-                                        ? 1
-                                        : (value.userData?.level.toDouble() ??
-                                                1.5) -
-                                            0.5,
-                                pathColor: Colors.black,
-                                currentLevelImage: ImageParams(
-                                  path: "assets/level_map/current_level.png",
-                                  size: const Size(40, 40),
-                                ),
-                                lockedLevelImage: ImageParams(
-                                  path: "assets/level_map/locked_level.png",
-                                  size: const Size(45, 45),
-                                ),
-                                completedLevelImage: ImageParams(
-                                  path: "assets/level_map/completed_level.png",
-                                  size: const Size(45, 45),
-                                ),
-                                startLevelImage: ImageParams(
-                                  path: "assets/level_map/start_quiz_image.png",
-                                  size: const Size(100, 100),
-                                ),
-                                pathEndImage: ImageParams(
-                                  path: "assets/level_map/end_quiz_image.png",
-                                  size: const Size(100, 100),
-                                ),
-                                bgImagesToBePaintedRandomly: [
-                                  ImageParams(
-                                    path:
-                                        "assets/level_map/random_images/grass.png",
-                                    size: const Size(30, 30),
-                                    repeatCountPerLevel: 0.5,
-                                  ),
-                                  ImageParams(
-                                      path:
-                                          "assets/level_map/random_images/grass2.png",
-                                      size: const Size(25, 25),
-                                      repeatCountPerLevel: 0.3),
-                                  ImageParams(
-                                      path:
-                                          "assets/level_map/random_images/lake.png",
-                                      size: const Size(80, 80),
-                                      repeatCountPerLevel: 0.05),
-                                  ImageParams(
-                                      path:
-                                          "assets/level_map/random_images/tree.png",
-                                      size: const Size(50, 50),
-                                      repeatCountPerLevel: 0.3),
-                                  ImageParams(
-                                      path:
-                                          "assets/level_map/random_images/church.png",
-                                      size: const Size(80, 80),
-                                      repeatCountPerLevel: 0.05,
-                                      imagePositionFactor: 0.4,
-                                      side: Side.RIGHT),
-                                  ImageParams(
-                                      path:
-                                          "assets/level_map/random_images/denar.png",
-                                      size: const Size(40, 40),
-                                      repeatCountPerLevel: 0.1),
-                                  ImageParams(
-                                      path:
-                                          "assets/level_map/random_images/bridge.png",
-                                      size: const Size(80, 80),
-                                      repeatCountPerLevel: 0.05,
-                                      imagePositionFactor: 0.4,
-                                      side: Side.LEFT),
-                                  ImageParams(
-                                      path:
-                                          "assets/level_map/random_images/flag-on-pole.png",
-                                      size: const Size(80, 80),
-                                      repeatCountPerLevel: 0.1),
-                                ],
-                              ),
-                            ),
-                            // title context.watch<QuizViewModel>().quizLevelTitle,
-
-
-                            //we add padding around the text
-                            Container(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      value2.quizLevelTitle,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.bottomCenter,
-                              margin: const EdgeInsets.only(bottom: 20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(context, '/quiz_screen');
-                                },
-                                child: RoundedButton(
-                                    colour: Colors.red,
-                                    title:
-                                        'Start Level ${value.userData?.level.toString() ?? '?'}',
-                                    onPressed: null),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-          const Center(
-            child: Text('Notifications'),
-          ),
+          const LevelMapScreen(),
+          const StreakApp(),
           const ProfileScreen(),
         ][currentPageIndex],
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
+        bottomNavigationBar: Consumer<UserViewModel>(
+          builder: (BuildContext context, UserViewModel userViewModel,
+              Widget? child) {
+            return NavigationBar(
+              onDestinationSelected: (int index) {
+                setState(() {
+                  currentPageIndex = index;
+                });
+              },
+              indicatorColor: Colors.amber,
+              selectedIndex: currentPageIndex,
+              destinations: <Widget>[
+                const NavigationDestination(
+                  selectedIcon: Icon(Icons.map_rounded),
+                  icon: Icon(Icons.map_rounded),
+                  label: 'Level Map',
+                ),
+                Center(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        const WidgetSpan(
+                          child: Badge(child: Icon(Icons.whatshot_rounded)),
+                        ),
+                        TextSpan(
+                          text: 'Streak ${userViewModel.streakCount}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const NavigationDestination(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
+            );
           },
-          indicatorColor: Colors.amber,
-          selectedIndex: currentPageIndex,
-          destinations: const <Widget>[
-            NavigationDestination(
-              selectedIcon: Icon(Icons.home),
-              icon: Icon(Icons.home_outlined),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Badge(child: Icon(Icons.notifications_sharp)),
-              label: 'Notifications',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
         ),
       ),
     );

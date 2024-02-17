@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/user.dart';
 import '../../viewmodels/user.viewmodel.dart';
-import '../../widgets/ProfileMenuWidget.dart';
+import '../../widgets/profile_menu_widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

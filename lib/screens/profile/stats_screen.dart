@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/user.dart';
 import '../../viewmodels/user.viewmodel.dart';
-import '../../widgets/ProfileMenuWidget.dart';
+import '../../widgets/profile_menu_widget.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -23,6 +24,8 @@ class _StatsScreenState extends State<StatsScreen> {
     correctAnswers: 0,
     incorrectAnswers: 0,
     imageLink: '',
+    lastOpenedDate: Timestamp.now(),
+    streakCount: 0,
   );
 
   @override
@@ -78,6 +81,13 @@ class _StatsScreenState extends State<StatsScreen> {
                   endIcon: false,
                 ),
                 ProfileMenuWidget(
+                  title: 'Streak: ${userData!.streakCount}',
+                  icon: LineAwesomeIcons.fire,
+                  onPress: () {},
+                  color: Colors.red,
+                  endIcon: false,
+                ),
+                ProfileMenuWidget(
                   title: 'Points: ${userData!.points}',
                   icon: LineAwesomeIcons.coins,
                   onPress: () {},
@@ -98,6 +108,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   color: Colors.red,
                   endIcon: false,
                 ),
+
               ],
             )
           : const Center(child: CircularProgressIndicator()),
