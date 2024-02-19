@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/screens/add_quiz/quiz_form_page.dart';
 
@@ -10,6 +11,7 @@ import 'package:quiz_app/screens/profile/settings_screen.dart';
 import 'package:quiz_app/screens/profile/stats_screen.dart';
 import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
+import 'package:quiz_app/screens/home_page.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
 import 'package:quiz_app/widgets/streak_testing.dart';
 
@@ -34,15 +36,14 @@ class MyApp extends StatelessWidget {
         '/login_screen': (BuildContext context) => const LoginPage(),
         '/registration_screen': (BuildContext context) =>
             const RegistrationPage(),
-        '/home_screen': (BuildContext context) =>
-            const MyHomePage(title: 'MKLearner App Home Page'),
+        // '/home_screen': (BuildContext context) =>
+        //     const MyHomePage(title: 'MKLearner App Home Page'),
         '/welcome_screen': (BuildContext context) => const WelcomePage(),
         '/add_quiz': (BuildContext context) => const QuizFormPage(),
-        '/stats_screen': (BuildContext context) => const StatsScreen(),
-        '/settings_screen': (BuildContext context) => const SettingsScreen(),
-        '/profile_screen': (BuildContext context) => const ProfileScreen(),
         '/streak_screen': (BuildContext context) => const StreakApp(),
+        '/home_page': (BuildContext context) => const HomePage(),
       },
+      builder: EasyLoading.init(),
     );
   }
 }

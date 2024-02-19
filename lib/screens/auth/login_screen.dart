@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
       final userViewModel = Provider.of<UserViewModel>(context, listen: false);
       await userViewModel.login(email, password).then((value) {
         if (value == "success" && context.mounted) {
-          Navigator.pushNamed(context, '/home_screen');
+          Navigator.pushNamed(context, '/home_page');
         }
       });
     } catch (e) {

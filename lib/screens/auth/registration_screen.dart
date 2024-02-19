@@ -92,7 +92,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       final userViewModel = Provider.of<UserViewModel>(context, listen: false);
       await userViewModel.register(email, password, username);
       if (context.mounted) {
-        Navigator.pushNamed(context, '/home_screen');
+        Navigator.pushNamed(context, '/home_page');
       }
     } catch (e) {
       print(e);

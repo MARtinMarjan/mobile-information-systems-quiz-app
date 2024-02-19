@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/screens/quiz/results_screen.dart';
@@ -61,13 +62,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             _timer.cancel(); // Cancel the timer when answering a question
             quizData.answerQuestion(selectedAnswer);
             if (currentQuestionIndex == questions.length - 1) {
-              Navigator.push(
+              PersistentNavBarNavigator.pushNewScreen(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ResultsScreen(
-                    chosenAnswers: quizData.getChosenAnswers(),
-                  ),
-                ),
+                screen:
+                    ResultsScreen(chosenAnswers: quizData.getChosenAnswers()),
+                withNavBar: true, // OPTIONAL VALUE. True by default.
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
               );
             }
           }

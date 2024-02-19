@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:level_map/level_map.dart';
 import 'package:quiz_app/screens/profile/profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
 import 'package:quiz_app/widgets/streak_testing.dart';
+import '../myapp.dart';
 import '../viewmodels/quiz.viewmodel.dart';
 import '../widgets/ui/rounded_button.dart';
 
@@ -18,6 +20,25 @@ class LevelMapScreen extends StatefulWidget {
 }
 
 class _LevelMapScreenState extends State<LevelMapScreen> {
+  late UserViewModel _userViewModel;
+  late QuizViewModel _quizViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    _quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
+    _userViewModel.checkoutActivityStreak();
+    _loadCurrentLevel();
+  }
+
+  Future<double> _loadCurrentLevel() async {
+    await _userViewModel.loadUserData().then((value) => {
+          _quizViewModel.getQuestionsByLevel(_userViewModel.userData!.level),
+        });
+    var level = _userViewModel.userData!.level.toDouble();
+    return level;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +48,6 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
         return Consumer<QuizViewModel>(
           builder: (BuildContext context2, QuizViewModel quizViewModel,
               Widget? child2) {
-
             double currentLevelValue =
                 (userViewModel.userData?.level.toDouble() ?? 1.5) - 0.5 <= 1
                     ? 1
@@ -76,8 +96,7 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                           ),
                           bgImagesToBePaintedRandomly: [
                             ImageParams(
-                              path:
-                                  "assets/level_map/random_images/grass.png",
+                              path: "assets/level_map/random_images/grass.png",
                               size: const Size(30, 30),
                               repeatCountPerLevel: 0.5,
                             ),
@@ -87,13 +106,11 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                                 size: const Size(25, 25),
                                 repeatCountPerLevel: 0.3),
                             ImageParams(
-                                path:
-                                    "assets/level_map/random_images/lake.png",
+                                path: "assets/level_map/random_images/lake.png",
                                 size: const Size(80, 80),
                                 repeatCountPerLevel: 0.05),
                             ImageParams(
-                                path:
-                                    "assets/level_map/random_images/tree.png",
+                                path: "assets/level_map/random_images/tree.png",
                                 size: const Size(50, 50),
                                 repeatCountPerLevel: 0.3),
                             ImageParams(
@@ -150,7 +167,9 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                         margin: const EdgeInsets.only(bottom: 20),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/quiz_screen');
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed("/quiz_screen");
+                            // Navigator.pushNamed(context, '/quiz_screen');
                           },
                           child: RoundedButton(
                               colour: Colors.red,

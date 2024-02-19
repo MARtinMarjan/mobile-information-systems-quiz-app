@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/screens/quiz/questions_screen.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
@@ -26,11 +27,13 @@ class _QuizState extends State<Quiz> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    quizData.resetQuiz();
+                    PersistentNavBarNavigator.pushNewScreen(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const QuestionsScreen(),
-                      ),
+                      screen: const QuestionsScreen(),
+                      withNavBar: true, // OPTIONAL VALUE. True by default.
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino,
                     );
                   },
                   child: Text(

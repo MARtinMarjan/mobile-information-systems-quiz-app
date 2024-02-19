@@ -1,11 +1,14 @@
 import 'dart:math';
 
 import 'package:confetti/confetti.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:quiz_app/models/question.dart';
+import 'package:quiz_app/screens/level_map.dart';
+import 'package:quiz_app/screens/home_page.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -187,9 +190,21 @@ class _ResultsScreenState extends State<ResultsScreen> {
                           TextButton.icon(
                             onPressed: () {
                               saveResults(context);
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
+
+                              // Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
+
+                              Navigator.of(context).pushAndRemoveUntil(
+                                CupertinoPageRoute(
+                                  builder: (BuildContext context) {
+                                    return const HomePage();
+                                  },
+                                ),
+                                (_) => false,
+                              );
+
+                              // Navigator.of(context).popUntil(ModalRoute.withName("/level_map"));
                             },
                             icon: const Icon(Icons.navigate_next),
                             label: const Text('Continue!'),

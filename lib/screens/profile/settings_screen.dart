@@ -36,12 +36,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 .textTheme
                 .headlineMedium,
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(LineAwesomeIcons.cog),
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     onPressed: () {},
+          //     icon: const Icon(LineAwesomeIcons.cog),
+          //   ),
+          // ],
         ),
         body: ListView(
           children: [

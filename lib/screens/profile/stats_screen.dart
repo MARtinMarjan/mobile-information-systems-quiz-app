@@ -49,12 +49,12 @@ class _StatsScreenState extends State<StatsScreen> {
           "Profile",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(LineAwesomeIcons.cog),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: const Icon(LineAwesomeIcons.cog),
+        //   ),
+        // ],
       ),
       body: userData != null
           ? ListView(

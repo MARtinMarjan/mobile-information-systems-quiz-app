@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz_app/screens/level_map.dart';
+import 'package:quiz_app/screens/profile/settings_screen.dart';
+import 'package:quiz_app/screens/profile/stats_screen.dart';
 import 'package:quiz_app/screens/profile/update_profile_screen.dart';
+import 'package:quiz_app/screens/welcome_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/widgets/profile_menu_widget.dart';
 
@@ -30,20 +35,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext context, UserViewModel value, Widget? child) {
       return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => Navigator.pushNamed(context, '/home_screen'),
-            icon: const Icon(LineAwesomeIcons.angle_left),
-          ),
           title: Text(
             "Profile",
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon:
-                    Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
-          ],
+          // actions: [
+          //   IconButton(
+          //       onPressed: () {},
+          //       icon:
+          //           Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
+          // ],
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -85,8 +86,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () =>
-                          Get.to(() => const UpdateProfileScreen()),
+                      onPressed: () => PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const UpdateProfileScreen(),
+                        withNavBar: true,
+                        // OPTIONAL VALUE. True by default.
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      ),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: zolta,
                           side: BorderSide.none,
@@ -103,7 +110,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: "Settings",
                       icon: LineAwesomeIcons.cogs,
                       onPress: () {
-                        Navigator.pushNamed(context, '/settings_screen');
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: const SettingsScreen(),
+                          withNavBar: true,
+                          // OPTIONAL VALUE. True by default.
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
+                        );
                       },
                       color: zolta),
                   const SizedBox(height: 30),
@@ -112,7 +126,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       icon: LineAwesomeIcons.info,
                       // onPress:() => Get.to(() => const StatsScreen()),
                       onPress: () {
-                        Navigator.pushNamed(context, '/stats_screen');
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: const StatsScreen(),
+                          withNavBar: true,
+                          // OPTIONAL VALUE. True by default.
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
+                        );
                       },
                       color: zolta),
                   const SizedBox(height: 30),
@@ -123,7 +144,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         final userViewModel =
                             Provider.of<UserViewModel>(context, listen: false);
                         userViewModel.signOut();
-                        Navigator.pushNamed(context, '/welcome_screen');
+                        Navigator.of(context, rootNavigator: true)
+                            .pushNamed("/welcome_screen");
+                        // Navigator.popAndPushNamed(context, "/login_screen");
                       },
                       endIcon: false,
                       color: Colors.red),
