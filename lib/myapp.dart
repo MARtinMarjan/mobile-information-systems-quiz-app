@@ -5,10 +5,6 @@ import 'package:quiz_app/screens/add_quiz/quiz_form_page.dart';
 
 import 'package:quiz_app/screens/auth/login_screen.dart';
 import 'package:quiz_app/screens/auth/registration_screen.dart';
-import 'package:quiz_app/screens/home_screen.dart';
-import 'package:quiz_app/screens/profile/profile_screen.dart';
-import 'package:quiz_app/screens/profile/settings_screen.dart';
-import 'package:quiz_app/screens/profile/stats_screen.dart';
 import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 import 'package:quiz_app/screens/home_page.dart';
@@ -42,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/add_quiz': (BuildContext context) => const QuizFormPage(),
         '/streak_screen': (BuildContext context) => const StreakApp(),
         '/home_page': (BuildContext context) => const HomePage(),
+        '/profile_screen': (BuildContext context) => const HomePage(),
       },
       builder: EasyLoading.init(),
     );

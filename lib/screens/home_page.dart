@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:level_map/level_map.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:quiz_app/screens/level_map.dart';
 import 'package:quiz_app/screens/profile/profile_screen.dart';
-import 'package:quiz_app/screens/profile/settings_screen.dart';
-import 'package:quiz_app/screens/profile/stats_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

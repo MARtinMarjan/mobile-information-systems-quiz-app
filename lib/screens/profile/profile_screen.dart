@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
-import 'package:quiz_app/screens/level_map.dart';
 import 'package:quiz_app/screens/profile/settings_screen.dart';
 import 'package:quiz_app/screens/profile/stats_screen.dart';
 import 'package:quiz_app/screens/profile/update_profile_screen.dart';
-import 'package:quiz_app/screens/welcome_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/widgets/profile_menu_widget.dart';
+import 'package:quiz_app/widgets/ui/footer_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -30,24 +28,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     var zolta = Colors.yellow;
     var bodyText = Theme.of(context).textTheme.bodyMedium;
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Consumer<UserViewModel>(
-        builder: (BuildContext context, UserViewModel value, Widget? child) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Profile",
-            style: Theme.of(context).textTheme.headlineMedium,
+      builder: (BuildContext context, UserViewModel value, Widget? child) {
+        return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text(
+              "Profile",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
-          // actions: [
-          //   IconButton(
-          //       onPressed: () {},
-          //       icon:
-          //           Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
-          // ],
-        ),
-        body: SingleChildScrollView(
-          child: Container(
+          body: SingleChildScrollView(
+            child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 children: [
@@ -90,7 +82,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context,
                         screen: const UpdateProfileScreen(),
                         withNavBar: true,
-                        // OPTIONAL VALUE. True by default.
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,
                       ),
@@ -114,7 +105,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           context,
                           screen: const SettingsScreen(),
                           withNavBar: true,
-                          // OPTIONAL VALUE. True by default.
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino,
                         );
@@ -130,7 +120,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           context,
                           screen: const StatsScreen(),
                           withNavBar: true,
-                          // OPTIONAL VALUE. True by default.
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino,
                         );
@@ -150,10 +139,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       endIcon: false,
                       color: Colors.red),
+                  const SizedBox(height: 30), // Add SizedBox for spacing
+                  const FooterAuth()
                 ],
-              )),
-        ),
-      );
-    });
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

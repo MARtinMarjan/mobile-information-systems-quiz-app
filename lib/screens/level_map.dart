@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:level_map/level_map.dart';
-import 'package:quiz_app/screens/profile/profile_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
-import 'package:quiz_app/screens/welcome_screen.dart';
-import 'package:quiz_app/widgets/streak_testing.dart';
-import '../myapp.dart';
 import '../viewmodels/quiz.viewmodel.dart';
 import '../widgets/ui/rounded_button.dart';
 

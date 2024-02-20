@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:quiz_app/models/question.dart';
-import 'package:quiz_app/screens/level_map.dart';
 import 'package:quiz_app/screens/home_page.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/services/auth_service.dart';
