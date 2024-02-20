@@ -18,13 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   late String email;
   late String password;
   bool showSpinner = false;
-
-  @override
-  void initState() {
-    super.initState();
-    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    userViewModel.loadUserData();
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,45 +32,60 @@ class _LoginPageState extends State<LoginPage> {
             Expanded(
               child: ModalProgressHUD(
                 inAsyncCall: showSpinner,
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    const Logo(),
-                    const SizedBox(
-                      height: 48.0,
-                    ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your email',
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      const Logo(),
+                      const SizedBox(
+                        height: 48.0,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    TextField(
-                      obscureText: true,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        password = value;
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your password',
+                      TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
+                        decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter your email',
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 24.0,
-                    ),
-                    RoundedButton(
-                      colour: Colors.red,
-                      title: 'Log In',
-                      onPressed: _login,
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                        decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter your password',
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24.0,
+                      ),
+                      RoundedButton(
+                        colour: Colors.red,
+                        title: 'Log In',
+                        onPressed: _login,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -88,21 +97,24 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() async {
-    setState(() {
-      showSpinner = true;
-    });
-    try {
-      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-      await userViewModel.login(email, password).then((value) {
-        if (value == "success" && context.mounted) {
-          Navigator.pushNamed(context, '/home_page');
-        }
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        showSpinner = true;
       });
-    } catch (e) {
-      Text("Login Error: $e");
+      try {
+        final userViewModel =
+            Provider.of<UserViewModel>(context, listen: false);
+        await userViewModel.login(email, password).then((value) {
+          if (value == "success" && context.mounted) {
+            Navigator.pushNamed(context, '/home_page');
+          }
+        });
+      } catch (e) {
+        Text("Login Error: $e");
+      }
+      setState(() {
+        showSpinner = false;
+      });
     }
-    setState(() {
-      showSpinner = false;
-    });
   }
 }

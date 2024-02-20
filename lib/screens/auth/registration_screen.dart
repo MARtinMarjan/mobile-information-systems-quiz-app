@@ -17,15 +17,9 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   late String email;
   late String password;
-  late String username = 'N/A';
+  late String username = '';
   bool showSpinner = false;
-
-  @override
-  void initState() {
-    super.initState();
-    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    userViewModel.loadUserData();
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,56 +33,83 @@ class _RegistrationPageState extends State<RegistrationPage> {
             Expanded(
               child: ModalProgressHUD(
                 inAsyncCall: showSpinner,
-                child: ListView(
-                  children: <Widget>[
-                    const Logo(),
-                    const SizedBox(
-                      height: 48.0,
-                    ),
-                    TextField(
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        username = value;
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your username',
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: <Widget>[
+                      const Logo(),
+                      const SizedBox(
+                        height: 48.0,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your email',
+                      TextFormField(
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          setState(() {
+                            username = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your username';
+                          }
+                          return null;
+                        },
+                        decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter your username',
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    TextField(
-                      obscureText: true,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        password = value;
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your password',
+                      const SizedBox(
+                        height: 8.0,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 24.0,
-                    ),
-                    RoundedButton(
-                      colour: Colors.red,
-                      title: 'Register',
-                      onPressed: _register,
-                    )
-                  ],
+                      TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
+                        decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter your email',
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                        decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter your password',
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24.0,
+                      ),
+                      RoundedButton(
+                        colour: Colors.red,
+                        title: 'Register',
+                        onPressed: _register,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -100,20 +121,23 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   void _register() async {
-    setState(() {
-      showSpinner = true;
-    });
-    try {
-      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-      await userViewModel.register(email, password, username);
-      if (context.mounted) {
-        Navigator.pushNamed(context, '/home_page');
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        showSpinner = true;
+      });
+      try {
+        final userViewModel =
+            Provider.of<UserViewModel>(context, listen: false);
+        await userViewModel.register(email, password, username);
+        if (context.mounted) {
+          Navigator.pushNamed(context, '/home_page');
+        }
+      } catch (e) {
+        print('Registration Error: $e');
       }
-    } catch (e) {
-      print(e);
+      setState(() {
+        showSpinner = false;
+      });
     }
-    setState(() {
-      showSpinner = false;
-    });
   }
 }
