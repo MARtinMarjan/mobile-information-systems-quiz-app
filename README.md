@@ -17,9 +17,9 @@ So when you press Start the questions are shown where you have 4 possible option
 ![image](https://github.com/DimitrijaT/mobile-information-systems-quiz-app/assets/100298572/5fe7d55e-c345-418f-819a-8246b9e87056)
 
 
-After you finish the level there is summary screen with correct answers and if the score is perfect you are awared with confetti animation!!!
-<br>
-Or if you are not satisfied with your result you can restart the quiz easily.
+After you finish the level there is summary screen with correct answers and if the score is perfect you are awared with confetti animation!!! <br>
+Or if you are not satisfied with your result you can restart the quiz easily.<br>
+
 ![image](https://github.com/DimitrijaT/mobile-information-systems-quiz-app/assets/100298572/062f65f9-8147-4a08-985d-add436251696)
 
 
@@ -33,7 +33,7 @@ This is accesible via bottom navigation bar where you can check your profile inf
 
 
 <h1>Developer requirments and implementation</h1>
--Using web service such as Firebase and etc.
+-Using web service such as Firebase and etc. <br>
 
 -Design Patterns <br>
 1.Navigation <br>
@@ -42,5 +42,5 @@ This is accesible via bottom navigation bar where you can check your profile inf
 4.Singleton
 
 -Features <br>
--Use Camera or Gallery to update profile picture <br>
--Activity sensor when taking the quiz if you are AFK for 10 seconds quiz is paused.
+1.Use Camera or Gallery to update profile picture <br>
+2.Activity sensor when taking the quiz if you are AFK for 10 seconds quiz is paused.
