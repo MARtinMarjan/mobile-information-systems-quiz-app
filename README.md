@@ -11,12 +11,14 @@ The structure is simple and user friendy so anyone can use it when you launch th
 
 <h2>Home Screen</h2>
 After you succesfuly login to the game there is a roadmap and your starting level which is level 1 where you can start digging trough the macedonian language and learn it in a fun way.
+<br>
 So when you press Start the questions are shown where you have 4 possible options, only one is correct.
 
 ![image](https://github.com/DimitrijaT/mobile-information-systems-quiz-app/assets/100298572/5fe7d55e-c345-418f-819a-8246b9e87056)
 
 
 After you finish the level there is summary screen with correct answers and if the score is perfect you are awared with confetti animation!!!
+<br>
 Or if you are not satisfied with your result you can restart the quiz easily.
 ![image](https://github.com/DimitrijaT/mobile-information-systems-quiz-app/assets/100298572/062f65f9-8147-4a08-985d-add436251696)
 
@@ -33,12 +35,12 @@ This is accesible via bottom navigation bar where you can check your profile inf
 <h1>Developer requirments and implementation</h1>
 -Using web service such as Firebase and etc.
 
--Design Patterns
-1.Navigation
-2.Reusable Components (UI Elements etc.)
-3.Builder (Used in Login/Register screen)
+-Design Patterns <br>
+1.Navigation <br>
+2.Reusable Components (UI Elements etc.) <br>
+3.Builder (Used in Login/Register screen) <br>
 4.Singleton
 
--Features
--Use Camera or Gallery to update profile picture
+-Features <br>
+-Use Camera or Gallery to update profile picture <br>
 -Activity sensor when taking the quiz if you are AFK for 10 seconds quiz is paused.
