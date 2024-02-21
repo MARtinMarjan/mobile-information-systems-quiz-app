@@ -70,6 +70,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
 
   final AuthService auth = AuthService();
 
+  int pointMultiplier = 1;
+
   List<Map<String, Object>> getSummaryData(List<Question> questions) {
     final List<Map<String, Object>> summary = [];
 
@@ -91,6 +93,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
     );
     if (allCorrect) {
       _controllerBottomCenter.play();
+      pointMultiplier = 2;
     }
 
     return summary;
@@ -113,7 +116,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
     userViewModel
         .addUserQuizStats(
           quizViewModel.level,
-          numCorrectQuestions * 5,
+          (numCorrectQuestions * 5) * pointMultiplier,
           numCorrectQuestions,
           numTotalQuestions - numCorrectQuestions,
         )
@@ -189,11 +192,6 @@ class _ResultsScreenState extends State<ResultsScreen> {
                           TextButton.icon(
                             onPressed: () {
                               saveResults(context);
-
-                              // Navigator.of(context).pop();
-                              // Navigator.of(context).pop();
-                              // Navigator.of(context).pop();
-
                               Navigator.of(context).pushAndRemoveUntil(
                                 CupertinoPageRoute(
                                   builder: (BuildContext context) {

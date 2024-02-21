@@ -26,6 +26,7 @@ class _QuizFormPageState extends State<QuizFormPage> {
             'questionText': question.questionText,
             'answers': question.answers,
             'correctAnswerIndex': question.correctAnswerIndex,
+            'type': 'single_choice',
           };
         }).toList();
 
@@ -35,7 +36,7 @@ class _QuizFormPageState extends State<QuizFormPage> {
           'questions': questionsMapList,
           'level': _level,
         });
-
+        _questions.clear();
         // Show success message or navigate to another page
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Quiz submitted successfully!'),
@@ -47,7 +48,9 @@ class _QuizFormPageState extends State<QuizFormPage> {
           content: Text('Failed to submit quiz. Please try again later.'),
         ));
       }
+
     }
+
   }
 
   @override

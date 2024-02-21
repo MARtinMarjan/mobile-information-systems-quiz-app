@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/myapp.dart';
+import 'package:quiz_app/services/leaderboard_service.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/services/auth_service.dart';
@@ -18,14 +19,17 @@ void main() async {
 
   final authService = AuthService();
   final dbService = DBService();
+  final leaderboardService = LeaderboardService();
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => QuizViewModel()),
         ChangeNotifierProvider(
-            create: (_) =>
-                UserViewModel(authService: authService, dbService: dbService)),
+            create: (_) => UserViewModel(
+                authService: authService,
+                dbService: dbService,
+                leaderboardService: leaderboardService)),
       ],
       child: const MyApp(),
     ),

@@ -45,12 +45,9 @@ class _StatsScreenState extends State<StatsScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            PersistentNavBarNavigator.pushNewScreen(
-              context,
-              screen: const ProfileScreen(),
-              withNavBar: true,
-              pageTransitionAnimation: PageTransitionAnimation.cupertino,
-            );
+            Navigator.of(context).popUntil((route) {
+              return route.settings.name == "/profile_screen";
+            });
           },
           icon: const Icon(LineAwesomeIcons.angle_left),
         ),

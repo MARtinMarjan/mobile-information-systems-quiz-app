@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../services/db_service.dart';
+import '../services/leaderboard_service.dart';
 
 class UserViewModel extends ChangeNotifier {
   final AuthService _authService;
@@ -19,6 +20,7 @@ class UserViewModel extends ChangeNotifier {
   UserViewModel({
     required AuthService authService,
     required DBService dbService,
+    required LeaderboardService leaderboardService,
   })  : _authService = authService,
         _dbService = dbService;
 
@@ -66,7 +68,9 @@ class UserViewModel extends ChangeNotifier {
 
   Future<void> loadUserData() async {
     if (_user != null) {
-      _userData = await _dbService.getUserData(_user!.uid);
+      _userData = await _dbService.getUserData(_user!.uid).then((value) {
+        return value;
+      });
       notifyListeners();
     }
   }
@@ -83,8 +87,7 @@ class UserViewModel extends ChangeNotifier {
       );
       await loadUserData(); // Reload user data after updating stats
     }
-    loadUserData();
-    notifyListeners();
+    await loadUserData().then((value) => notifyListeners());
   }
 
   Future<void> saveProfile(String newUsername, Uint8List image) async {

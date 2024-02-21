@@ -58,7 +58,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       return;
     }
     userViewModel.saveProfile(username, _image!).then((value) {
-      Get.back();
+      Navigator.of(context).popUntil((route) {
+        return route.settings.name == "/profile_screen";
+      });
     });
   }
 
@@ -71,12 +73,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         child: AppBar(
           leading: IconButton(
             onPressed: () {
-              PersistentNavBarNavigator.pushNewScreen(
-                context,
-                screen: const ProfileScreen(),
-                withNavBar: true,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino,
-              );
+              Navigator.of(context).popUntil((route) {
+                return route.settings.name == "/profile_screen";
+              });
             },
             icon: const Icon(LineAwesomeIcons.angle_left),
           ),

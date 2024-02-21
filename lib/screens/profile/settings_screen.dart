@@ -26,12 +26,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              PersistentNavBarNavigator.pushNewScreen(
-                context,
-                screen: const ProfileScreen(),
-                withNavBar: true,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino,
-              );
+              // PersistentNavBarNavigator.pushNewScreen(
+              //   context,
+              //   screen: const ProfileScreen(),
+              //   withNavBar: true,
+              //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              // );
+              Navigator.of(context).popUntil((route) {
+                return route.settings.name == "/profile_screen";
+              });
             },
             icon: const Icon(LineAwesomeIcons.angle_left),
           ),
@@ -49,7 +52,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 UserViewModel userViewModel =
                     Provider.of<UserViewModel>(context, listen: false);
                 userViewModel.resetProgress();
-                Navigator.pushNamed(context, '/profile_screen');
+                Navigator.of(context).popUntil((route) {
+                  return route.settings.name == "/profile_screen";
+                });
               },
               color: Colors.red,
               endIcon: false,

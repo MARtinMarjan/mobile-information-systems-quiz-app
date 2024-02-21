@@ -97,7 +97,7 @@ class DBService {
       'correct_answers': 0,
       'incorrect_answers': 0,
       'streak_count': 1,
-      'last_opened_date': DateTime.now(),
+      'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
     }, SetOptions(merge: true));
   }
 

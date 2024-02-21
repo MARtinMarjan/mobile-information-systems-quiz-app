@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:quiz_app/screens/leaderboard/leaderboard.dart';
 import 'package:quiz_app/screens/level_map.dart';
 import 'package:quiz_app/screens/profile/profile_screen.dart';
+import 'package:quiz_app/screens/profile/settings_screen.dart';
+import 'package:quiz_app/screens/profile/stats_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +18,11 @@ class _HomePageState extends State<HomePage> {
   late PersistentTabController _controller;
 
   List<Widget> _buildScreens() {
-    return [const LevelMapScreen(), const ProfileScreen()];
+    return [
+      const LevelMapScreen(),
+      const LeaderboardScreen(),
+      const ProfileScreen()
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -23,22 +30,28 @@ class _HomePageState extends State<HomePage> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.map),
         title: ("Map"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        activeColorPrimary: CupertinoColors.activeOrange,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.chart_bar_alt_fill),
+        title: ("Leaderboard"),
+        activeColorPrimary: CupertinoColors.activeOrange,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.profile_circled),
         title: ("Profile"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        activeColorPrimary: CupertinoColors.activeOrange,
         inactiveColorPrimary: CupertinoColors.systemGrey,
-        // routeAndNavigatorSettings: RouteAndNavigatorSettings(
-        //   initialRoute: "/",
-        //   routes: {
-        //     "/profile_screen": (final context) => const ProfileScreen(),
-        //     "/stats_screen": (final context) => const StatsScreen(),
-        //     "/settings_screen": (final context) => const SettingsScreen(),
-        //   },
-        // ),
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: "/profile_screen",
+          routes: {
+            "/profile_screen": (final context) => const ProfileScreen(),
+            "/stats_screen": (final context) => const StatsScreen(),
+            "/settings_screen": (final context) => const SettingsScreen(),
+          },
+        ),
       ),
     ];
   }
@@ -81,6 +94,7 @@ class _HomePageState extends State<HomePage> {
       screenTransitionAnimation: const ScreenTransitionAnimation(
         // Screen transition animation on change of selected tab.
         animateTabTransition: true,
+
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),

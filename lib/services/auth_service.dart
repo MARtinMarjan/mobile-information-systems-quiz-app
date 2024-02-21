@@ -38,6 +38,7 @@ class AuthService {
         'points': 0,
         'correct_answers': 0,
         'incorrect_answers': 0,
+        'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
         'streak_count': 0,
       });
 
