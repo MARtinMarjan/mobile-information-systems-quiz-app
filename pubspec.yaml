@@ -51,6 +51,7 @@ dependencies:
   confetti: ^0.7.0
   persistent_bottom_nav_bar: ^5.0.2
   flutter_easyloading: ^3.0.5
+  cupertino_onboarding: ^1.2.0
 
 
 flutter_launcher_icons:

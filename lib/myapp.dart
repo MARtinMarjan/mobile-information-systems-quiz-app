@@ -9,6 +9,7 @@ import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 import 'package:quiz_app/screens/home_page.dart';
 import 'package:quiz_app/screens/welcome_screen.dart';
+import 'package:quiz_app/screens/onboarding_screen.dart';
 import 'package:quiz_app/widgets/streak_testing.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       navigatorKey: navigatorKey,
-      initialRoute: '/splash_screen',
+      initialRoute: '/onboarding_page',
       routes: <String, WidgetBuilder>{
         '/splash_screen': (BuildContext context) => const Splashscreen(),
         '/quiz_screen': (BuildContext context) => const Quiz(),
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/streak_screen': (BuildContext context) => const StreakApp(),
         '/home_page': (BuildContext context) => const HomePage(),
         '/profile_screen': (BuildContext context) => const HomePage(),
+        '/onboarding_page': (BuildContext context) => const OnboardingPage(),
       },
       builder: EasyLoading.init(),
     );

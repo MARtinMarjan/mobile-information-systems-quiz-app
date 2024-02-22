@@ -15,7 +15,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Leaderboard'),
+        automaticallyImplyLeading: false,
+        title: Text(
+          "Leaderboard",
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
       ),
       body: FutureBuilder(
         future: _leaderboardService.getLeaderboard(),
@@ -33,7 +37,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: Text('${index + 1}'),
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(snapshot.data![index].imageLink),
+                  ),
                   title: Text(snapshot.data![index].username),
                   subtitle: Text('Points: ${snapshot.data![index].points}'),
                 );

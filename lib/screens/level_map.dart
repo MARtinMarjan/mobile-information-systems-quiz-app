@@ -36,26 +36,32 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(
-      builder:
-          (BuildContext context, UserViewModel userViewModel, Widget? child) {
+      builder: (BuildContext context, UserViewModel userViewModel, Widget? child) {
         return Consumer<QuizViewModel>(
-          builder: (BuildContext context2, QuizViewModel quizViewModel,
-              Widget? child2) {
-            return Column(
-              children: [
-                Expanded(
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      _buildLevelMap(userViewModel),
-                      _buildTitleCard(quizViewModel.quizLevelTitle),
-                      _buildStartButton(
-                          userViewModel.userData?.level.toString() ?? '?'),
-                    ],
+          builder: (BuildContext context, QuizViewModel quizViewModel, Widget? child) {
+            bool isLoading = userViewModel.user == null || quizViewModel.quizLevelTitle.isEmpty;
+
+            if (isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        _buildLevelMap(userViewModel),
+                        _buildTitleCard(quizViewModel.quizLevelTitle),
+                        _buildStartButton(
+                            userViewModel.userData?.level.toString() ?? '?'),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            }
           },
         );
       },
