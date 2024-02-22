@@ -24,6 +24,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     super.initState();
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
     previousImage = userViewModel.userData?.imageLink ?? '';
+
     previousUsername = userViewModel.userData?.username ?? '';
     if (previousUsername.isNotEmpty) {
       usernameController.text = previousUsername;

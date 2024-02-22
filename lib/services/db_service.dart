@@ -63,9 +63,16 @@ class DBService {
     }
   }
 
+  // Upload image to Firebase Storage
   Future<String> uploadImageToStorage(String childName, Uint8List file) async {
+    // Reference ref = storage.ref().child(childName);
+    //
+    // UploadTask uploadTask = ref.putData(file);
+    // TaskSnapshot snapshot = await uploadTask;
+    // String downloadUrl = await snapshot.ref.getDownloadURL();
+    // return downloadUrl;
+    // dont replace existing but add new image
     Reference ref = storage.ref().child(childName);
-
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
@@ -74,10 +81,10 @@ class DBService {
 
   Future<String> saveData(
       {required String username, required Uint8List file, required uid}) async {
-    String resp = "Error occured";
+    String resp = "Error occurred";
     try {
       if (username.isNotEmpty) {
-        String imageUrl = await uploadImageToStorage("ProfileImage", file);
+        String imageUrl = await uploadImageToStorage(uid, file);
         await firestore.collection('users').doc(uid).set({
           'username': username,
           'image_link': imageUrl,

@@ -42,7 +42,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                         NetworkImage(snapshot.data![index].imageLink),
                   ),
                   title: Text(snapshot.data![index].username),
-                  subtitle: Text('Points: ${snapshot.data![index].points}'),
+                  subtitle: Row(
+                    children: [
+                      Text('Points: ${snapshot.data![index].points}'),
+                      const SizedBox(width: 8),
+                      Text('Streak: ${snapshot.data![index].streakCount}'),
+                    ],
+                  ),
                 );
               },
             );
