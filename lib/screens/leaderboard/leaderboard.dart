@@ -51,7 +51,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   ),
                   trailing: CircleAvatar(
                     backgroundImage:
-                    NetworkImage(snapshot.data![index].imageLink),
+                        NetworkImage(snapshot.data![index].imageLink),
                   ),
                 );
               },

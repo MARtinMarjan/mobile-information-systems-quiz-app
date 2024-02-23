@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
+import '../widgets/ui/footer_auth.dart';
 import '../widgets/ui/logo.dart';
 import '../widgets/ui/rounded_button.dart';
+
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
 
@@ -28,21 +30,29 @@ class _WelcomePageState extends State<WelcomePage> {
         backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: ListView(children: <Widget>[
-            const Logo(),
-            RoundedButton(
-              colour: Colors.red,
-              title: 'Log In',
-              onPressed: () {
-                Navigator.pushNamed(context, '/login_screen');
-              },
+          child: Column(children: [
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  const Logo(),
+                  RoundedButton(
+                    colour: Colors.red,
+                    title: 'Log In',
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login_screen');
+                    },
+                  ),
+                  RoundedButton(
+                      colour: Colors.redAccent,
+                      title: 'Register',
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/registration_screen');
+                      }),
+                ],
+              ),
             ),
-            RoundedButton(
-                colour: Colors.redAccent,
-                title: 'Register',
-                onPressed: () {
-                  Navigator.pushNamed(context, '/registration_screen');
-                }),
+            const FooterAuth(),
           ]),
         ));
   }

@@ -17,21 +17,18 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
   late UserViewModel _userViewModel;
   late QuizViewModel _quizViewModel;
 
-  @override
-  void initState() {
-    super.initState();
-    _userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    _quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
-    _userViewModel.checkoutActivityStreak();
-    _loadCurrentLevel();
-  }
-
-  Future<double> _loadCurrentLevel() async {
+  Future<void> _loadCurrentLevel() async {
+    await _userViewModel.checkoutActivityStreak();
     await _userViewModel.loadUserData().then((value) {
       _quizViewModel.getQuestionsByLevel(_userViewModel.userData!.level);
     });
-    var level = _userViewModel.userData!.level.toDouble();
-    return level;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    _quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
   }
 
   @override
@@ -42,30 +39,50 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
           child: FutureBuilder<void>(
             future: _loadCurrentLevel(),
             builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container(
-                  color: Colors.lightGreen,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error}'),
-                );
-              } else {
-                return Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    _buildLevelMap(getLevelValue(_userViewModel)),
-                    _buildTitleCard(_quizViewModel.quizLevelTitle),
-                    _buildStartButton(
-                      context,
-                      _userViewModel.userData?.level.toString() ?? '?',
-                    ),
-                  ],
-                );
-              }
+              double levelValue = 1.0;
+              String title = "???";
+              int streak = 0;
+              String level = "?";
+
+              return Consumer2<UserViewModel, QuizViewModel>(
+                builder: (context, userViewModel, quizViewModel, child) {
+                  //add loading inbetween
+                  EasyLoading.show(status: 'loading...');
+                  levelValue = getLevelValue(_userViewModel);
+                  title = _quizViewModel.quizLevelTitle;
+                  streak = _userViewModel.userData?.streakCount ?? 0;
+                  level = _userViewModel.userData?.level.toString() ?? '?';
+                  EasyLoading.dismiss();
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      color: Colors.lightGreen,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    return Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        _buildLevelMap(levelValue),
+                        _buildTitleCard(
+                          title,
+                          streak,
+                        ),
+                        _buildStartButton(
+                          context,
+                          level,
+                        ),
+                      ],
+                    );
+                  }
+                },
+              );
             },
           ),
         ),
@@ -154,44 +171,112 @@ Widget _buildLevelMap(double currentLevelValue) {
   );
 }
 
-Widget _buildTitleCard(String title) {
-  return Container(
-    alignment: Alignment.topCenter,
-    child: Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: Card(
-        color: Colors.amber,
+Widget _buildTitleCard(String title, int streak) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Container(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 32),
+            child: Card(
+              color: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(360),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "$streak",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const WidgetSpan(
+                        child: Icon(Icons.whatshot_outlined,
+                            size: 20, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )),
+      Container(
+        alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          padding: const EdgeInsets.only(top: 30),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(360),
+            ),
+            color: Colors.amber,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ),
       ),
-    ),
+    ],
   );
 }
 
 Widget _buildStartButton(BuildContext context, String levelNumber) {
   return Container(
-    alignment: Alignment.bottomCenter,
-    margin: const EdgeInsets.only(bottom: 20),
-    child: GestureDetector(
-      onTap: () {
-        Navigator.of(context, rootNavigator: true).pushNamed("/quiz_screen");
-        // Navigator.pushNamed(context, '/quiz_screen');
-        //Undefined name 'context'.
-      },
-      child: RoundedButton(
-        colour: Colors.red,
-        title: 'Start Level $levelNumber',
-        onPressed: null,
-      ),
-    ),
-  );
+      alignment: Alignment.bottomRight,
+      margin: const EdgeInsets.only(bottom: 20),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).pushNamed("/quiz_screen");
+          // Navigator.pushNamed(context, '/quiz_screen');
+          //Undefined name 'context'.
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20, right: 20),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(360),
+            ),
+            color: Colors.red,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const WidgetSpan(
+                      child: Icon(
+                        Icons.play_arrow_rounded,
+                        size: 32,
+                        color: Colors.white,
+                      ),
+                    ),
+                    TextSpan(
+                      text: levelNumber,
+                      style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ));
 }
