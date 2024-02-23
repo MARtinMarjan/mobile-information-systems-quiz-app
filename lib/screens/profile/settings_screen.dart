@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../viewmodels/user.viewmodel.dart';
 import '../../widgets/profile_menu_widget.dart';
+import '../add_quiz/quiz_form_page.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -37,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             icon: const Icon(LineAwesomeIcons.angle_left),
           ),
           title: Text(
-            "Profile",
+            "Settings",
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
@@ -69,6 +71,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: LineAwesomeIcons.trash,
               onPress: () {},
               color: Colors.red,
+              endIcon: false,
+            ),
+            ProfileMenuWidget(
+              title: 'Add New Level',
+              icon: LineAwesomeIcons.plus_circle,
+              onPress: () {
+                //   '/add_quiz': (BuildContext context) => const QuizFormPage(),
+
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: const QuizFormPage(),
+                  withNavBar: true,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+              },
+              color: Colors.green,
               endIcon: false,
             ),
           ],

@@ -50,7 +50,7 @@ class _StatsScreenState extends State<StatsScreen> {
           icon: const Icon(LineAwesomeIcons.angle_left),
         ),
         title: Text(
-          "Profile",
+          "Statistics",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),

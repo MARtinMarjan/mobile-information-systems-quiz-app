@@ -102,14 +102,16 @@ class UserViewModel extends ChangeNotifier {
     await loadUserData().then((value) => notifyListeners());
   }
 
-  Future<void> saveProfile(String newUsername, Uint8List image) async {
+  Future<void> saveProfile(String newUsername, Uint8List? image) async {
     if (_user != null) {
+      isLoading = true;
       String resp = await _dbService.saveData(
           username: newUsername, file: image, uid: _user!.uid);
       if (resp == "success") {
         _userData = await _dbService.getUserData(_user!.uid);
-        notifyListeners();
       }
+      notifyListeners();
+      isLoading = false;
     }
   }
 

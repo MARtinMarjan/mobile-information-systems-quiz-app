@@ -44,11 +44,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
-  void saveProfile() async {
+  Future<void> saveProfile() async {
     String username = usernameController.text;
     UserViewModel userViewModel =
         Provider.of<UserViewModel>(context, listen: false);
-    if (_image == null) {
+    if (_image == null && previousImage.isEmpty) {
       Get.snackbar("Error", "Please select an image");
       return;
     }
@@ -56,8 +56,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       Get.snackbar("Error", "Please enter a username");
       return;
     }
-    userViewModel.saveProfile(username, _image!).then((value) {
+    userViewModel.saveProfile(username, _image).then((value) {
       Navigator.of(context).popUntil((route) {
+        userViewModel.loadUserData();
         return route.settings.name == "/profile_screen";
       });
     });
@@ -65,7 +66,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var zolta = Colors.yellow;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight + 50.0),
@@ -118,7 +118,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     right: 0,
                     child: Container(
                       decoration: const BoxDecoration(
-                        color: Colors.yellow,
+                        color: Colors.amber,
                         shape: BoxShape.circle,
                       ),
                       child: PopupMenuButton<ImageSource>(
@@ -161,13 +161,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       child: ElevatedButton(
                         onPressed: saveProfile,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: zolta,
+                          backgroundColor: Colors.amber,
                           side: BorderSide.none,
                           shape: const StadiumBorder(),
                         ),
                         child: const Text(
                           "Save Changes",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white, fontSize: 16.0),
                         ),
                       ),
                     ),

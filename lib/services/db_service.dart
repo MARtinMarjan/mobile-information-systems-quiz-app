@@ -80,17 +80,24 @@ class DBService {
   }
 
   Future<String> saveData(
-      {required String username, required Uint8List file, required uid}) async {
+      {required String username,
+      required Uint8List? file,
+      required uid}) async {
     String resp = "Error occurred";
     try {
-      if (username.isNotEmpty) {
+      if (username.isNotEmpty && file != null && file.isNotEmpty) {
         String imageUrl = await uploadImageToStorage(uid, file);
         await firestore.collection('users').doc(uid).set({
           'username': username,
           'image_link': imageUrl,
         }, SetOptions(merge: true));
-        resp = "success";
+      } else if (username.isNotEmpty && file == null) {
+        await firestore
+            .collection('users')
+            .doc(uid)
+            .set({'username': username}, SetOptions(merge: true));
       }
+      resp = "success";
     } catch (err) {
       resp = err.toString();
     }
