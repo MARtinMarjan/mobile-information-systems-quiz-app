@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/screens/add_quiz/quiz_form_page.dart';
 
@@ -42,7 +41,7 @@ class MyApp extends StatelessWidget {
         '/profile_screen': (BuildContext context) => const HomePage(),
         '/onboarding_page': (BuildContext context) => const OnboardingPage(),
       },
-      builder: EasyLoading.init(),
+      // builder: EasyLoading.init(),
     );
   }
 }

@@ -15,7 +15,7 @@ class Assets {
   static const String levelMapEndQuizImage = 'assets/level_map/end_quiz_image.png';
   static const String levelMapGraduationCap = 'assets/level_map/GraduationCap.png';
   static const String levelMapLockedLevel = 'assets/level_map/locked_level.png';
-  static const String levelMapNorthMacedonia (2) = 'assets/level_map/north-macedonia (2).png';
+
   static const String levelMapStartQuizImage = 'assets/level_map/start_quiz_image.png';
   static const String randomImagesBridge = 'assets/level_map/random_images/bridge.png';
   static const String randomImagesChurch = 'assets/level_map/random_images/church.png';

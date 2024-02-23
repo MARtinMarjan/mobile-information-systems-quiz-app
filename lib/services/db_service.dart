@@ -110,7 +110,7 @@ class DBService {
       'points': 0,
       'correct_answers': 0,
       'incorrect_answers': 0,
-      'streak_count': 1,
+      'streak_count': 0,
       'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
     }, SetOptions(merge: true));
   }
@@ -121,17 +121,25 @@ class DBService {
   //       'last_opened_date': DateTime.now(),
   //     }, SetOptions(merge: true));
 
-  Future<void> updateStreakCount(String uid, int streakCount) {
-    return userCollection.doc(uid).set({
-      'streak_count': streakCount,
-      'last_opened_date': DateTime.now(),
-    }, SetOptions(merge: true));
+  Future<void> updateStreakCount(
+      String uid, int streakCount, DateTime lastOpenedDate,
+      [bool updateDate = true]) {
+    if (updateDate == true) {
+      return userCollection.doc(uid).set({
+        'streak_count': streakCount,
+        'last_opened_date': DateTime.now(),
+      }, SetOptions(merge: true));
+    } else {
+      return userCollection.doc(uid).set({
+        'streak_count': streakCount,
+      }, SetOptions(merge: true));
+    }
   }
 
   Future<void> resetStreakCount(String uid) {
     return userCollection.doc(uid).set({
       'streak_count': 0,
-      'last_opened_date': DateTime.now(),
+      'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
     }, SetOptions(merge: true));
   }
 

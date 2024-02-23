@@ -15,4 +15,9 @@ class Parser {
   static String parseEmail(String email) {
     return email.toString().split("@")[0];
   }
+
+  static stringToDateTime(String dateTime) {
+    return DateTime.parse(dateTime);
+  }
+
 }

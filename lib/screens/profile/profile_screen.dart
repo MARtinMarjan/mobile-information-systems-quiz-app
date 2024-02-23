@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               PageTransitionAnimation.cupertino,
                         );
                       },
-                      color: zolta),
+                      color: Colors.blue),
                   const SizedBox(height: 30),
                   ProfileMenuWidget(
                       title: "Logout",
@@ -134,8 +134,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Provider.of<UserViewModel>(context, listen: false);
                         userViewModel.signOut();
                         Navigator.of(context, rootNavigator: true)
-                            .pushNamed("/welcome_screen");
-                        // Navigator.popAndPushNamed(context, "/login_screen");
+                            .pushReplacementNamed("/welcome_screen");
+                        Navigator.of(context).popUntil((route) {
+                          return route.settings.name == "/welcome_screen";
+                        });
                       },
                       endIcon: false,
                       color: Colors.red),

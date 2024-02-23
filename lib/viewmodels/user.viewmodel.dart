@@ -7,6 +7,7 @@ import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../services/db_service.dart';
 import '../services/leaderboard_service.dart';
+import '../utils/date_checkers.dart';
 
 class UserViewModel extends ChangeNotifier {
   final AuthService _authService;
@@ -118,7 +119,8 @@ class UserViewModel extends ChangeNotifier {
   void resetProgress() {
     if (_user != null) {
       _dbService.resetProgress(_user!.uid);
-      _dbService.updateStreakCount(_user!.uid, _streakCount + 1);
+      _dbService.updateStreakCount(
+          _user!.uid, 0, DateTime.now().subtract(const Duration(days: 1)));
       _streakCount = 0;
       loadUserData();
       notifyListeners();
@@ -134,6 +136,7 @@ class UserViewModel extends ChangeNotifier {
         if (!isYesterday(_lastOpenedDate, DateTime.now()) &&
             !isToday(_lastOpenedDate, DateTime.now())) {
           _dbService.resetStreakCount(_user!.uid);
+          _lastOpenedDate = DateTime.now().subtract(const Duration(days: 1));
           _streakCount = 0;
         }
       });
@@ -151,13 +154,15 @@ class UserViewModel extends ChangeNotifier {
         if (!isYesterday(_lastOpenedDate, DateTime.now()) &&
             !isToday(_lastOpenedDate, DateTime.now())) {
           _dbService.resetStreakCount(_user!.uid).then((value) => {
-                _dbService.updateStreakCount(_user!.uid, _streakCount + 1),
+                _dbService.updateStreakCount(_user!.uid, 1,
+                    DateTime.now().subtract(const Duration(days: 1))),
               });
-          _streakCount = 0;
+          _streakCount = 1;
         }
-        //if streak has been updated today, don't update it again
-        if (!isToday(_lastOpenedDate, DateTime.now())) {
-          _dbService.updateStreakCount(_user!.uid, _streakCount + 1);
+        // Check if streak needs to be updated
+        else if (!isToday(_lastOpenedDate, DateTime.now())) {
+          _dbService.updateStreakCount(
+              _user!.uid, _streakCount + 1, DateTime.now());
           _streakCount++;
           _lastOpenedDate = DateTime.now();
         }
@@ -166,16 +171,4 @@ class UserViewModel extends ChangeNotifier {
       isLoading = false;
     }
   }
-}
-
-bool isYesterday(DateTime date1, DateTime date2) {
-  return date1.day == date2.day - 1 &&
-      date1.month == date2.month &&
-      date1.year == date2.year;
-}
-
-bool isToday(DateTime date1, DateTime date2) {
-  return date1.day == date2.day &&
-      date1.month == date2.month &&
-      date1.year == date2.year;
 }
