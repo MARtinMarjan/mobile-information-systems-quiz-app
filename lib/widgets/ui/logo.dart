@@ -19,7 +19,7 @@ class Logo extends StatelessWidget {
                 height: MediaQuery.of(context).size.width * 0.6,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/quiz_logo_2.jpg'),
+                    image: AssetImage('assets/images/quiz_logo_2.png'),
                     fit: BoxFit.contain,
                   ),
                 ),

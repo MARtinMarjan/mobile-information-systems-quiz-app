@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var zolta = Colors.yellow;
+    var zolta = Colors.orange;
     var bodyText = Theme.of(context).textTheme.bodyMedium;
     return Consumer<UserViewModel>(
       builder: (BuildContext context, UserViewModel value, Widget? child) {

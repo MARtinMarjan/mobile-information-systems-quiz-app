@@ -47,12 +47,21 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
               return Consumer2<UserViewModel, QuizViewModel>(
                 builder: (context, userViewModel, quizViewModel, child) {
                   //add loading inbetween
-                  EasyLoading.show(status: 'loading...');
+
                   levelValue = getLevelValue(_userViewModel);
                   title = _quizViewModel.quizLevelTitle;
                   streak = _userViewModel.userData?.streakCount ?? 0;
                   level = _userViewModel.userData?.level.toString() ?? '?';
-                  EasyLoading.dismiss();
+
+                  if (context.watch<UserViewModel>().isLoading ||
+                      context.watch<QuizViewModel>().isLoading) {
+                    return Container(
+                      color: Colors.lightGreen,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
@@ -66,20 +75,27 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                       child: Text('Error: ${snapshot.error}'),
                     );
                   } else {
-                    return Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        _buildLevelMap(levelValue),
-                        _buildTitleCard(
-                          title,
-                          streak,
-                        ),
-                        _buildStartButton(
-                          context,
-                          level,
-                        ),
-                      ],
-                    );
+                    return context.watch<UserViewModel>().isLoading
+                        ? Container(
+                            color: Colors.lightGreen,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              _buildLevelMap(levelValue),
+                              _buildTitleCard(
+                                title,
+                                streak,
+                              ),
+                              _buildStartButton(
+                                context,
+                                level,
+                              ),
+                            ],
+                          );
                   }
                 },
               );

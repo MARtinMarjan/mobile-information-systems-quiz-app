@@ -6,32 +6,49 @@ import '../services/questions_service.dart';
 
 class QuizViewModel extends ChangeNotifier {
   List<Question> _questions = [];
-  int _level = 1;
-  int _currentQuestionIndex = 0;
-  final List<String> _chosenAnswers = [];
 
   List<Question> get questions => _questions;
 
-  int get level => _level;
-
-  String quizLevelTitle = 'Welcome to the Quiz!';
-
-  int get currentQuestionIndex => _currentQuestionIndex;
+  final List<String> _chosenAnswers = [];
 
   List<String> get chosenAnswers => _chosenAnswers;
 
-  QuizViewModel() {
-    getQuestionsByLevel(_level);
+  int _level = 1;
+
+  int get level => _level;
+  int _currentQuestionIndex = 0;
+
+  int get currentQuestionIndex => _currentQuestionIndex;
+
+  String quizLevelTitle = 'Welcome to the Quiz!';
+
+  bool _isLoading = true;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
+  }
+
+  QuizViewModel() {
+    getQuestionsByLevel(_level)
+        .then((value) => {_isLoading = false, notifyListeners()});
+    _isLoading = false;
   }
 
   final QuestionService questionService = QuestionService();
 
   Future<void> getQuestionsByLevel(int level) async {
+    // if (isLoading) {
+    //   return;
+    // }
+    isLoading = true;
     Quiz? quiz = await questionService.getQuizByLevel(level);
     _questions = quiz?.questions ?? [];
     quizLevelTitle = quiz?.title ?? "Welcome to the Quiz!";
     notifyListeners();
+    isLoading = false;
   }
 
   void answerQuestion(String selectedAnswer) {
@@ -45,11 +62,6 @@ class QuizViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateLevel(int newLevel) {
-    _level = newLevel;
-    notifyListeners();
-  }
-
   void resetQuiz() {
     _currentQuestionIndex = 0;
     _chosenAnswers.clear();
@@ -58,11 +70,6 @@ class QuizViewModel extends ChangeNotifier {
 
   getChosenAnswers() {
     return _chosenAnswers;
-    notifyListeners();
-  }
-
-  getTitle() {
-    return quizLevelTitle;
     notifyListeners();
   }
 }

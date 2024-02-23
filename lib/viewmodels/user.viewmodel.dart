@@ -13,24 +13,30 @@ class UserViewModel extends ChangeNotifier {
   final DBService _dbService;
 
   User? _user;
+
+  User? get user => _user;
   QuizUserData? _userData;
+
+  QuizUserData? get userData => _userData;
   int _streakCount = 0;
+
+  int get streakCount => _streakCount;
   late DateTime _lastOpenedDate;
+
+  bool _isLoading = true;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
   UserViewModel({
     required AuthService authService,
     required DBService dbService,
-    required LeaderboardService leaderboardService,
   })  : _authService = authService,
         _dbService = dbService;
-
-  User? get user => _user;
-
-  QuizUserData? get userData => _userData;
-
-  int get streakCount => _streakCount;
-
-  DateTime get lastOpenedDate => _lastOpenedDate;
 
   Future<String> login(String email, String password) async {
     try {
@@ -67,11 +73,14 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<void> loadUserData() async {
+    // if (isLoading) {
+    //   return;
+    // }
     if (_user != null) {
-      _userData = await _dbService.getUserData(_user!.uid).then((value) {
-        return value;
-      });
+      isLoading = true;
+      _userData = await _dbService.getUserData(_user!.uid);
       notifyListeners();
+      isLoading = false;
     }
   }
 
@@ -113,6 +122,7 @@ class UserViewModel extends ChangeNotifier {
 
   Future<void> checkoutActivityStreak() async {
     if (_user != null) {
+      isLoading = true;
       _dbService.getLastOpenedDate(_user!.uid).then((value) {
         _lastOpenedDate = value;
         // Check if streak needs to be reset
@@ -122,11 +132,14 @@ class UserViewModel extends ChangeNotifier {
           _streakCount = 0;
         }
       });
+      notifyListeners();
+      isLoading = false;
     }
   }
 
   Future<void> updateStreak() async {
     if (_user != null) {
+      isLoading = true;
       _dbService.getLastOpenedDate(_user!.uid).then((value) {
         _lastOpenedDate = value;
         // Check if streak needs to be reset
@@ -144,9 +157,9 @@ class UserViewModel extends ChangeNotifier {
           _lastOpenedDate = DateTime.now();
         }
       });
+      notifyListeners();
+      isLoading = false;
     }
-
-    notifyListeners();
   }
 }
 

@@ -2,10 +2,12 @@
 class Assets {
   Assets._();
 
+  static const String assetsImagesQuizLogo2 = 'assets/images/quiz_logo_2.png';
+  static const String assetsImagesQuizLogo3 = 'assets/images/quiz_logo_3.png';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
-  static const String imagesOIG2 = 'assets/images/quiz_logo_3.jpg';
   static const String imagesQuizLogo1 = 'assets/images/quiz_logo_1.jpg';
   static const String imagesQuizLogo2 = 'assets/images/quiz_logo_2.jpg';
+  static const String imagesQuizLogo3 = 'assets/images/quiz_logo_3.jpg';
   static const String levelMapBoyGraduation = 'assets/level_map/BoyGraduation.png';
   static const String levelMapBoyStudy = 'assets/level_map/BoyStudy.png';
   static const String levelMapCompletedLevel = 'assets/level_map/completed_level.png';

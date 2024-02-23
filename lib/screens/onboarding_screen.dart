@@ -70,7 +70,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 height: MediaQuery.of(context).size.width * 0.6,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/quiz_logo_3.jpg'),
+                    image: AssetImage('assets/images/quiz_logo_3.png'),
                     fit: BoxFit.contain,
                   ),
                 ),

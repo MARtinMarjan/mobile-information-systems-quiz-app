@@ -29,10 +29,8 @@ void main() async {
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (_) => UserViewModel(
-              authService: authService,
-              dbService: dbService,
-              leaderboardService: leaderboardService),
+          create: (_) =>
+              UserViewModel(authService: authService, dbService: dbService),
           lazy: false,
         ),
       ],
