@@ -12,6 +12,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoOnboarding(
+      bottomButtonColor: CupertinoColors.systemRed.resolveFrom(context),
       onPressedOnLastPage: () => {
         Navigator.of(context).pushReplacementNamed('/splash_screen'),
       },
@@ -63,7 +64,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           body: Column(
             children: [
               const Text(
-                  'Miki is the mascot of MKLearner. He is a lynx and he is here to help you learn the Macedonian language.'),
+                  'Miki is the mascot of MKLearner. He is a lynx and he is here to help you learn the Macedonian language. '),
               Container(
                 width: MediaQuery.of(context).size.width * 0.6,
                 height: MediaQuery.of(context).size.width * 0.6,
@@ -79,8 +80,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
         ),
         const CupertinoOnboardingPage(
           title: Text("Let's start!"),
-          body: Text(
-              "Now that you know what MKLearner is, let's get started, shall we?"),
+          body: Column(
+            children: [
+              Text(
+                  " Now that you know what MKLearner is, let's get started, shall we? Start by taking a quiz and see how much you know about the Macedonian language. "),
+            ],
+          ),
         ),
       ],
     );

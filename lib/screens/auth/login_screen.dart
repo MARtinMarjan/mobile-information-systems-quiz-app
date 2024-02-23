@@ -22,16 +22,18 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: ModalProgressHUD(
-                inAsyncCall: showSpinner,
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            // shrinkWrap: true,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
                 child: Form(
                   key: _formKey,
                   child: ListView(
@@ -88,9 +90,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-            ),
-            const FooterAuth(),
-          ],
+              Visibility(
+                visible: !keyboardIsOpen,
+                child: const FooterAuth(),
+              ),
+            ],
+          ),
         ),
       ),
     );

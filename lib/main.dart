@@ -24,12 +24,17 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => QuizViewModel()),
         ChangeNotifierProvider(
-            create: (_) => UserViewModel(
-                authService: authService,
-                dbService: dbService,
-                leaderboardService: leaderboardService)),
+          create: (_) => QuizViewModel(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserViewModel(
+              authService: authService,
+              dbService: dbService,
+              leaderboardService: leaderboardService),
+          lazy: false,
+        ),
       ],
       child: const MyApp(),
     ),

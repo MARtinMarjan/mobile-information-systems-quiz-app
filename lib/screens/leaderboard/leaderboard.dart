@@ -37,9 +37,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(snapshot.data![index].imageLink),
+                  leading: Text(
+                    '${index + 1}',
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   title: Text(snapshot.data![index].username),
                   subtitle: Row(
@@ -48,6 +48,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       const SizedBox(width: 8),
                       Text('Streak: ${snapshot.data![index].streakCount}'),
                     ],
+                  ),
+                  trailing: CircleAvatar(
+                    backgroundImage:
+                    NetworkImage(snapshot.data![index].imageLink),
                   ),
                 );
               },
