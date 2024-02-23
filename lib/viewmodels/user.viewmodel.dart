@@ -65,6 +65,9 @@ class UserViewModel extends ChangeNotifier {
   Future<void> signOut() async {
     await _authService.signOut();
     _user = null;
+    _streakCount = 0;
+    _userData = null;
+
     notifyListeners();
   }
 

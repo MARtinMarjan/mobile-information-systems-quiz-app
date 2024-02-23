@@ -49,10 +49,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       Text('Streak: ${snapshot.data![index].streakCount}'),
                     ],
                   ),
-                  trailing: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(snapshot.data![index].imageLink),
-                  ),
+                  trailing: snapshot.data?[index].imageLink != null
+                      ? CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(snapshot.data![index].imageLink))
+                      : const CircleAvatar(
+                          child: Icon(Icons.person),
+                        ),
                 );
               },
             );

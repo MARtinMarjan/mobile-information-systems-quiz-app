@@ -33,7 +33,8 @@ class AuthService {
         'email': email,
         'created_at': FieldValue.serverTimestamp(),
         'username': username,
-        'avatar': 'https://robohash.org/${userCredential.user!.uid}?set=set4',
+        'image_link':
+            'https://robohash.org/${userCredential.user!.uid}?set=set4',
         'level': 1,
         'points': 0,
         'correct_answers': 0,
