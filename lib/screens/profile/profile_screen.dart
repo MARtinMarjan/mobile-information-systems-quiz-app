@@ -86,12 +86,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             PageTransitionAnimation.cupertino,
                       ),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: zolta,
+                          backgroundColor: Colors.amber,
                           side: BorderSide.none,
                           shape: const StadiumBorder()),
                       child: const Text("Edit Profile",
                           style:
-                              TextStyle(color: Color.fromARGB(255, 0, 0, 1))),
+                              TextStyle(color: Colors.white, fontSize: 16.0)),
                     ),
                   ),
                   const SizedBox(height: 30),

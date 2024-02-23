@@ -18,6 +18,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       },
       pages: [
         WhatsNewPage(
+          // scrollPhysics: const BouncingScrollPhysics(),
           title: const Text("What is MKLearner?"),
           features: [
             // Feature's type must be `WhatsNewFeature`
@@ -39,7 +40,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ),
               title: const Text("Don't Lose your streak!"),
               description: const Text(
-                "Keep your streak going by practicing every day and competing with other users.",
+                "Keep your streak going by practicing every day!",
               ),
             ),
             // Leaderboard

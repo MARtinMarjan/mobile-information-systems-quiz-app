@@ -30,19 +30,19 @@ class _HomePageState extends State<HomePage> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.map),
         title: ("Map"),
-        activeColorPrimary: CupertinoColors.systemOrange,
+        activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.chart_bar_alt_fill),
         title: ("Leaderboard"),
-        activeColorPrimary: CupertinoColors.systemOrange,
+        activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.profile_circled),
         title: ("Profile"),
-        activeColorPrimary: CupertinoColors.systemOrange,
+        activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: "/profile_screen",
