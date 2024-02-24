@@ -11,6 +11,8 @@ import 'package:quiz_app/screens/welcome_screen.dart';
 import 'package:quiz_app/screens/onboarding_screen.dart';
 import 'package:quiz_app/widgets/streak_testing.dart';
 
+import 'main.dart';
+
 final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       navigatorKey: navigatorKey,
-      initialRoute: '/onboarding_page',
+      initialRoute: initScreen == 0 || initScreen == null ? "/onboarding_page" : "/splash_screen",
       routes: <String, WidgetBuilder>{
         '/splash_screen': (BuildContext context) => const Splashscreen(),
         '/quiz_screen': (BuildContext context) => const Quiz(),

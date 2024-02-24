@@ -7,8 +7,11 @@ import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/services/auth_service.dart';
 import 'package:quiz_app/services/db_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
+
+int? initScreen;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,9 +20,13 @@ void main() async {
   );
   // await FirebaseApi().initNotifications();
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = await prefs.getInt("initScreen");
+  await prefs.setInt("initScreen", 1);
+  print('initScreen $initScreen');
+
   final authService = AuthService();
   final dbService = DBService();
-  final leaderboardService = LeaderboardService();
 
   runApp(
     MultiProvider(
