@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
@@ -32,26 +34,43 @@ class _WelcomePageState extends State<WelcomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(children: [
             Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  const Logo(),
-                  RoundedButton(
-                    colour: Colors.red,
-                    title: 'Log In',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login_screen');
-                    },
+              child: Column(
+                children: [
+                  ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      const Logo(),
+                      RoundedButton(
+                        colour: Colors.red,
+                        title: 'Log In',
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login_screen');
+                        },
+                      ),
+                      RoundedButton(
+                          colour: Colors.redAccent,
+                          title: 'Register',
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/registration_screen');
+                          }),
+                    ],
                   ),
-                  RoundedButton(
-                      colour: Colors.redAccent,
-                      title: 'Register',
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: SignInButton(
+                      Buttons.Google,
                       onPressed: () {
-                        Navigator.pushNamed(context, '/registration_screen');
-                      }),
+                        final userViewModel =
+                        Provider.of<UserViewModel>(context, listen: false);
+                        userViewModel.googleSignUp(context);
+                        Navigator.pushNamed(context, '/home_page');
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
+
             const FooterAuth(),
           ]),
         ));

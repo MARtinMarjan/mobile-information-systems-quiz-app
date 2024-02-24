@@ -2,11 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../services/db_service.dart';
-import '../services/leaderboard_service.dart';
 import '../utils/date_checkers.dart';
 
 class UserViewModel extends ChangeNotifier {
@@ -48,6 +48,41 @@ class UserViewModel extends ChangeNotifier {
     } catch (e) {
       print("Login Error: $e");
       rethrow;
+    }
+  }
+
+  // if user doesnt exist create a new user
+  //I/flutter (28582): Error getting user data: type 'Null' is not a subtype of type 'Map<String, dynamic>' in type cast
+  // E/flutter (28582): [ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: type 'Null' is not a subtype of type 'Map<String, dynamic>' in type cast
+  // E/flutter (28582): #0      DBService.getUserData (package:quiz_app/services/db_service.dart:59:50)
+  // E/flutter (28582): <asynchronous suspension>
+  // E/flutter (28582): #1      UserViewModel.loadUserData (package:quiz_app/viewmodels/user.viewmodel.dart:109:19)
+  // E/flutter (28582): <asynchronous suspension>
+  // E/flutter (28582): #2      UserViewModel.googleSignUp (package:quiz_app/viewmodels/user.viewmodel.dart:72:9)
+  // E/flutter (28582): <asynchronous suspension>
+  // E/flutter (28582):
+  Future<void> googleSignUp(BuildContext context) async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      UserCredential userCredential =
+          await _authService.signInWithCredential(credential);
+      _user = userCredential.user;
+      if (userCredential.additionalUserInfo!.isNewUser) {
+        await _authService.registerGoogleUser(userCredential);
+      } else {
+        await loadUserData();
+      }
+      notifyListeners();
     }
   }
 

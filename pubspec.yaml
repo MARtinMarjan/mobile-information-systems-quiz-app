@@ -54,6 +54,8 @@ dependencies:
   modals: ^1.0.0+1
   flutter_chat_bubble: ^2.0.2
   shared_preferences: ^2.2.2
+  google_sign_in: 5.4.4
+  flutter_signin_button: ^2.0.0
 
 
 flutter_launcher_icons:

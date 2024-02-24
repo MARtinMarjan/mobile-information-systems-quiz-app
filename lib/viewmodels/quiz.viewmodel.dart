@@ -13,7 +13,7 @@ class QuizViewModel extends ChangeNotifier {
 
   List<String> get chosenAnswers => _chosenAnswers;
 
-  int _level = 1;
+  final int _level = 1;
 
   int get level => _level;
   int _currentQuestionIndex = 0;

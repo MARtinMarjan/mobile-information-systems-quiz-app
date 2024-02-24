@@ -50,6 +50,27 @@ class AuthService {
     }
   }
 
+  Future<void> registerGoogleUser(UserCredential user) async {
+    try {
+      await _firestore.collection('users').doc(user.user!.uid).set({
+        'uid': user.user!.uid,
+        'email': user.user!.email,
+        'created_at': FieldValue.serverTimestamp(),
+        'username': user.user!.displayName,
+        'image_link': user.user!.photoURL,
+        'level': 1,
+        'points': 0,
+        'correct_answers': 0,
+        'incorrect_answers': 0,
+        'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
+        'streak_count': 0,
+      });
+    } catch (e) {
+      print("Registration Error: $e");
+      rethrow;
+    }
+  }
+
   Future<void> signOut() async {
     await _auth.signOut();
   }
@@ -72,5 +93,9 @@ class AuthService {
 
   bool isLoggedIn() {
     return _auth.currentUser != null;
+  }
+
+  signInWithCredential(AuthCredential authCredential) {
+    return _auth.signInWithCredential(authCredential);
   }
 }

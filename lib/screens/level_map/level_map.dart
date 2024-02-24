@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:modals/modals.dart';
 import 'package:provider/provider.dart';
 import 'package:level_map/level_map.dart';
 import 'package:quiz_app/screens/level_map/start_button.dart';
-import 'package:quiz_app/screens/level_map/streak_screen.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import '../../viewmodels/quiz.viewmodel.dart';
-import '../../widgets/ui/rounded_button.dart';
 import 'level_title_bar.dart';
 
 class LevelMapScreen extends StatefulWidget {
@@ -23,7 +20,7 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
   Future<void> _loadCurrentLevel() async {
     await _userViewModel.checkoutActivityStreak();
     await _userViewModel.loadUserData().then((value) {
-      _quizViewModel.getQuestionsByLevel(_userViewModel.userData!.level);
+      _quizViewModel.getQuestionsByLevel(_userViewModel.userData?.level ?? 1);
     });
   }
 

@@ -2,10 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:modals/modals.dart';
 import 'package:quiz_app/utils/date_checkers.dart';
 
-import '../../utils/parser.dart';
 
 class StreakScreen extends StatelessWidget {
   final int streak;
