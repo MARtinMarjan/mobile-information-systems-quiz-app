@@ -4,9 +4,9 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
-import '../widgets/ui/footer_auth.dart';
-import '../widgets/ui/logo.dart';
-import '../widgets/ui/rounded_button.dart';
+import '../../widgets/ui/footer_auth.dart';
+import '../../widgets/ui/logo.dart';
+import '../../widgets/ui/rounded_button.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

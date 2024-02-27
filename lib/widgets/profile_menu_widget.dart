@@ -10,19 +10,22 @@ class ProfileMenuWidget extends StatelessWidget {
     this.endIcon = true,
     this.textColor,
     required this.color,
+    this.hasPressAction = true,
   });
 
   final MaterialColor color;
   final String title;
   final IconData icon;
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
   final bool endIcon;
   final Color? textColor;
+
+  final bool hasPressAction;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: onPress,
+      onTap: hasPressAction ? onPress : null,
       leading: Container(
         width: 45,
         height: 45,

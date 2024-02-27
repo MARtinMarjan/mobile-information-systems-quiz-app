@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_pie_chart/easy_pie_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,8 @@ class _StatsScreenState extends State<StatsScreen> {
     userData = userViewModel.userData;
   }
 
+  String tapIndex = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,14 +58,69 @@ class _StatsScreenState extends State<StatsScreen> {
         ),
       ),
       body: userData != null
-          ? ListView(
+          ? Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: EasyPieChart(
+                    gap: 0.05,
+                    start: 0,
+                    size: 180,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    borderWidth: 20,
+                    animateFromEnd: true,
+                    onTap: (index) {
+                      if (index == 0) {
+                        tapIndex = "Correct Answers";
+                      } else if (index == 1) {
+                        tapIndex = "Incorrect Answers";
+                      }
+                      // tapIndex = index.toString();
+                      setState(() {});
+                    },
+                    pieType: PieType.crust,
+                    children: [
+                      PieData(
+                          value: ((userData!.correctAnswers /
+                                  (userData!.correctAnswers +
+                                      userData!.incorrectAnswers)))
+                              .toDouble(),
+                          color: Colors.green),
+                      PieData(
+                          value: ((userData!.incorrectAnswers /
+                                  (userData!.correctAnswers +
+                                      userData!.incorrectAnswers)))
+                              .toDouble(),
+                          color: Colors.red),
+                    ],
+                    child: Center(
+                      child: tapIndex == "Correct Answers"
+                          ? Text(
+                              tapIndex,
+                              style: const TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          : Text(tapIndex,
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ),
                 ProfileMenuWidget(
                   title: 'Name: ${userData!.username}',
                   icon: LineAwesomeIcons.user,
                   onPress: () {},
                   color: Colors.blue,
                   endIcon: false,
+                  hasPressAction: false,
                 ),
                 ProfileMenuWidget(
                   title: 'Email: ${userData!.email}',
@@ -70,6 +128,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   onPress: () {},
                   color: Colors.green,
                   endIcon: false,
+                  hasPressAction: false,
                 ),
                 ProfileMenuWidget(
                   title: 'Level: ${userData!.level}',
@@ -77,6 +136,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   onPress: () {},
                   color: Colors.yellow,
                   endIcon: false,
+                  hasPressAction: false,
                 ),
                 ProfileMenuWidget(
                   title: 'Streak: ${userData!.streakCount}',
@@ -84,6 +144,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   onPress: () {},
                   color: Colors.red,
                   endIcon: false,
+                  hasPressAction: false,
                 ),
                 ProfileMenuWidget(
                   title: 'Points: ${userData!.points}',
@@ -91,18 +152,29 @@ class _StatsScreenState extends State<StatsScreen> {
                   onPress: () {},
                   color: Colors.orange,
                   endIcon: false,
+                  hasPressAction: false,
                 ),
                 ProfileMenuWidget(
                   title: 'Correct Answers: ${userData!.correctAnswers}',
                   icon: LineAwesomeIcons.check_circle,
+                  // onPress: () {
+                  //   tapIndex = "Correct Answers";
+                  //   setState(() {});
+                  // },
                   onPress: () {},
-                  color: Colors.teal,
+                  hasPressAction: false,
+                  color: Colors.green,
                   endIcon: false,
                 ),
                 ProfileMenuWidget(
                   title: 'Incorrect Answers: ${userData!.incorrectAnswers}',
                   icon: LineAwesomeIcons.times_circle,
+                  // onPress: () {
+                  //   tapIndex = "Incorrect Answers";
+                  //   setState(() {});
+                  // },
                   onPress: () {},
+                  hasPressAction: false,
                   color: Colors.red,
                   endIcon: false,
                 ),

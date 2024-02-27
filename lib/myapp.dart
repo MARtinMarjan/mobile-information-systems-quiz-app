@@ -7,7 +7,7 @@ import 'package:quiz_app/screens/auth/registration_screen.dart';
 import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 import 'package:quiz_app/screens/home_page.dart';
-import 'package:quiz_app/screens/welcome_screen.dart';
+import 'package:quiz_app/screens/auth/welcome_screen.dart';
 import 'package:quiz_app/screens/onboarding_screen.dart';
 import 'package:quiz_app/widgets/streak_testing.dart';
 

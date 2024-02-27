@@ -1,9 +1,7 @@
 // TODO
 
-import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:mailto/mailto.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatefulWidget {
@@ -93,7 +91,6 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
