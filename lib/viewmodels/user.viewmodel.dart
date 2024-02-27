@@ -199,4 +199,8 @@ class UserViewModel extends ChangeNotifier {
       isLoading = false;
     }
   }
+
+  resetForgottenPassword(String email) {
+    _authService.sendPasswordResetEmail(email);
+  }
 }

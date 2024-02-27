@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       navigatorKey: navigatorKey,
-      initialRoute: initScreen == 0 || initScreen == null ? "/onboarding_page" : "/splash_screen",
+      initialRoute: initScreen == 0 || initScreen == null
+          ? "/onboarding_page"
+          : "/splash_screen",
       routes: <String, WidgetBuilder>{
         '/splash_screen': (BuildContext context) => const Splashscreen(),
         '/quiz_screen': (BuildContext context) => const Quiz(),

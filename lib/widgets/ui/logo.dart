@@ -14,16 +14,19 @@ class Logo extends StatelessWidget {
           Container(
               color: Colors.white,
               child: Center(
-                  child: Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: MediaQuery.of(context).size.width * 0.6,
+                  child: Hero(
+                    tag: "logoImage",
+                    child: Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                height: MediaQuery.of(context).size.width * 0.5,
                 decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/quiz_logo_2.png'),
-                    fit: BoxFit.contain,
-                  ),
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/quiz_logo_2.png'),
+                      fit: BoxFit.contain,
+                    ),
                 ),
-              ))),
+              ),
+                  ))),
           Column(
             children: [
               Container(
@@ -32,7 +35,7 @@ class Logo extends StatelessWidget {
                   child: Text(
                     "MK",
                     style: GoogleFonts.merriweather(
-                      fontSize: 36.0,
+                      fontSize: 30.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.yellow[800],
                     ),
@@ -45,7 +48,7 @@ class Logo extends StatelessWidget {
                   child: Text(
                     "LEARNER",
                     style: GoogleFonts.merriweather(
-                      fontSize: 36.0,
+                      fontSize: 30.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.red[800],
                     ),

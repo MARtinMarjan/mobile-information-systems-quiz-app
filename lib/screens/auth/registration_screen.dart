@@ -105,9 +105,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         height: 24.0,
                       ),
                       RoundedButton(
-                        colour: Colors.red,
+                        color: Colors.red,
                         title: 'Register',
                         onPressed: _register,
+                        textColor: Colors.white,
                       )
                     ],
                   ),

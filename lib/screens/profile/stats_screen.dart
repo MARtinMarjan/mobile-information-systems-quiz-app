@@ -60,60 +60,64 @@ class _StatsScreenState extends State<StatsScreen> {
       body: userData != null
           ? Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: EasyPieChart(
-                    gap: 0.05,
-                    start: 0,
-                    size: 180,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                    borderWidth: 20,
-                    animateFromEnd: true,
-                    onTap: (index) {
-                      if (index == 0) {
-                        tapIndex = "Correct Answers";
-                      } else if (index == 1) {
-                        tapIndex = "Incorrect Answers";
-                      }
-                      // tapIndex = index.toString();
-                      setState(() {});
-                    },
-                    pieType: PieType.crust,
-                    children: [
-                      PieData(
-                          value: ((userData!.correctAnswers /
-                                  (userData!.correctAnswers +
-                                      userData!.incorrectAnswers)))
-                              .toDouble(),
-                          color: Colors.green),
-                      PieData(
-                          value: ((userData!.incorrectAnswers /
-                                  (userData!.correctAnswers +
-                                      userData!.incorrectAnswers)))
-                              .toDouble(),
-                          color: Colors.red),
-                    ],
-                    child: Center(
-                      child: tapIndex == "Correct Answers"
-                          ? Text(
-                              tapIndex,
-                              style: const TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          : Text(tapIndex,
-                              style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                ),
+                (userData!.correctAnswers + userData!.incorrectAnswers) != 0
+                    ? Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: EasyPieChart(
+                          gap: 0.05,
+                          start: 0,
+                          size: 180,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          borderWidth: 20,
+                          animateFromEnd: true,
+                          onTap: (index) {
+                            if (index == 0) {
+                              tapIndex = "Correct Answers";
+                            } else if (index == 1) {
+                              tapIndex = "Incorrect Answers";
+                            }
+                            // tapIndex = index.toString();
+                            setState(() {});
+                          },
+                          pieType: PieType.crust,
+                          children: [
+                            PieData(
+                                value: ((userData!.correctAnswers /
+                                        (userData!.correctAnswers +
+                                            userData!.incorrectAnswers)))
+                                    .toDouble(),
+                                color: Colors.green),
+                            PieData(
+                                value: ((userData!.incorrectAnswers /
+                                        (userData!.correctAnswers +
+                                            userData!.incorrectAnswers)))
+                                    .toDouble(),
+                                color: Colors.red),
+                          ],
+                          child: Center(
+                            child: tapIndex == "Correct Answers"
+                                ? Text(
+                                    tapIndex,
+                                    style: const TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(tapIndex,
+                                    style: const TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                      )
+                    : const Center(
+                        child: Text("Play a quiz to see your statistics!", style: TextStyle(fontSize: 18.0)),
+                      ),
                 ProfileMenuWidget(
                   title: 'Name: ${userData!.username}',
                   icon: LineAwesomeIcons.user,
