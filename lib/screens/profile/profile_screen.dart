@@ -9,6 +9,8 @@ import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/widgets/profile_menu_widget.dart';
 import 'package:quiz_app/widgets/ui/footer_auth.dart';
 
+import '../about_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -94,9 +96,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               TextStyle(color: Colors.white, fontSize: 16.0)),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 15),
                   const Divider(),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 15),
                   ProfileMenuWidget(
                       title: "Settings",
                       icon: LineAwesomeIcons.cogs,
@@ -109,11 +111,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               PageTransitionAnimation.cupertino,
                         );
                       },
-                      color: zolta),
-                  const SizedBox(height: 30),
+                      color: Colors.grey),
+                  const SizedBox(height: 15),
                   ProfileMenuWidget(
                       title: "Stats",
-                      icon: LineAwesomeIcons.info,
+                      icon: LineAwesomeIcons.area_chart,
                       // onPress:() => Get.to(() => const StatsScreen()),
                       onPress: () {
                         PersistentNavBarNavigator.pushNewScreen(
@@ -124,8 +126,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               PageTransitionAnimation.cupertino,
                         );
                       },
-                      color: Colors.blue),
-                  const SizedBox(height: 30),
+                      color: Colors.yellow),
+                  const SizedBox(height: 15),
+                  ProfileMenuWidget(
+                      title: "About",
+                      icon: LineAwesomeIcons.info_circle,
+                      onPress: () {
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: const AboutScreen(),
+                          withNavBar: true,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
+                        );
+                      },
+                      color: Colors.cyan),
+                  const SizedBox(height: 15), // Add SizedBox for spacing
                   ProfileMenuWidget(
                       title: "Logout",
                       icon: LineAwesomeIcons.alternate_sign_out,
@@ -141,7 +157,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       endIcon: false,
                       color: Colors.red),
-                  const SizedBox(height: 30), // Add SizedBox for spacing
                   const FooterAuth()
                 ],
               ),

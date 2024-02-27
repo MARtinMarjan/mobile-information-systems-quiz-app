@@ -51,16 +51,6 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  // if user doesnt exist create a new user
-  //I/flutter (28582): Error getting user data: type 'Null' is not a subtype of type 'Map<String, dynamic>' in type cast
-  // E/flutter (28582): [ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: type 'Null' is not a subtype of type 'Map<String, dynamic>' in type cast
-  // E/flutter (28582): #0      DBService.getUserData (package:quiz_app/services/db_service.dart:59:50)
-  // E/flutter (28582): <asynchronous suspension>
-  // E/flutter (28582): #1      UserViewModel.loadUserData (package:quiz_app/viewmodels/user.viewmodel.dart:109:19)
-  // E/flutter (28582): <asynchronous suspension>
-  // E/flutter (28582): #2      UserViewModel.googleSignUp (package:quiz_app/viewmodels/user.viewmodel.dart:72:9)
-  // E/flutter (28582): <asynchronous suspension>
-  // E/flutter (28582):
   Future<void> googleSignUp(BuildContext context) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -151,29 +141,33 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  void resetProgress() {
+  Future<void> resetProgress() async {
     if (_user != null) {
+      isLoading = true;
       _dbService.resetProgress(_user!.uid);
-      _dbService.updateStreakCount(
-          _user!.uid, 0, DateTime.now().subtract(const Duration(days: 1)));
       _streakCount = 0;
-      loadUserData();
+      _lastOpenedDate = DateTime.now().subtract(const Duration(days: 1));
+      await loadUserData();
       notifyListeners();
+      isLoading = false;
     }
   }
 
   Future<void> checkoutActivityStreak() async {
     if (_user != null) {
       isLoading = true;
-      _dbService.getLastOpenedDate(_user!.uid).then((value) {
+      await _dbService.getLastOpenedDate(_user!.uid).then((value) {
         _lastOpenedDate = value;
         // Check if streak needs to be reset
         if (!isYesterday(_lastOpenedDate, DateTime.now()) &&
             !isToday(_lastOpenedDate, DateTime.now())) {
-          _dbService.resetStreakCount(_user!.uid);
           _lastOpenedDate = DateTime.now().subtract(const Duration(days: 1));
           _streakCount = 0;
+          _dbService.resetStreakCount(_user!.uid);
         }
+      });
+      await _dbService.getStreakCount(_user!.uid).then((value) {
+        _streakCount = value;
       });
       notifyListeners();
       isLoading = false;
@@ -185,21 +179,20 @@ class UserViewModel extends ChangeNotifier {
       isLoading = true;
       _dbService.getLastOpenedDate(_user!.uid).then((value) {
         _lastOpenedDate = value;
+
         // Check if streak needs to be reset
         if (!isYesterday(_lastOpenedDate, DateTime.now()) &&
             !isToday(_lastOpenedDate, DateTime.now())) {
-          _dbService.resetStreakCount(_user!.uid).then((value) => {
-                _dbService.updateStreakCount(_user!.uid, 1,
-                    DateTime.now().subtract(const Duration(days: 1))),
-              });
           _streakCount = 1;
+          _dbService.updateStreakCount(
+              _user!.uid, 1, DateTime.now().subtract(const Duration(days: 1)));
         }
         // Check if streak needs to be updated
-        else if (!isToday(_lastOpenedDate, DateTime.now())) {
-          _dbService.updateStreakCount(
-              _user!.uid, _streakCount + 1, DateTime.now());
+        else if (isYesterday(_lastOpenedDate, DateTime.now())) {
           _streakCount++;
           _lastOpenedDate = DateTime.now();
+          _dbService.updateStreakCount(
+              _user!.uid, _streakCount, DateTime.now());
         }
       });
       notifyListeners();

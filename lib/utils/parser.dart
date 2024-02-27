@@ -19,5 +19,4 @@ class Parser {
   static stringToDateTime(String dateTime) {
     return DateTime.parse(dateTime);
   }
-
 }

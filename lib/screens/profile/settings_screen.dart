@@ -51,7 +51,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onPress: () {
                 UserViewModel userViewModel =
                     Provider.of<UserViewModel>(context, listen: false);
+
                 userViewModel.resetProgress();
+
                 Navigator.of(context).popUntil((route) {
                   return route.settings.name == "/profile_screen";
                 });
@@ -77,8 +79,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: 'Add New Level',
               icon: LineAwesomeIcons.plus_circle,
               onPress: () {
-                //   '/add_quiz': (BuildContext context) => const QuizFormPage(),
-
                 PersistentNavBarNavigator.pushNewScreen(
                   context,
                   screen: const QuizFormPage(),

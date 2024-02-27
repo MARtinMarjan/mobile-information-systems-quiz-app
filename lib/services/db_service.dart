@@ -148,4 +148,10 @@ class DBService {
       return value.get('last_opened_date').toDate();
     });
   }
+
+  Future<int> getStreakCount(String uid) {
+    return userCollection.doc(uid).get().then((value) {
+      return value.get('streak_count');
+    });
+  }
 }

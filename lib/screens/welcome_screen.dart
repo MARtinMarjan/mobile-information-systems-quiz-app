@@ -51,7 +51,8 @@ class _WelcomePageState extends State<WelcomePage> {
                           colour: Colors.redAccent,
                           title: 'Register',
                           onPressed: () {
-                            Navigator.pushNamed(context, '/registration_screen');
+                            Navigator.pushNamed(
+                                context, '/registration_screen');
                           }),
                     ],
                   ),
@@ -61,7 +62,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       Buttons.Google,
                       onPressed: () {
                         final userViewModel =
-                        Provider.of<UserViewModel>(context, listen: false);
+                            Provider.of<UserViewModel>(context, listen: false);
                         userViewModel.googleSignUp(context);
                         Navigator.pushNamed(context, '/home_page');
                       },
@@ -70,7 +71,6 @@ class _WelcomePageState extends State<WelcomePage> {
                 ],
               ),
             ),
-
             const FooterAuth(),
           ]),
         ));

@@ -18,10 +18,12 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
   late QuizViewModel _quizViewModel;
 
   Future<void> _loadCurrentLevel() async {
-    await _userViewModel.checkoutActivityStreak();
-    await _userViewModel.loadUserData().then((value) {
-      _quizViewModel.getQuestionsByLevel(_userViewModel.userData?.level ?? 1);
-    });
+    if (mounted) {
+      await _userViewModel.checkoutActivityStreak();
+      await _userViewModel.loadUserData().then((value) {
+        _quizViewModel.getQuestionsByLevel(_userViewModel.userData?.level ?? 1);
+      });
+    }
   }
 
   @override
@@ -47,59 +49,67 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
             builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
               return Consumer2<UserViewModel, QuizViewModel>(
                   builder: (context, userViewModel, quizViewModel, child) {
-                levelValue = getLevelValue(_userViewModel);
-                title = _quizViewModel.quizLevelTitle;
-                streak = _userViewModel.userData?.streakCount ?? 0;
-                level = _userViewModel.userData?.level.toString() ?? '?';
-                lastOpenedDate =
-                    _userViewModel.userData?.lastOpenedDate.toDate() ??
-                        DateTime.now();
+                if (mounted) {
+                  levelValue = getLevelValue(_userViewModel);
+                  title = _quizViewModel.quizLevelTitle;
+                  streak = _userViewModel.userData?.streakCount ?? 0;
+                  level = _userViewModel.userData?.level.toString() ?? '?';
+                  lastOpenedDate =
+                      _userViewModel.userData?.lastOpenedDate.toDate() ??
+                          DateTime.now();
 
-                if (context.watch<UserViewModel>().isLoading ||
-                    context.watch<QuizViewModel>().isLoading) {
-                  return Container(
-                    color: Colors.lightGreen,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
-                    color: Colors.lightGreen,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
+                  if (context.watch<UserViewModel>().isLoading ||
+                      context.watch<QuizViewModel>().isLoading) {
+                    return Container(
+                      color: Colors.lightGreen,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return Container(
+                      color: Colors.lightGreen,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    return context.watch<UserViewModel>().isLoading
+                        ? Container(
+                            color: Colors.lightGreen,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              _buildLevelMap(levelValue),
+                              buildTitleCard(
+                                context,
+                                title,
+                                streak,
+                                lastOpenedDate,
+                              ),
+                              buildStartButton(
+                                context,
+                                level,
+                              ),
+                            ],
+                          );
+                  }
                 } else {
-                  return context.watch<UserViewModel>().isLoading
-                      ? Container(
-                          color: Colors.lightGreen,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
-                      : Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            _buildLevelMap(levelValue),
-                            buildTitleCard(
-                              context,
-                              title,
-                              streak,
-                              lastOpenedDate,
-                            ),
-                            buildStartButton(
-                              context,
-                              level,
-                            ),
-                          ],
-                        );
+                  return Container(
+                    color: Colors.lightGreen,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 }
               });
             },
