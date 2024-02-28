@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/screens/auth/login_screen.dart';
-import 'package:quiz_app/screens/home_page.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 
 import '../../widgets/ui/footer_auth.dart';
 import '../../widgets/ui/logo.dart';
-import '../../widgets/ui/rounded_button.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

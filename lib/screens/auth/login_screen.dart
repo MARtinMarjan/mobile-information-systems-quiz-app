@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/screens/auth/forgotten_password_screen.dart';
 import 'package:quiz_app/screens/auth/registration_screen.dart';
-import 'package:quiz_app/widgets/ui/footer_auth.dart';
 
 import '../../viewmodels/user.viewmodel.dart';
-import '../../widgets/ui/logo.dart';
 import '../../widgets/ui/rounded_button.dart';
 
 class LoginPage extends StatefulWidget {
