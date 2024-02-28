@@ -39,6 +39,8 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
   String level = "?";
   DateTime lastOpenedDate = DateTime.now();
 
+  int levelProgress = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,6 +59,7 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                   lastOpenedDate =
                       _userViewModel.userData?.lastOpenedDate.toDate() ??
                           DateTime.now();
+                  levelProgress = _userViewModel.userData?.levelProgress ?? 0;
 
                   if (context.watch<UserViewModel>().isLoading ||
                       context.watch<QuizViewModel>().isLoading) {
@@ -99,6 +102,7 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                               buildStartButton(
                                 context,
                                 level,
+                                  levelProgress,
                               ),
                             ],
                           );

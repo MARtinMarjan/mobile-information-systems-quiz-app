@@ -22,7 +22,6 @@ Widget calculateStreak(
     BuildContext context, int streak, DateTime lastOpenedDate) {
   DateTime today = DateTime.now();
   int days = daysBetweenDates(lastOpenedDate, today);
-
   if (days == 1) {
     return Material(
         type: MaterialType.transparency,

@@ -17,16 +17,25 @@ class DBService {
   }
 
   Future<void> addUserQuizStats(String uid, int level, int points,
-      int correctAnswers, int incorrectAnswers) async {
+      int correctAnswers, int incorrectAnswers, int levelProgress) async {
     int currentLevel = await getCurrentLevel(uid);
-
     try {
-      await userCollection.doc(uid).set({
-        'level': currentLevel + 1,
-        'points': points,
-        'correct_answers': correctAnswers,
-        'incorrect_answers': incorrectAnswers,
-      }, SetOptions(merge: true));
+      if (levelProgress == 4) {
+        await userCollection.doc(uid).set({
+          'level': currentLevel + 1,
+          'points': points,
+          'correct_answers': correctAnswers,
+          'incorrect_answers': incorrectAnswers,
+          'level_progress': 0,
+        }, SetOptions(merge: true));
+      } else {
+        await userCollection.doc(uid).set({
+          'points': points,
+          'correct_answers': correctAnswers,
+          'incorrect_answers': incorrectAnswers,
+          'level_progress': ++levelProgress,
+        }, SetOptions(merge: true));
+      }
     } catch (e) {
       print("Error adding user quiz stats: $e");
       rethrow;
@@ -112,6 +121,7 @@ class DBService {
       'incorrect_answers': 0,
       'streak_count': 0,
       'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
+      'level_progress': 0,
     }, SetOptions(merge: true));
   }
 

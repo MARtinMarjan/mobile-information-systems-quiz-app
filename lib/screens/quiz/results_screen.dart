@@ -119,6 +119,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           (numCorrectQuestions * 5) * pointMultiplier,
           numCorrectQuestions,
           numTotalQuestions - numCorrectQuestions,
+      userViewModel.userData!.levelProgress,
         )
         .then((value) => {
               quizViewModel.resetQuiz(),

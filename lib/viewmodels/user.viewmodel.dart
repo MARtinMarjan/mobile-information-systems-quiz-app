@@ -113,8 +113,8 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> addUserQuizStats(
-      int level, int points, int correctAnswers, int incorrectAnswers) async {
+  Future<void> addUserQuizStats(int level, int points, int correctAnswers,
+      int incorrectAnswers, int levelProgress) async {
     if (_user != null) {
       await _dbService.addUserQuizStats(
         _user!.uid,
@@ -122,6 +122,7 @@ class UserViewModel extends ChangeNotifier {
         _userData!.points + points,
         _userData!.correctAnswers + correctAnswers,
         _userData!.incorrectAnswers + incorrectAnswers,
+        levelProgress,
       );
       await loadUserData(); // Reload user data after updating stats
     }

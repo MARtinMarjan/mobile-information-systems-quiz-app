@@ -27,6 +27,7 @@ class _StatsScreenState extends State<StatsScreen> {
     imageLink: '',
     lastOpenedDate: Timestamp.now(),
     streakCount: 0,
+    levelProgress: 0,
   );
 
   @override

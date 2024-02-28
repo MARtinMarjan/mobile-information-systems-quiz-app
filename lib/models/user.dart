@@ -12,6 +12,7 @@ class QuizUserData {
 
   final Timestamp lastOpenedDate;
 
+  final int levelProgress;
   final int streakCount;
 
   QuizUserData({
@@ -25,6 +26,7 @@ class QuizUserData {
     required this.imageLink,
     required this.lastOpenedDate,
     required this.streakCount,
+    required this.levelProgress,
   });
 
   factory QuizUserData.fromMap(Map<String, dynamic> data) {
@@ -39,6 +41,7 @@ class QuizUserData {
       imageLink: data['image_link'] as String? ?? '',
       lastOpenedDate: data['last_opened_date'] as Timestamp? ?? Timestamp.now(),
       streakCount: data['streak_count'] as int? ?? 0,
+      levelProgress: data['level_progress'] as int? ?? 0,
     );
   }
 }

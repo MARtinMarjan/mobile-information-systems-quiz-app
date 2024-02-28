@@ -41,6 +41,7 @@ class AuthService {
         'incorrect_answers': 0,
         'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
         'streak_count': 0,
+        'level_progress': 0,
       });
 
       return userCredential;
@@ -64,6 +65,7 @@ class AuthService {
         'incorrect_answers': 0,
         'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
         'streak_count': 0,
+        'level_progress': 0,
       });
     } catch (e) {
       print("Registration Error: $e");

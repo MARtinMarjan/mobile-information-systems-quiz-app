@@ -24,6 +24,7 @@ class LeaderboardService {
           imageLink: doc['image_link'],
           lastOpenedDate: doc['last_opened_date'],
           streakCount: doc['streak_count'],
+          levelProgress: doc['level_progress'],
         );
       }).toList();
 
