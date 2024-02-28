@@ -51,6 +51,11 @@ class _QuizState extends State<Quiz> {
   Widget build(BuildContext context) {
     return Consumer<QuizViewModel>(builder: (context, quizData, child) {
       return CupertinoOnboarding(
+          bottomButtonBorderRadius: BorderRadius.lerp(
+            BorderRadius.circular(10),
+            BorderRadius.circular(20),
+            10,
+          ),
           bottomButtonChild: Text(
               'Start Level ${context.watch<UserViewModel>().userData?.level}'),
           bottomButtonColor: CupertinoColors.systemRed.resolveFrom(context),

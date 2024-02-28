@@ -65,6 +65,7 @@ class _StatsScreenState extends State<StatsScreen> {
                         padding: const EdgeInsets.all(10.0),
                         child: EasyPieChart(
                           gap: 0.05,
+                          animateDuration: const Duration(milliseconds: 800),
                           start: 0,
                           size: 180,
                           style: const TextStyle(

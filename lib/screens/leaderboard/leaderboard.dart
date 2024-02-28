@@ -36,26 +36,47 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Text(
-                    '${index + 1}',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                return Container(
+                  decoration: index == 0
+                      ? BoxDecoration(
+                          color: Colors.yellowAccent[100],
+                          borderRadius: BorderRadius.circular(10),
+                        )
+                      : index == 1
+                          ? BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(10),
+                            )
+                          : index == 2
+                              ? BoxDecoration(
+                                  color: Colors.orange[50],
+                                  borderRadius: BorderRadius.circular(10),
+                                )
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                  child: ListTile(
+                    leading: Text(
+                      '${index + 1}',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    title: Text(snapshot.data![index].username),
+                    subtitle: Row(
+                      children: [
+                        Text('Points: ${snapshot.data![index].points}'),
+                        const SizedBox(width: 8),
+                        Text('Streak: ${snapshot.data![index].streakCount}'),
+                      ],
+                    ),
+                    trailing: snapshot.data?[index].imageLink != null
+                        ? CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(snapshot.data![index].imageLink))
+                        : const CircleAvatar(
+                            child: Icon(Icons.person),
+                          ),
                   ),
-                  title: Text(snapshot.data![index].username),
-                  subtitle: Row(
-                    children: [
-                      Text('Points: ${snapshot.data![index].points}'),
-                      const SizedBox(width: 8),
-                      Text('Streak: ${snapshot.data![index].streakCount}'),
-                    ],
-                  ),
-                  trailing: snapshot.data?[index].imageLink != null
-                      ? CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(snapshot.data![index].imageLink))
-                      : const CircleAvatar(
-                          child: Icon(Icons.person),
-                        ),
                 );
               },
             );

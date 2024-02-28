@@ -9,14 +9,59 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
+  // Future<void> pushAndReplace(String routeName) async {
+  //   final current = ModalRoute.of(context);
+  //   Navigator.pushNamed(context, routeName);
+  //   await Future.delayed(const Duration(milliseconds: 1));
+  //   Navigator.removeRoute(context, current!);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoOnboarding(
       bottomButtonColor: CupertinoColors.systemRed.resolveFrom(context),
       onPressedOnLastPage: () => {
-        Navigator.of(context).pushReplacementNamed('/splash_screen'),
+        Navigator.of(context).pushReplacementNamed('/welcome_screen'),
+        // pushAndReplace('/welcome_screen')
       },
+      bottomButtonBorderRadius: BorderRadius.lerp(
+        BorderRadius.circular(10),
+        BorderRadius.circular(20),
+        10,
+      ),
       pages: [
+        CupertinoOnboardingPage(
+          title: const Text("Welcome to MKLearner!"),
+          body: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                  "MKLearner is a language learning app that helps you learn the Macedonian language"),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: MediaQuery.of(context).size.width * 0.3,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/level_map/random_images/macedonia.png'),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                height: MediaQuery.of(context).size.width * 0.5,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/quiz_logo_2.png'),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
         WhatsNewPage(
           // scrollPhysics: const BouncingScrollPhysics(),
           title: const Text("What is MKLearner?"),
@@ -79,12 +124,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ],
           ),
         ),
-        const CupertinoOnboardingPage(
-          title: Text("Let's start!"),
+        CupertinoOnboardingPage(
+          title: const Text("Let's start!"),
           body: Column(
             children: [
-              Text(
+              const Text(
                   " Now that you know what MKLearner is, let's get started, shall we? Start by taking a quiz and see how much you know about the Macedonian language. "),
+              Hero(
+                tag: "logoImage",
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.width * 0.6,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/quiz_logo_2.png'),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

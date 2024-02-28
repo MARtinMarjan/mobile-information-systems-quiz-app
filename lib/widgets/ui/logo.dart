@@ -11,22 +11,24 @@ class Logo extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-              color: Colors.white,
-              child: Center(
-                  child: Hero(
-                    tag: "logoImage",
-                    child: Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.width * 0.5,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/quiz_logo_2.png'),
-                      fit: BoxFit.contain,
-                    ),
+          FittedBox(
+            child: Container(
+                color: Colors.white,
+                child: Center(
+                    child: Hero(
+                      tag: "logoImage",
+                      child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.width * 0.5,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/quiz_logo_2.png'),
+                        fit: BoxFit.contain,
+                      ),
+                  ),
                 ),
-              ),
-                  ))),
+                    ))),
+          ),
           Column(
             children: [
               Container(
