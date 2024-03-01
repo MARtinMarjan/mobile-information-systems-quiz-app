@@ -5,6 +5,7 @@ class Assets {
   static const String assetsImagesQuizLogo2 = 'assets/images/quiz_logo_2.png';
   static const String assetsImagesQuizLogo3 = 'assets/images/quiz_logo_3.png';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
+  static const String imagesOIG2 = 'assets/images/quiz_logo_4_sleeping.png';
   static const String imagesQuizLogo1 = 'assets/images/quiz_logo_1.jpg';
   static const String imagesQuizLogo2 = 'assets/images/quiz_logo_2.jpg';
   static const String imagesQuizLogo3 = 'assets/images/quiz_logo_3.jpg';
@@ -15,7 +16,7 @@ class Assets {
   static const String levelMapEndQuizImage = 'assets/level_map/end_quiz_image.png';
   static const String levelMapGraduationCap = 'assets/level_map/GraduationCap.png';
   static const String levelMapLockedLevel = 'assets/level_map/locked_level.png';
-
+  static const String levelMapNorthMacedonia = 'assets/level_map/north-macedonia.png';
   static const String levelMapStartQuizImage = 'assets/level_map/start_quiz_image.png';
   static const String randomImagesBridge = 'assets/level_map/random_images/bridge.png';
   static const String randomImagesChurch = 'assets/level_map/random_images/church.png';

@@ -50,69 +50,70 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<QuizViewModel>(
-      builder: (context, quizData, _) {
-        var currentQuestionIndex = quizData.currentQuestionIndex;
-        var currentQuestion = widget.allQuestions[currentQuestionIndex];
-        //
-        // print(
-        //     '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestionIndex: $currentQuestionIndex');
-        // print(
-        //     '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion: $currentQuestion');
-        //
-        // if (currentQuestion is QuestionMatcher) {
-        //   print(
-        //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion is QuestionMatcher');
-        //   print(
-        //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion.questions: ${currentQuestion.questions}');
-        //   print(
-        //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion.answers: ${currentQuestion.answers}');
-        //
-        //   print(currentQuestion.questions[0]);
-        // }
+    return Consumer<QuizViewModel>(builder: (context, quizData, _) {
+      var currentQuestionIndex = quizData.currentQuestionIndex;
+      var currentQuestion = widget.allQuestions[currentQuestionIndex];
+      //
+      // print(
+      //     '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestionIndex: $currentQuestionIndex');
+      // print(
+      //     '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion: $currentQuestion');
+      //
+      // if (currentQuestion is QuestionMatcher) {
+      //   print(
+      //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion is QuestionMatcher');
+      //   print(
+      //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion.questions: ${currentQuestion.questions}');
+      //   print(
+      //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion.answers: ${currentQuestion.answers}');
+      //
+      //   print(currentQuestion.questions[0]);
+      // }
 
-        void answerQuestion(String selectedAnswer, IQuestion currentQuestion) {
-          var isLastQuestion =
-              currentQuestionIndex >= widget.allQuestions.length - 1;
-          _timer.cancel(); // Cancel the timer when answering a question
-          if (currentQuestion is QuestionSingleChoice) {
-            bool correct = currentQuestion.correctAnswerIndex ==
-                currentQuestion.answers.indexOf(selectedAnswer);
-            quizData.answerQuestion(
-                selectedAnswer,
-                currentQuestionIndex,
-                QuestionType.singleChoice,
-                correct,
-                currentQuestion.answers[currentQuestion.correctAnswerIndex]);
-          } else if (currentQuestion is QuestionMatcher) {
-            if (totalMatcherAnswers != currentQuestion.questions.length) {
-              return;
-            }
-            if (totalCorrectMatcherAnswers == totalMatcherAnswers) {
-              quizData.answerQuestion(selectedAnswer, currentQuestionIndex,
-                  QuestionType.matcher, true, '');
-            } else {
-              quizData.answerQuestion(selectedAnswer, currentQuestionIndex,
-                  QuestionType.matcher, false, '');
-            }
-            setState(() {
-              totalCorrectMatcherAnswers = 0;
-              totalMatcherAnswers = 0;
-              currentQuestionIndex = quizData.currentQuestionIndex;
-              currentQuestion = widget.allQuestions[currentQuestionIndex];
-            });
+      void answerQuestion(String selectedAnswer, IQuestion currentQuestion) {
+        var isLastQuestion =
+            currentQuestionIndex >= widget.allQuestions.length - 1;
+        _timer.cancel(); // Cancel the timer when answering a question
+        if (currentQuestion is QuestionSingleChoice) {
+          bool correct = currentQuestion.correctAnswerIndex ==
+              currentQuestion.answers.indexOf(selectedAnswer);
+          quizData.answerQuestion(
+              selectedAnswer,
+              currentQuestionIndex,
+              QuestionType.singleChoice,
+              correct,
+              currentQuestion.answers[currentQuestion.correctAnswerIndex],
+              currentQuestion.questionText);
+        } else if (currentQuestion is QuestionMatcher) {
+          if (totalMatcherAnswers != currentQuestion.questions.length) {
+            return;
           }
-          if (isLastQuestion) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => ResultsScreen(
-                  chosenAnswers: quizData.getChosenAnswers(),
-                ),
-              ),
-            );
+          if (totalCorrectMatcherAnswers == totalMatcherAnswers) {
+            quizData.answerQuestion(selectedAnswer, currentQuestionIndex,
+                QuestionType.matcher, true, '', 'Match The Following');
+          } else {
+            quizData.answerQuestion(selectedAnswer, currentQuestionIndex,
+                QuestionType.matcher, false, '', 'Match The Following');
           }
+          setState(() {
+            totalCorrectMatcherAnswers = 0;
+            totalMatcherAnswers = 0;
+            currentQuestionIndex = quizData.currentQuestionIndex;
+            currentQuestion = widget.allQuestions[currentQuestionIndex];
+          });
         }
+        if (isLastQuestion) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => ResultsScreen(
+                chosenAnswers: quizData.getChosenAnswers(),
+              ),
+            ),
+          );
+        }
+      }
 
+      if (!_isQuizPaused) {
         return Scaffold(
             body: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -215,6 +216,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   onTap: () {
                     answerQuestion(rememberSelectedAnswer,
                         currentQuestion); //TODO: rememberSelectedAnswer
+                    _startTimer();
                   },
                   color: Colors.amber,
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -225,8 +227,44 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             ],
           ),
         ));
-      },
-    );
+      } else {
+        return Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/quiz_logo_4_sleeping.png',
+                  width: 200,
+                  height: 200,
+                ),
+                const Text(
+                  'Paused',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                AnswerButton(
+                  answerText: 'Resume',
+                  onTap: () {
+                    _resumeQuiz();
+                    _startTimer();
+                  },
+                  color: Colors.amber,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 50,
+                  fontSize: 20,
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    });
   }
 
   Widget _questionMatcherWidget(QuestionMatcher question) {
@@ -303,7 +341,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   }
 
   void _startTimer() {
-    const pauseDuration = Duration(seconds: 20); // Adjust as needed
+    const pauseDuration = Duration(seconds: 10); // Adjust as needed
     _timer = Timer(pauseDuration, () {
       setState(() {
         _isQuizPaused = true;
@@ -428,7 +466,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         });
     setState(() {
       // getLanguageDropDownMenuItems(languages);
-      flutterTts.setLanguage("hr-HR"); 
+      flutterTts.setLanguage("hr-HR");
       // flutterTts.setLanguage("sr-SR");
       if (isAndroid) {
         flutterTts

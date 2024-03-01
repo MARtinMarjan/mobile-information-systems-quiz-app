@@ -61,13 +61,14 @@ class QuizViewModel extends ChangeNotifier {
   }
 
   void answerQuestion(String selectedAnswer, int questionIndex,
-      QuestionType type, bool isCorrect, String solution) {
+      QuestionType type, bool isCorrect, String solution, String question) {
     Answer answer = Answer(
       questionIndex: questionIndex,
       answer: selectedAnswer,
       questionType: type,
       isCorrect: isCorrect,
       solution: solution,
+      question: question,
     );
     _chosenAnswers.add(answer); // Add the selected answer to chosenAnswers
     if (_currentQuestionIndex ==

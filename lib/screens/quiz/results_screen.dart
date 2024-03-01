@@ -293,13 +293,24 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           congratulateOrTryAgain(),
-                          const SizedBox(height: 30),
+                          // const SizedBox(height: 30),
                           // QuestionsSummary(
                           //   chosenAnswers: widget.chosenAnswers,),
-                          ...widget.chosenAnswers.map((answer) {
-                            return SummaryItem(answer);
-                          }),
-                          const SizedBox(height: 60),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: ListView(
+                              children: [
+                                ...widget.chosenAnswers.map((answer) {
+                                  return SummaryItem(answer);
+                                }),
+                              ],
+                            ),
+                          ),
+
+                          // ...widget.chosenAnswers.map((answer) {
+                          //   return SummaryItem(answer);
+                          // }),
+                          // const SizedBox(height: 60),
                           TextButton.icon(
                             onPressed: () {
                               // quizData.resetQuiz();
