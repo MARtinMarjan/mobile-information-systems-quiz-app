@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
           : "/splash_screen",
       routes: <String, WidgetBuilder>{
         '/splash_screen': (BuildContext context) => const Splashscreen(),
-        '/quiz_screen': (BuildContext context) => const Quiz(),
         '/login_screen': (BuildContext context) => const LoginPage(),
         '/registration_screen': (BuildContext context) =>
             const RegistrationPage(),

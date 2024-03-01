@@ -1,0 +1,154 @@
+//import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_quiz_matcher/flutter_quiz_matcher.dart';
+// import 'package:flutter_quiz_matcher/models/model.dart';
+//
+// void main() {
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+//
+// class _MyAppState extends State<MyApp> {
+//   List<String> listImagesLocations = [
+//     'assets/images/bell.png',
+//     'assets/images/book.png',
+//     'assets/images/home.png',
+//     'assets/images/google.jpeg'
+//   ];
+//   List<String> listAnswer = ['bell', 'book', 'home', 'google'];
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter picture matching package',
+//       theme: ThemeData(
+//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//         useMaterial3: true,
+//       ),
+//       home: QuizMatcher(
+//         questions: [
+//           Container(
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Image.asset(listImagesLocations[0]),
+//           ),
+//           Container(
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Image.asset(listImagesLocations[1]),
+//           ),
+//           Container(
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Image.asset(listImagesLocations[2]),
+//           ),
+//           Container(
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Image.asset(listImagesLocations[3]),
+//           ),
+//         ],
+//         answers: [
+//           Container(
+//             alignment: Alignment.center,
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Text(listAnswer[0]),
+//           ),
+//           Container(
+//             alignment: Alignment.center,
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Text(listAnswer[1]),
+//           ),
+//           Container(
+//             alignment: Alignment.center,
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Text(listAnswer[2]),
+//           ),
+//           Container(
+//             alignment: Alignment.center,
+//             decoration: BoxDecoration(
+//                 border: Border.all(width: 1, color: Colors.black)),
+//             width: 100,
+//             height: 100,
+//             child: Text(listAnswer[3]),
+//           ),
+//         ],
+//         defaultLineColor: Colors.black,
+//         correctLineColor: Colors.green,
+//         incorrectLineColor: Colors.red,
+//         drawingLineColor: Colors.black,
+//         onScoreUpdated: (UserScore userAnswers) {
+//           if (kDebugMode) {
+//             print(userAnswers.questionIndex);
+//           }
+//           if (kDebugMode) {
+//             print(userAnswers.questionAnswer);
+//           }
+//         },
+//         paddingAround: const EdgeInsets.all(8),
+//       ),
+//     );
+//   }
+// }
+
+import 'package:flutter/material.dart';
+
+import 'iquestion.dart';
+
+class QuestionMatcher implements IQuestion {
+  QuestionMatcher({
+    required this.questions,
+    required this.answers,
+    required this.areQuestionsImages,
+  });
+
+  final List<String> questions;
+  final List<String> answers;
+  final bool areQuestionsImages;
+
+  //get
+
+  get getQuestions => questions;
+
+  get getAnswers => answers;
+
+  get getAreQuestionsImages => areQuestionsImages;
+
+  factory QuestionMatcher.fromMap(Map<String, dynamic> data) {
+    if (data.isEmpty) {
+      return QuestionMatcher(
+        questions: [],
+        answers: [],
+        areQuestionsImages: false,
+      );
+    }
+    return QuestionMatcher(
+      questions: List<String>.from(data['questions'] as List<dynamic>? ?? []),
+      answers: List<String>.from(data['answers'] as List<dynamic>? ?? []),
+      areQuestionsImages: data['areQuestionsImages'] as bool? ?? false,
+    );
+  }
+}

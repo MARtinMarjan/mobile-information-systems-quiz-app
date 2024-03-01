@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/models/question.dart';
+import 'package:quiz_app/models/question_single_choice.dart';
+import 'package:quiz_app/screens/level_map/answer.dart';
 
+import '../models/question_matcher.dart';
 import '../models/quiz.dart';
 import '../services/questions_service.dart';
 
 class QuizViewModel extends ChangeNotifier {
-  List<Question> _questions = [];
+  List<QuestionSingleChoice> _questions = [];
 
-  List<Question> get questions => _questions;
+  List<QuestionSingleChoice> get questions => _questions;
 
-  final List<String> _chosenAnswers = [];
+  getShuffledQuestions() {
+    _questions.shuffle();
+    return _questions;
+  }
 
-  List<String> get chosenAnswers => _chosenAnswers;
+  List<QuestionMatcher> _questionsMatcher = [];
+
+  List<QuestionMatcher> get questionsMatcher => _questionsMatcher;
+
+  final List<Answer> _chosenAnswers = [];
+
+  List<Answer> get chosenAnswers => _chosenAnswers;
 
   final int _level = 1;
 
@@ -40,24 +51,31 @@ class QuizViewModel extends ChangeNotifier {
   final QuestionService questionService = QuestionService();
 
   Future<void> getQuestionsByLevel(int level) async {
-    // if (isLoading) {
-    //   return;
-    // }
     isLoading = true;
     Quiz? quiz = await questionService.getQuizByLevel(level);
     _questions = quiz?.questions ?? [];
+    _questionsMatcher = quiz?.questionsMatcher ?? [];
     quizLevelTitle = quiz?.title ?? "Welcome to the Quiz!";
     notifyListeners();
     isLoading = false;
   }
 
-  void answerQuestion(String selectedAnswer) {
-    _chosenAnswers
-        .add(selectedAnswer); // Add the selected answer to chosenAnswers
-    if (_currentQuestionIndex < _questions.length - 1) {
-      _currentQuestionIndex++;
+  void answerQuestion(String selectedAnswer, int questionIndex,
+      QuestionType type, bool isCorrect, String solution) {
+    Answer answer = Answer(
+      questionIndex: questionIndex,
+      answer: selectedAnswer,
+      questionType: type,
+      isCorrect: isCorrect,
+      solution: solution,
+    );
+    _chosenAnswers.add(answer); // Add the selected answer to chosenAnswers
+    if (_currentQuestionIndex ==
+        _questions.length + _questionsMatcher.length - 1) {
+      notifyListeners();
     } else {
-      // Handle end of quiz
+      _currentQuestionIndex++;
+      notifyListeners();
     }
     notifyListeners();
   }

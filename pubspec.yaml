@@ -63,6 +63,8 @@ dependencies:
   page_transition: ^2.1.0
   simple_circular_progress_bar: ^1.0.2
   flutter_tts: ^3.8.5
+  flutter_quiz_matcher: ^0.0.4
+  animated_flip_counter: ^0.2.6
 
 
 flutter_launcher_icons:

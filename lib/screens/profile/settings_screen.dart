@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz_app/models/question_matcher.dart';
 
 import '../../viewmodels/user.viewmodel.dart';
 import '../../widgets/profile_menu_widget.dart';
 import '../add_quiz/quiz_form_page.dart';
+import '../quiz/matcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -22,6 +24,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<UserViewModel>(context, listen: false);
+
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -75,20 +79,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: Colors.red,
               endIcon: false,
             ),
-            ProfileMenuWidget(
-              title: 'Add New Level',
-              icon: LineAwesomeIcons.plus_circle,
-              onPress: () {
-                PersistentNavBarNavigator.pushNewScreen(
-                  context,
-                  screen: const QuizFormPage(),
-                  withNavBar: true,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                );
-              },
-              color: Colors.green,
-              endIcon: false,
-            ),
+            (user.userData!.role == 'admin' || user.userData!.role == 'dev')
+                ? ProfileMenuWidget(
+                    title: 'DEV: Add New Level',
+                    icon: LineAwesomeIcons.plus_circle,
+                    onPress: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const QuizFormPage(),
+                        withNavBar: true,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
+                    color: Colors.green,
+                    endIcon: false,
+                  )
+                : Container(),
+            (user.userData!.role == 'admin' || user.userData!.role == 'dev')
+                ? ProfileMenuWidget(
+                    title: 'DEV: Open Quiz Matcher',
+                    icon: LineAwesomeIcons.plus_circle,
+                    onPress: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: MatchQuestion(questionsMatcher: [
+                          QuestionMatcher.fromMap({
+                            "questions": ["1", "2"],
+                            "answers": ["3", "4"],
+                            "areQuestionsImages": false,
+                          }),
+                        ]),
+                        withNavBar: true,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
+                    color: Colors.green,
+                    endIcon: false,
+                  )
+                : Container(),
           ],
         ));
   }

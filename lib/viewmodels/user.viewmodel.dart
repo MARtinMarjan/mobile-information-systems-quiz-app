@@ -181,15 +181,13 @@ class UserViewModel extends ChangeNotifier {
       _dbService.getLastOpenedDate(_user!.uid).then((value) {
         _lastOpenedDate = value;
 
-        // Check if streak needs to be reset
-        if (!isYesterday(_lastOpenedDate, DateTime.now()) &&
-            !isToday(_lastOpenedDate, DateTime.now())) {
+        var daysBetween = daysBetweenDates(_lastOpenedDate, DateTime.now());
+
+        if (daysBetween > 1) {
           _streakCount = 1;
           _dbService.updateStreakCount(
               _user!.uid, 1, DateTime.now().subtract(const Duration(days: 1)));
-        }
-        // Check if streak needs to be updated
-        else if (isYesterday(_lastOpenedDate, DateTime.now())) {
+        } else if (daysBetween == 1) {
           _streakCount++;
           _lastOpenedDate = DateTime.now();
           _dbService.updateStreakCount(

@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 class AnswerButton extends StatelessWidget {
+  final double height;
+
+  final double width;
+
+  final double fontSize;
+
   const AnswerButton({
     super.key,
     required this.answerText,
     required this.onTap,
     required this.color,
+    this.height = 20,
+    this.width = 20,
+    this.fontSize = 16,
   });
 
   final String answerText;
@@ -18,6 +27,7 @@ class AnswerButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
+        minimumSize: Size(width, height),
         padding: const EdgeInsets.symmetric(
           vertical: 10,
           horizontal: 40,
@@ -32,6 +42,9 @@ class AnswerButton extends StatelessWidget {
       child: Text(
         answerText,
         textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
       ),
     );
   }

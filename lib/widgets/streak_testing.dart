@@ -20,7 +20,7 @@ class StreakApp extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    userViewModel.updateStreak();
+                    userViewModel.checkoutActivityStreak();
                   },
                   child: const Text('Increment Streak'),
                 ),

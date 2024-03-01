@@ -2,50 +2,69 @@ import 'package:cupertino_onboarding/cupertino_onboarding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz_app/models/question_single_choice.dart';
 import 'package:quiz_app/screens/quiz/questions_screen.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 
+import '../../models/iquestion.dart';
 import '../../viewmodels/user.viewmodel.dart';
 
-class Quiz extends StatefulWidget {
-  const Quiz({super.key});
+class QuizStartScreen extends StatefulWidget {
+  final int level;
+
+  bool runOnce;
+
+  QuizStartScreen({super.key, required this.level, this.runOnce = false});
 
   @override
-  State<Quiz> createState() => _QuizState();
+  State<QuizStartScreen> createState() => _QuizStartScreenState();
 }
 
-class _QuizState extends State<Quiz> {
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Consumer<QuizViewModel>(
-  //     builder: (context, quizData, child) {
-  //       return Scaffold(
-  //           body: Center(
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Text(context.watch<QuizViewModel>().quizLevelTitle),
-  //             Center(
-  //               child: ElevatedButton(
-  //                 onPressed: () {
-  //                   quizData.resetQuiz();
-  //                   PersistentNavBarNavigator.pushNewScreen(
-  //                     context,
-  //                     screen: const QuestionsScreen(),
-  //                     withNavBar: true, // OPTIONAL VALUE. True by default.
-  //                     pageTransitionAnimation: PageTransitionAnimation.sizeUp,
-  //                   );
-  //                 },
-  //                 child: Text(
-  //                     'Start Level ${context.watch<UserViewModel>().userData?.level}'),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ));
-  //     },
-  //   );
-  // }
+class _QuizStartScreenState extends State<QuizStartScreen> {
+  late List<IQuestion> allQuestions;
+
+  @override
+  initState() {
+    super.initState();
+    readData(context.read<QuizViewModel>()).then((value) {
+      setState(() {
+        allQuestions = value;
+      });
+    });
+  }
+
+  Future<List<IQuestion>> readData(QuizViewModel quizData) async {
+    await context.read<QuizViewModel>().getQuestionsByLevel(widget.level);
+
+    List<IQuestion> allQuestions = [];
+
+    final List<QuestionSingleChoice> questions =
+        quizData.getShuffledQuestions();
+    final questionsMatcher = quizData.questionsMatcher;
+
+    if (widget.runOnce == false) {
+      for (var i = 0; i < questions.length; i++) {
+        var correctNumberIndex = questions[i].correctAnswerIndex;
+        var correctAnswer = questions[i].answers[correctNumberIndex];
+        questions[i].answers.shuffle();
+        questions[i].correctAnswerIndex =
+            questions[i].answers.indexOf(correctAnswer);
+      }
+      widget.runOnce = true;
+      print("HOW MANY TIMES??");
+    }
+
+    for (var i = 0; i < questions.length; i++) {
+      print("${questions[i].answers.toString()}");
+      allQuestions.add(questions[i]);
+      if (i < questionsMatcher.length) {
+        allQuestions.add(questionsMatcher[i]);
+      }
+    }
+
+    allQuestions = allQuestions.reversed.toList();
+    return allQuestions;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +82,7 @@ class _QuizState extends State<Quiz> {
                 quizData.resetQuiz(),
                 PersistentNavBarNavigator.pushNewScreen(
                   context,
-                  screen: const QuestionsScreen(),
+                  screen: QuestionsScreen(allQuestions: allQuestions),
                   withNavBar: true, // OPTIONAL VALUE. True by default.
                   pageTransitionAnimation: PageTransitionAnimation.slideUp,
                 )

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_app/models/question.dart';
+import 'package:quiz_app/models/question_single_choice.dart';
 
 class QuizFormPage extends StatefulWidget {
   const QuizFormPage({super.key});
@@ -12,7 +12,7 @@ class QuizFormPage extends StatefulWidget {
 class _QuizFormPageState extends State<QuizFormPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late String _quizTitle;
-  final List<Question> _questions = [];
+  final List<QuestionSingleChoice> _questions = [];
   int _level = 1;
 
   void _submitForm() async {
@@ -113,7 +113,7 @@ class _QuizFormPageState extends State<QuizFormPage> {
                             return null;
                           },
                           onSaved: (value) {
-                            _questions.add(Question(value!, [], 0));
+                            _questions.add(QuestionSingleChoice(value!, [], 0));
                           },
                         ),
                         const SizedBox(height: 10),

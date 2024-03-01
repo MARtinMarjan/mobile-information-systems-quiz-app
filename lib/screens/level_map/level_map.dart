@@ -102,7 +102,7 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                               buildStartButton(
                                 context,
                                 level,
-                                  levelProgress,
+                                levelProgress,
                               ),
                             ],
                           );
@@ -133,12 +133,13 @@ double getLevelValue(UserViewModel userViewModel) {
 Widget _buildLevelMap(double currentLevelValue) {
   return LevelMap(
     backgroundColor: Colors.lightGreen,
+    scrollToCurrentLevel: true,
     levelMapParams: LevelMapParams(
       // LevelMapParams configurations...
       pathStrokeWidth: 3,
       firstCurveReferencePointOffsetFactor: const Offset(0.5, 0.5),
       enableVariationBetweenCurves: false,
-      levelCount: 20,
+      levelCount: 50,
       currentLevel: currentLevelValue,
       pathColor: Colors.black,
       currentLevelImage: ImageParams(

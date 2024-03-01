@@ -28,6 +28,7 @@ class _StatsScreenState extends State<StatsScreen> {
     lastOpenedDate: Timestamp.now(),
     streakCount: 0,
     levelProgress: 0,
+    role: 'user',
   );
 
   @override

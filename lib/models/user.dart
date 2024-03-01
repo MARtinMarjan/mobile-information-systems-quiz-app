@@ -12,6 +12,8 @@ class QuizUserData {
 
   final Timestamp lastOpenedDate;
 
+  final String role;
+
   final int levelProgress;
   final int streakCount;
 
@@ -27,6 +29,7 @@ class QuizUserData {
     required this.lastOpenedDate,
     required this.streakCount,
     required this.levelProgress,
+    required this.role,
   });
 
   factory QuizUserData.fromMap(Map<String, dynamic> data) {
@@ -42,6 +45,7 @@ class QuizUserData {
       lastOpenedDate: data['last_opened_date'] as Timestamp? ?? Timestamp.now(),
       streakCount: data['streak_count'] as int? ?? 0,
       levelProgress: data['level_progress'] as int? ?? 0,
+      role: data['role'] as String? ?? 'user',
     );
   }
 }

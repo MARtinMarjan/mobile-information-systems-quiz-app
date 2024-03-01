@@ -25,6 +25,7 @@ class LeaderboardService {
           lastOpenedDate: doc['last_opened_date'],
           streakCount: doc['streak_count'],
           levelProgress: doc['level_progress'],
+          role: doc['role'],
         );
       }).toList();
 

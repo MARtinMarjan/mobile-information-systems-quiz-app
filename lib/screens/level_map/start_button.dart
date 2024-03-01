@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
+
+import '../../models/quiz.dart';
 
 Widget buildStartButton(BuildContext context, String levelNumber,
     [int levelProgress = 0]) {
@@ -10,7 +14,22 @@ Widget buildStartButton(BuildContext context, String levelNumber,
       margin: const EdgeInsets.only(bottom: 20),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context, rootNavigator: true).pushNamed("/quiz_screen");
+          // Go directly to Quiz()
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => QuizStartScreen(
+          //       level: int.parse(levelNumber),
+          //     ),
+          //   ),
+          // );
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: QuizStartScreen(
+              level: int.parse(levelNumber),
+            ),
+            withNavBar: false,
+          );
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 20, right: 20),
@@ -31,7 +50,7 @@ Widget buildStartButton(BuildContext context, String levelNumber,
                   backStrokeWidth: 10,
                   mergeMode: true,
                   maxValue: 4,
-                  animationDuration: 2,
+                  animationDuration: 1,
                   valueNotifier: valueNotifier),
               Padding(
                 padding:

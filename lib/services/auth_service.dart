@@ -42,6 +42,7 @@ class AuthService {
         'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
         'streak_count': 0,
         'level_progress': 0,
+        'role': 'user',
       });
 
       return userCredential;
@@ -66,6 +67,7 @@ class AuthService {
         'last_opened_date': DateTime.now().subtract(const Duration(days: 1)),
         'streak_count': 0,
         'level_progress': 0,
+        'role': 'user',
       });
     } catch (e) {
       print("Registration Error: $e");
@@ -76,6 +78,7 @@ class AuthService {
   Future<void> sendPasswordResetEmail(String email) async {
     return _auth.sendPasswordResetEmail(email: email);
   }
+
   Future<void> signOut() async {
     await _auth.signOut();
   }
