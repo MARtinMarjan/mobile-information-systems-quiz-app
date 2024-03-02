@@ -16,8 +16,8 @@ class Quiz {
       (data['questions'] as List<dynamic>? ?? []).map((questionData) {
         final questionType = questionData['type'] as String;
         switch (questionType) {
-          case 'single_choice':
-            return QuestionSingleChoice.fromMap(questionData);
+          case 'single_choice' || 'listen_and_answer':
+            return QuestionSingleChoice.fromMap(questionData, questionType);
           default:
             throw UnsupportedError('Unsupported question type: $questionType');
         }

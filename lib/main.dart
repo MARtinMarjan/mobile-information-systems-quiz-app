@@ -7,6 +7,7 @@ import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import 'package:quiz_app/services/auth_service.dart';
 import 'package:quiz_app/services/db_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simplytranslate/simplytranslate.dart';
 
 import 'firebase_options.dart';
 

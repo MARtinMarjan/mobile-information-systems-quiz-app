@@ -3,7 +3,9 @@ enum QuestionType {
   singleChoice,
   multipleChoice,
   trueFalse,
-  fillInTheBlank
+  fillInTheBlank,
+
+  listenAndAnswer,
 }
 
 class Answer {

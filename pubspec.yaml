@@ -65,6 +65,7 @@ dependencies:
   flutter_tts: ^3.8.5
   flutter_quiz_matcher: ^0.0.4
   animated_flip_counter: ^0.2.6
+  simplytranslate: ^1.2.4
 
 
 flutter_launcher_icons:

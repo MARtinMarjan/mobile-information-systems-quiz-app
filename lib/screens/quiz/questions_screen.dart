@@ -1,18 +1,21 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_matcher/flutter_quiz_matcher.dart';
 import 'package:flutter_quiz_matcher/models/model.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/models/iquestion.dart';
 import 'package:quiz_app/models/question_single_choice.dart';
 import 'package:quiz_app/screens/level_map/answer.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/screens/quiz/results_screen.dart';
+import 'package:simplytranslate/simplytranslate.dart';
 import '../../models/question_matcher.dart';
 import '../../widgets/ui/answer_button.dart';
 
@@ -132,19 +135,88 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                           right: 20,
                           child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  _readAnswer(currentQuestion.questionText);
-                                },
-                                child: Text(
-                                  currentQuestion.questionText,
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
+                              if (currentQuestion.questionType ==
+                                  "listen_and_answer")
+                                Column(children: [
+                                  const Text(
+                                    'Listen And Select the Correct Answer',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
+                                  GestureDetector(
+                                    onTap: () {
+                                      _readAnswer(currentQuestion.questionText);
+                                      _resumeQuiz();
+                                    },
+                                    child: const Icon(
+                                      CupertinoIcons.waveform_circle_fill,
+                                      size: 100,
+                                      color: Colors.amber,
+                                    ),
+                                  ),
+                                ])
+                              else
+                                GestureDetector(
+                                  onTap: () async {
+                                    _readAnswer(currentQuestion.questionText);
+                                    final gt =
+                                        SimplyTranslator(EngineType.google);
+                                    String translatedText = await gt.trSimply(
+                                        currentQuestion.questionText,
+                                        "mk",
+                                        'en');
+                                    String translatedTextOpposite =
+                                        await gt.trSimply(
+                                            currentQuestion.questionText,
+                                            "en",
+                                            'mk');
+                                    // show the translated text in a snackbar from the top
+                                    Get.snackbar(
+                                        "Translation",
+                                        "$translatedText\t$translatedTextOpposite",
+                                        snackPosition: SnackPosition.TOP,
+                                        backgroundColor: Colors.amber,
+                                        colorText: Colors.black,
+                                        margin: const EdgeInsets.all(10),
+                                        borderRadius: 10,
+                                        duration: const Duration(seconds: 5),
+                                        isDismissible: true,
+                                        // dismissDirection: SnackDismissDirection.HORIZONTAL,
+                                        forwardAnimationCurve:
+                                            Curves.easeOutBack,
+                                        reverseAnimationCurve:
+                                            Curves.easeInCirc,
+                                        animationDuration:
+                                            const Duration(milliseconds: 800),
+                                        snackStyle: SnackStyle.FLOATING,
+                                        icon: const Icon(Icons.translate,
+                                            color: Colors.black),
+                                        shouldIconPulse: true,
+                                        mainButton: TextButton(
+                                          onPressed: () {
+                                            Get.back();
+                                          },
+                                          child: const Text(
+                                            'Close',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ));
+
+                                    _resumeQuiz();
+                                  },
+                                  child: Text(
+                                    currentQuestion.questionText,
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20),
                                 child: Column(
@@ -166,7 +238,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                             MediaQuery.of(context).size.width *
                                                 0.9,
                                       );
-                                    })
+                                    }),
                                   ],
                                 ),
                               ),
@@ -214,9 +286,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 child: AnswerButton(
                   answerText: 'Submit',
                   onTap: () {
-                    answerQuestion(rememberSelectedAnswer,
-                        currentQuestion); //TODO: rememberSelectedAnswer
-                    _startTimer();
+                    answerQuestion(rememberSelectedAnswer, currentQuestion);
+                    _resumeQuiz();
                   },
                   color: Colors.amber,
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -252,7 +323,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   answerText: 'Resume',
                   onTap: () {
                     _resumeQuiz();
-                    _startTimer();
+                    _resumeQuiz();
                   },
                   color: Colors.amber,
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -275,6 +346,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             return GestureDetector(
               onTap: () {
                 _readAnswer(question);
+                _resumeQuiz();
               },
               child: Container(
                 alignment: Alignment.center,
@@ -283,7 +355,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     border: Border.all(width: 1, color: Colors.black)),
                 width: 100,
                 height: 100,
-                child: Text(question),
+                child: Text(
+                  question,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             );
           },
@@ -295,6 +374,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             return GestureDetector(
               onTap: () {
                 _readAnswer(answer);
+                _resumeQuiz();
               },
               child: Container(
                 alignment: Alignment.center,
@@ -303,7 +383,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     border: Border.all(width: 1, color: Colors.black)),
                 width: 100,
                 height: 100,
-                child: Text(answer),
+                child: Text(answer,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
               ),
             );
           },

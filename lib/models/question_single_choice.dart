@@ -6,8 +6,10 @@ class QuestionSingleChoice implements IQuestion {
   final List<String> answers;
   int correctAnswerIndex;
 
-  QuestionSingleChoice(
-      this.questionText, this.answers, this.correctAnswerIndex);
+  final String questionType;
+
+  QuestionSingleChoice(this.questionText, this.answers, this.correctAnswerIndex,
+      [this.questionType = 'single_choice']);
 
   List<String> get shuffledAnswers {
     final shuffledList = List.of(answers);
@@ -19,11 +21,13 @@ class QuestionSingleChoice implements IQuestion {
     return selectedAnswerIndex == correctAnswerIndex;
   }
 
-  factory QuestionSingleChoice.fromMap(Map<String, dynamic> data) {
+  factory QuestionSingleChoice.fromMap(
+      Map<String, dynamic> data, String questionType) {
     return QuestionSingleChoice(
       data['questionText'] as String? ?? '',
       List<String>.from(data['answers'] as List<dynamic>? ?? []),
       (data['correctAnswerIndex'] as int? ?? 0),
+      questionType = questionType,
     );
   }
 }
