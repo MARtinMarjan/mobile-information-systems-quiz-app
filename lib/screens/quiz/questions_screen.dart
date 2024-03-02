@@ -32,7 +32,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   late Timer _timer;
   bool _isQuizPaused = false;
 
+  late Answer _lastAnsweredQuestion;
+
+  bool _showQuestionResultDialog = false;
+
   late String rememberSelectedAnswer = '';
+
+  int totalMatcherAnswers = 0;
+  int totalCorrectMatcherAnswers = 0;
 
   @override
   void initState() {
@@ -48,38 +55,29 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     super.dispose();
   }
 
-  int totalMatcherAnswers = 0;
-  int totalCorrectMatcherAnswers = 0;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<QuizViewModel>(builder: (context, quizData, _) {
-      var currentQuestionIndex = quizData.currentQuestionIndex;
-      var currentQuestion = widget.allQuestions[currentQuestionIndex];
-      //
-      // print(
-      //     '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestionIndex: $currentQuestionIndex');
-      // print(
-      //     '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion: $currentQuestion');
-      //
-      // if (currentQuestion is QuestionMatcher) {
-      //   print(
-      //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion is QuestionMatcher');
-      //   print(
-      //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion.questions: ${currentQuestion.questions}');
-      //   print(
-      //       '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% currentQuestion.answers: ${currentQuestion.answers}');
-      //
-      //   print(currentQuestion.questions[0]);
-      // }
+      int currentQuestionIndex = quizData.currentQuestionIndex;
+      IQuestion currentQuestion = widget.allQuestions[currentQuestionIndex];
 
-      void answerQuestion(String selectedAnswer, IQuestion currentQuestion) {
-        var isLastQuestion =
-            currentQuestionIndex >= widget.allQuestions.length - 1;
-        _timer.cancel(); // Cancel the timer when answering a question
+      void saveAndGoNext(String selectedAnswer, IQuestion currentQuestion) {
+        _timer.cancel();
+
         if (currentQuestion is QuestionSingleChoice) {
           bool correct = currentQuestion.correctAnswerIndex ==
               currentQuestion.answers.indexOf(selectedAnswer);
+
+          _lastAnsweredQuestion = Answer(
+            questionIndex: currentQuestionIndex,
+            answer: selectedAnswer,
+            isCorrect: correct,
+            solution:
+                currentQuestion.answers[currentQuestion.correctAnswerIndex],
+            question: currentQuestion.questionText,
+            questionType: QuestionType.singleChoice,
+          );
+
           quizData.answerQuestion(
               selectedAnswer,
               currentQuestionIndex,
@@ -89,12 +87,36 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               currentQuestion.questionText);
         } else if (currentQuestion is QuestionMatcher) {
           if (totalMatcherAnswers != currentQuestion.questions.length) {
+            _lastAnsweredQuestion = Answer(
+              questionIndex: currentQuestionIndex,
+              answer: selectedAnswer,
+              isCorrect: false,
+              solution: '',
+              question: 'Match The Following',
+              questionType: QuestionType.matcher,
+            );
             return;
           }
           if (totalCorrectMatcherAnswers == totalMatcherAnswers) {
+            _lastAnsweredQuestion = Answer(
+              questionIndex: currentQuestionIndex,
+              answer: selectedAnswer,
+              isCorrect: true,
+              solution: '',
+              question: 'Match The Following',
+              questionType: QuestionType.matcher,
+            );
             quizData.answerQuestion(selectedAnswer, currentQuestionIndex,
                 QuestionType.matcher, true, '', 'Match The Following');
           } else {
+            _lastAnsweredQuestion = Answer(
+              questionIndex: currentQuestionIndex,
+              answer: selectedAnswer,
+              isCorrect: false,
+              solution: '',
+              question: 'Match The Following',
+              questionType: QuestionType.matcher,
+            );
             quizData.answerQuestion(selectedAnswer, currentQuestionIndex,
                 QuestionType.matcher, false, '', 'Match The Following');
           }
@@ -105,15 +127,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             currentQuestion = widget.allQuestions[currentQuestionIndex];
           });
         }
-        if (isLastQuestion) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => ResultsScreen(
-                chosenAnswers: quizData.getChosenAnswers(),
-              ),
-            ),
-          );
-        }
+
+        _showQuestionResultDialog = true;
       }
 
       if (!_isQuizPaused) {
@@ -174,8 +189,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                             "en",
                                             'mk');
                                     // show the translated text in a snackbar from the top
-                                    Get.snackbar(
-                                        "Translation",
+                                    Get.snackbar("Translation",
                                         "$translatedText\t$translatedTextOpposite",
                                         snackPosition: SnackPosition.TOP,
                                         backgroundColor: Colors.amber,
@@ -282,12 +296,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     currentQuestionIndex, widget.allQuestions.length),
               ),
               Positioned(
-                bottom: 50,
+                bottom: 45,
                 child: AnswerButton(
                   answerText: 'Submit',
                   onTap: () {
-                    answerQuestion(rememberSelectedAnswer, currentQuestion);
-                    _resumeQuiz();
+                    saveAndGoNext(rememberSelectedAnswer, currentQuestion);
+                    _pauseTimer();
+                    _showResultDialog(quizData, currentQuestionIndex);
                   },
                   color: Colors.amber,
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -322,7 +337,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 AnswerButton(
                   answerText: 'Resume',
                   onTap: () {
-                    _resumeQuiz();
                     _resumeQuiz();
                   },
                   color: Colors.amber,
@@ -440,6 +454,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       _isQuizPaused = false;
     });
     _startTimer(); // Restart the timer
+  }
+
+  void _pauseTimer() {
+    _timer.cancel();
+    setState(() {
+      _isQuizPaused = false;
+    });
   }
 
   late FlutterTts flutterTts;
@@ -563,6 +584,109 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   Future<void> _readAnswer(String word) async {
     var result = await flutterTts.speak(word);
     if (result == 1) setState(() => ttsState = TtsState.playing);
+  }
+
+  _showResultDialog(QuizViewModel quizData, currentQuestionIndex) {
+    // We use _lastAnsweredQuestion here to show the result of the last answered question
+    // make it pop out from the bottom and have simillar design as the answer buttons and a button togo to nextr question
+    showModalBottomSheet(
+        enableDrag: false,
+        isDismissible: false,
+        isScrollControlled: true,
+        context: context,
+        builder: (_) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: FractionallySizedBox(
+                heightFactor: 0.3,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Question Result',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        _lastAnsweredQuestion.isCorrect
+                            ? 'Correct'
+                            : 'Incorrect',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: _lastAnsweredQuestion.isCorrect
+                              ? Colors.green
+                              : Colors.red,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      (!_lastAnsweredQuestion.isCorrect &&
+                              _lastAnsweredQuestion.questionType != QuestionType.matcher)
+                          ? Text(
+                              'Correct Answer: ${_lastAnsweredQuestion.solution}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            )
+                          : const SizedBox(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      AnswerButton(
+                        answerText: 'Next Question',
+                        onTap: () {
+                          setState(() {
+                            _showQuestionResultDialog = false;
+                            rememberSelectedAnswer = '';
+                            _lastAnsweredQuestion = Answer(
+                              questionIndex: 0,
+                              answer: '',
+                              isCorrect: false,
+                              solution: '',
+                              question: '',
+                              questionType: QuestionType.singleChoice,
+                            );
+                            quizData.goToNextQuestion();
+                            _resumeQuiz();
+                          });
+                          var isLastQuestion = currentQuestionIndex >=
+                              widget.allQuestions.length - 1;
+                          Navigator.of(context).pop();
+                          if (isLastQuestion) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => ResultsScreen(
+                                  chosenAnswers: quizData.getChosenAnswers(),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        color: Colors.amber,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 50,
+                        fontSize: 20,
+                      ),
+                    ],
+                  ),
+                )),
+          );
+        });
   }
 }
 

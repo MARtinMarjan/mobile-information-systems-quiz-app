@@ -70,7 +70,11 @@ class QuizViewModel extends ChangeNotifier {
       solution: solution,
       question: question,
     );
-    _chosenAnswers.add(answer); // Add the selected answer to chosenAnswers
+    _chosenAnswers.add(answer);
+    notifyListeners();
+  }
+
+  void goToNextQuestion() {
     if (_currentQuestionIndex ==
         _questions.length + _questionsMatcher.length - 1) {
       notifyListeners();
