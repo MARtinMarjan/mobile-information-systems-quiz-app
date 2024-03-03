@@ -126,9 +126,11 @@ class _ChatCompletionPageState extends State<ChatCompletionPage> {
   void initState() {
     super.initState();
     textEditingController = TextEditingController();
+
     // API KEY HERE!!!
     chatGpt =
         ChatGpt(apiKey: "/");
+
     getLastLevel();
   }
 
