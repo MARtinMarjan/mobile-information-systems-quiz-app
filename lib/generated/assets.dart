@@ -5,10 +5,11 @@ class Assets {
   static const String assetsImagesQuizLogo2 = 'assets/images/quiz_logo_2.png';
   static const String assetsImagesQuizLogo3 = 'assets/images/quiz_logo_3.png';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
-  static const String imagesOIG2 = 'assets/images/quiz_logo_4_sleeping.png';
   static const String imagesQuizLogo1 = 'assets/images/quiz_logo_1.jpg';
   static const String imagesQuizLogo2 = 'assets/images/quiz_logo_2.jpg';
   static const String imagesQuizLogo3 = 'assets/images/quiz_logo_3.jpg';
+  static const String imagesQuizLogo4Sleeping = 'assets/images/quiz_logo_4_sleeping.png';
+  static const String imagesQuizLogo5Ai = 'assets/images/quiz_logo_5_ai.png';
   static const String levelMapBoyGraduation = 'assets/level_map/BoyGraduation.png';
   static const String levelMapBoyStudy = 'assets/level_map/BoyStudy.png';
   static const String levelMapCompletedLevel = 'assets/level_map/completed_level.png';
@@ -27,5 +28,8 @@ class Assets {
   static const String randomImagesLake = 'assets/level_map/random_images/lake.png';
   static const String randomImagesMacedonia = 'assets/level_map/random_images/macedonia.png';
   static const String randomImagesTree = 'assets/level_map/random_images/tree.png';
+  static const String soundsError = 'assets/sounds/error.mp3';
+  static const String soundsSuccess = 'assets/sounds/success.mp3';
+  static const String soundsTada = 'assets/sounds/tada.mp3';
 
 }

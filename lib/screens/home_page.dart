@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:quiz_app/screens/leaderboard/leaderboard.dart';
 import 'package:quiz_app/screens/level_map/level_map.dart';
 import 'package:quiz_app/screens/profile/profile_screen.dart';
 import 'package:quiz_app/screens/profile/settings_screen.dart';
 import 'package:quiz_app/screens/profile/stats_screen.dart';
+
+import 'alphabet/learn_alphabet_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _buildScreens() {
     return [
       const LevelMapScreen(),
+      const AlphabetScreen(),
       const LeaderboardScreen(),
       const ProfileScreen()
     ];
@@ -30,6 +34,12 @@ class _HomePageState extends State<HomePage> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.map),
         title: ("Map"),
+        activeColorPrimary: Colors.amber,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(LineAwesomeIcons.language),
+        title: ("Alphabet"),
         activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

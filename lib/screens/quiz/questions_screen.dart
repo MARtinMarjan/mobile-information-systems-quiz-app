@@ -3,11 +3,11 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_quiz_matcher/flutter_quiz_matcher.dart';
 import 'package:flutter_quiz_matcher/models/model.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/models/iquestion.dart';
@@ -16,6 +16,7 @@ import 'package:quiz_app/screens/level_map/answer.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
 import 'package:quiz_app/screens/quiz/results_screen.dart';
 import 'package:simplytranslate/simplytranslate.dart';
+import 'package:soundpool/soundpool.dart';
 import '../../models/question_matcher.dart';
 import '../../widgets/ui/answer_button.dart';
 
@@ -45,14 +46,72 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   void initState() {
     super.initState();
     _startTimer();
-
     initTts();
+    if (!kIsWeb) {
+      _initPool(_soundpoolOptions);
+    }
+    _loadSounds();
   }
 
   @override
   void dispose() {
     _timer.cancel();
     super.dispose();
+  }
+
+  Soundpool? _pool;
+  SoundpoolOptions _soundpoolOptions = const SoundpoolOptions();
+
+  late Future<int> _successId;
+  late Future<int> _failureId;
+
+  late Future<int> _congratsId;
+  int? _successSoundStreamId;
+  int? _failureSoundStreamId;
+
+  void _loadSounds() {
+    _successId = _loadSuccessSound();
+    _failureId = _loadFailureSound();
+    _congratsId = _loadCongratsSound();
+  }
+
+  Future<int> _loadSuccessSound() async {
+    var asset = await rootBundle.load('assets/sounds/success.mp3');
+    return await _pool!.load(asset);
+  }
+
+  Future<int> _loadCongratsSound() async {
+    var asset = await rootBundle.load('assets/sounds/tada.mp3');
+    return await _pool!.load(asset);
+  }
+
+  Future<int> _loadFailureSound() async {
+    var asset = await rootBundle.load('assets/sounds/error.mp3');
+    return await _pool!.load(asset);
+  }
+
+  Future<void> _playSuccessSound() async {
+    var sound = await _successId;
+    _successSoundStreamId = await _pool!.play(sound);
+  }
+
+  Future<void> _playCongratsSound() async {
+    var sound = await _congratsId;
+    _successSoundStreamId = await _pool!.play(sound);
+  }
+
+  Future<void> _playFailureSound() async {
+    var sound = await _failureId;
+    _failureSoundStreamId = await _pool!.play(sound);
+  }
+
+  void _initPool(SoundpoolOptions soundpoolOptions) {
+    _pool?.dispose();
+    setState(() {
+      _soundpoolOptions = soundpoolOptions;
+      _pool = Soundpool.fromOptions(options: _soundpoolOptions);
+      print('pool updated: $_pool');
+    });
   }
 
   @override
@@ -120,12 +179,19 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             quizData.answerQuestion(selectedAnswer, currentQuestionIndex,
                 QuestionType.matcher, false, '', 'Match The Following');
           }
+
           setState(() {
             totalCorrectMatcherAnswers = 0;
             totalMatcherAnswers = 0;
             currentQuestionIndex = quizData.currentQuestionIndex;
             currentQuestion = widget.allQuestions[currentQuestionIndex];
           });
+        }
+
+        if (_lastAnsweredQuestion.isCorrect) {
+          _playSuccessSound();
+        } else {
+          _playFailureSound();
         }
 
         _showQuestionResultDialog = true;
@@ -190,7 +256,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                             'mk');
                                     // show the translated text in a snackbar from the top
                                     Get.snackbar("Translation",
-                                        "$translatedText\t$translatedTextOpposite",
+                                        "$translatedText\n$translatedTextOpposite",
                                         snackPosition: SnackPosition.TOP,
                                         backgroundColor: Colors.amber,
                                         colorText: Colors.black,
@@ -369,12 +435,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     border: Border.all(width: 1, color: Colors.black)),
                 width: 100,
                 height: 100,
-                child: Text(
-                  question,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    question,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -397,11 +466,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     border: Border.all(width: 1, color: Colors.black)),
                 width: 100,
                 height: 100,
-                child: Text(answer,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(answer,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
               ),
             );
           },
@@ -622,10 +694,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       ),
                       Text(
                         _lastAnsweredQuestion.isCorrect
-                            ? 'Correct'
-                            : 'Incorrect',
+                            ? 'Correct ✅'
+                            : 'Incorrect ❌',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                           color: _lastAnsweredQuestion.isCorrect
                               ? Colors.green
                               : Colors.red,
@@ -635,12 +708,16 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                         height: 20,
                       ),
                       (!_lastAnsweredQuestion.isCorrect &&
-                              _lastAnsweredQuestion.questionType != QuestionType.matcher)
-                          ? Text(
-                              'Correct Answer: ${_lastAnsweredQuestion.solution}',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
+                              _lastAnsweredQuestion.questionType !=
+                                  QuestionType.matcher)
+                          ? FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                'Correct Answer: ${_lastAnsweredQuestion.solution}',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
                               ),
                             )
                           : const SizedBox(),
@@ -672,6 +749,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                               MaterialPageRoute(
                                 builder: (context) => ResultsScreen(
                                   chosenAnswers: quizData.getChosenAnswers(),
+                                  congratsSound: _playCongratsSound,
                                 ),
                               ),
                             );
