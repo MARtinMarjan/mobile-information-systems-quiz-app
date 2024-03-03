@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:quiz_app/models/question_single_choice.dart';
 import 'package:quiz_app/screens/home_page.dart';
 import 'package:quiz_app/screens/level_map/answer.dart';
 import 'package:quiz_app/viewmodels/quiz.viewmodel.dart';
@@ -16,14 +15,16 @@ import 'package:provider/provider.dart';
 
 import '../../utils/questions_summary/summary_item.dart';
 import '../../viewmodels/user.viewmodel.dart';
-import '../../widgets/ui/answer_button.dart';
 
 class ResultsScreen extends StatefulWidget {
   final List<Answer> chosenAnswers;
 
+  final VoidCallback congratsSound;
+
   const ResultsScreen({
     super.key,
     required this.chosenAnswers,
+    required this.congratsSound,
   });
 
   @override
@@ -39,6 +40,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
   @override
   void initState() {
     super.initState();
+
     _controllerBottomCenter =
         ConfettiController(duration: const Duration(seconds: 1));
     bool allCorrect = false;
@@ -55,6 +57,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
       _controllerBottomCenter.play();
       pointMultiplier = 2;
     }
+    widget.congratsSound();
   }
 
   @override

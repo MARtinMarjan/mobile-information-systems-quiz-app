@@ -30,4 +30,13 @@ class QuestionSingleChoice implements IQuestion {
       questionType = questionType,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'questionText': questionText,
+      'answers': answers,
+      'correctAnswerIndex': correctAnswerIndex,
+      'questionType': questionType,
+    };
+  }
 }

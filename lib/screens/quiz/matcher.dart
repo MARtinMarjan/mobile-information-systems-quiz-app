@@ -74,12 +74,12 @@ class _MatchQuestionState extends State<MatchQuestion> {
             children: [
               Container(
                 color: Colors.redAccent,
-                child: Text(
+                child: const Text(
                   'Match the following questions with the correct answers',
                   style: TextStyle(fontSize: 20, color: Colors.black),
                 ),
               ),
-              Text(
+              const Text(
                 'Match the following questions with the correct answers',
                 style: TextStyle(fontSize: 20),
               ),

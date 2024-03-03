@@ -7,7 +7,9 @@ import 'package:quiz_app/models/question_matcher.dart';
 import '../../viewmodels/user.viewmodel.dart';
 import '../../widgets/profile_menu_widget.dart';
 import '../add_quiz/quiz_form_page.dart';
+import '../chatgpt/chat_completion.dart';
 import '../quiz/matcher.dart';
+import '../sounds/sound_test.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -110,6 +112,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             "areQuestionsImages": false,
                           }),
                         ]),
+                        withNavBar: true,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
+                    color: Colors.green,
+                    endIcon: false,
+                  )
+                : Container(),
+            (user.userData!.role == 'admin' || user.userData!.role == 'dev')
+                ? ProfileMenuWidget(
+                    title: 'DEV: Open ChatGPT',
+                    icon: LineAwesomeIcons.robot,
+                    onPress: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const ChatCompletionPage(),
+                        withNavBar: true,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
+                    color: Colors.green,
+                    endIcon: false,
+                  )
+                : Container(),
+            (user.userData!.role == 'admin' || user.userData!.role == 'dev')
+                ? ProfileMenuWidget(
+                    title: 'DEV: Test Game Sounds',
+                    icon: LineAwesomeIcons.robot,
+                    onPress: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const SoundpoolInitializer(),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,

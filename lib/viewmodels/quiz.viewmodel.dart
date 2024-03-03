@@ -60,6 +60,13 @@ class QuizViewModel extends ChangeNotifier {
     isLoading = false;
   }
 
+  Future<void> getQuestionsFromQuiz(Quiz quiz) async {
+    _questions = quiz.questions;
+    _questionsMatcher = quiz.questionsMatcher;
+    quizLevelTitle = quiz.title;
+    notifyListeners();
+  }
+
   void answerQuestion(String selectedAnswer, int questionIndex,
       QuestionType type, bool isCorrect, String solution, String question) {
     Answer answer = Answer(

@@ -4,7 +4,6 @@ import 'package:quiz_app/screens/add_quiz/quiz_form_page.dart';
 
 import 'package:quiz_app/screens/auth/login_screen.dart';
 import 'package:quiz_app/screens/auth/registration_screen.dart';
-import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 import 'package:quiz_app/screens/home_page.dart';
 import 'package:quiz_app/screens/auth/welcome_screen.dart';

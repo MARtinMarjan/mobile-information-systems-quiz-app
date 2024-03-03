@@ -66,6 +66,9 @@ dependencies:
   flutter_quiz_matcher: ^0.0.4
   animated_flip_counter: ^0.2.6
   simplytranslate: ^1.2.4
+  flutter_staggered_grid_view: ^0.7.0
+  chat_gpt_flutter: ^1.0.15
+  soundpool: ^2.4.1
 
 
 flutter_launcher_icons:
@@ -106,6 +109,7 @@ flutter:
     - assets/images/
     - assets/level_map/
     - assets/level_map/random_images/
+    - assets/sounds/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -4,6 +4,7 @@ import 'package:level_map/level_map.dart';
 import 'package:quiz_app/screens/level_map/start_button.dart';
 import 'package:quiz_app/viewmodels/user.viewmodel.dart';
 import '../../viewmodels/quiz.viewmodel.dart';
+import 'build_ai_button.dart';
 import 'level_title_bar.dart';
 
 class LevelMapScreen extends StatefulWidget {
@@ -104,6 +105,7 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                                 level,
                                 levelProgress,
                               ),
+                              buildAIButton(context),
                             ],
                           );
                   }

@@ -28,4 +28,14 @@ class Quiz {
       }).toList(),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'questions': questions.map((question) => question.toMap()).toList(),
+      'level': level,
+      'questionsMatcher': questionsMatcher.map((question) => question.toMap()).toList(),
+    };
+  }
+
 }

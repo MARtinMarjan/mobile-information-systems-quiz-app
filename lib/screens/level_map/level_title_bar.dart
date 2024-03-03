@@ -12,7 +12,7 @@ Widget buildTitleCard(
       Container(
         alignment: Alignment.topLeft,
         child: Padding(
-          padding: const EdgeInsets.only(top: 35),
+          padding: const EdgeInsets.only(top: 35, left: 10),
           child: ModalAnchor(
             tag: 'anchor',
             child: ElevatedButton(
@@ -38,16 +38,17 @@ Widget buildTitleCard(
         ),
       ),
       Container(
+        width: 250,
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.only(top: 32),
+          padding: const EdgeInsets.only(top: 35, right: 10),
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(360),
             ),
             color: Colors.amber,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
                 title,
                 style: const TextStyle(

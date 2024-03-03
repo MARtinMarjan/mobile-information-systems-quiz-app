@@ -114,8 +114,6 @@
 //   }
 // }
 
-import 'package:flutter/material.dart';
-
 import 'iquestion.dart';
 
 class QuestionMatcher implements IQuestion {
@@ -150,5 +148,13 @@ class QuestionMatcher implements IQuestion {
       answers: List<String>.from(data['answers'] as List<dynamic>? ?? []),
       areQuestionsImages: data['areQuestionsImages'] as bool? ?? false,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'questions': questions,
+      'answers': answers,
+      'areQuestionsImages': areQuestionsImages,
+    };
   }
 }
