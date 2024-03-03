@@ -120,7 +120,7 @@ class _ForgottenPasswordPageState extends State<ForgottenPasswordPage> {
                           ? RoundedButton(
                               color: Colors.red,
                               title: 'Reset Password',
-                              onPressed: _login,
+                              onPressed: _resetPassword,
                               textColor: Colors.white,
                             )
                           : const RoundedButton(
@@ -144,7 +144,7 @@ class _ForgottenPasswordPageState extends State<ForgottenPasswordPage> {
     );
   }
 
-  void _login() async {
+  void _resetPassword() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         showSpinner = true;

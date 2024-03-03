@@ -206,9 +206,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             alignment: Alignment.bottomCenter,
             children: [
               currentQuestion is QuestionMatcher
-                  ? Flexible(
-                      child: _questionMatcherWidget(currentQuestion),
-                    )
+                  ? _questionMatcherWidget(currentQuestion)
                   : currentQuestion is QuestionSingleChoice
                       ? Positioned(
                           top: 130,

@@ -7,6 +7,7 @@ import 'package:quiz_app/models/question_matcher.dart';
 import '../../viewmodels/user.viewmodel.dart';
 import '../../widgets/profile_menu_widget.dart';
 import '../add_quiz/quiz_form_page.dart';
+import '../auth/forgotten_password_screen.dart';
 import '../chatgpt/chat_completion.dart';
 import '../quiz/matcher.dart';
 import '../sounds/sound_test.dart';
@@ -55,14 +56,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: 'Reset Progress',
               icon: LineAwesomeIcons.times_circle,
               onPress: () {
-                UserViewModel userViewModel =
-                    Provider.of<UserViewModel>(context, listen: false);
-
-                userViewModel.resetProgress();
-
-                Navigator.of(context).popUntil((route) {
-                  return route.settings.name == "/profile_screen";
-                });
+                // UserViewModel userViewModel =
+                //     Provider.of<UserViewModel>(context, listen: false);
+                //
+                // userViewModel.resetProgress();
+                //
+                // Navigator.of(context).popUntil((route) {
+                //   return route.settings.name == "/profile_screen";
+                // });
+                // modal
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Reset Progress"),
+                      content: const Text(
+                          "Are you sure you want to reset your progress?"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            user.resetProgress();
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Reset',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               color: Colors.red,
               endIcon: false,
@@ -70,14 +100,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ProfileMenuWidget(
               title: 'Change Password',
               icon: LineAwesomeIcons.key,
-              onPress: () {},
+              onPress: () {
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: _resetPassword(),
+                  withNavBar: true,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+              },
               endIcon: false,
               color: Colors.red,
             ),
             ProfileMenuWidget(
               title: 'Delete Account',
               icon: LineAwesomeIcons.trash,
-              onPress: () {},
+              onPress: () {
+                // show modal
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Delete Account"),
+                      content: const Text(
+                          "Are you sure you want to delete your account?"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            user.deleteAccount();
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Delete',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
               color: Colors.red,
               endIcon: false,
             ),
@@ -157,5 +226,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 : Container(),
           ],
         ));
+  }
+
+  _resetPassword() {
+    try {
+      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+      String email = userViewModel.userData!.email;
+      userViewModel.resetForgottenPassword(email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          padding: const EdgeInsets.all(12.0),
+          margin: const EdgeInsets.only(bottom: 20.0, left: 12.0, right: 12.0),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          content: Text('Password reset email sent to $email'),
+        ),
+      );
+    } catch (e) {
+      Text("Email Error: $e");
+    }
   }
 }

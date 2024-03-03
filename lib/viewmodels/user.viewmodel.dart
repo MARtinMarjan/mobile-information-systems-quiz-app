@@ -202,4 +202,19 @@ class UserViewModel extends ChangeNotifier {
   resetForgottenPassword(String email) {
     _authService.sendPasswordResetEmail(email);
   }
+
+  deleteAccount() {
+    _authService.deleteAccount();
+    _user = null;
+  }
+
+  Future<bool> isAlreadySignedIn() async {
+    if (await _authService.isAlreadySignedIn()) {
+      _user = _authService.getCurrentUser();
+      await loadUserData();
+      notifyListeners();
+      return Future.value(true);
+    }
+    return Future.value(false);
+  }
 }

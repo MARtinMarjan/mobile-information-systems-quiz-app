@@ -115,7 +115,7 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
                                   capitalLetterSwitch
                                       ? alphabet[i].cyrillic
                                       : alphabet[i].cyrillic.toLowerCase(),
-                                  style: const TextStyle(fontSize: 30),
+                                  style: const TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   capitalLetterSwitch
@@ -123,7 +123,7 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
                                       : alphabet[i]
                                           .latinCounterpart
                                           .toLowerCase(),
-                                  style: const TextStyle(fontSize: 20),
+                                  style: const TextStyle(fontSize: 15),
                                 ),
                               ],
                             ),

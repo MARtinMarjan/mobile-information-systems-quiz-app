@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:quiz_app/services/leaderboard_service.dart';
 
 class LeaderboardScreen extends StatefulWidget {
@@ -57,26 +58,80 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                   child: ListTile(
-                    leading: Text(
-                      '${index + 1}',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    title: Text(snapshot.data![index].username),
-                    subtitle: Row(
-                      children: [
-                        Text('Points: ${snapshot.data![index].points}'),
-                        const SizedBox(width: 8),
-                        Text('Streak: ${snapshot.data![index].streakCount}'),
-                      ],
-                    ),
-                    trailing: snapshot.data?[index].imageLink != null
-                        ? CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(snapshot.data![index].imageLink))
-                        : const CircleAvatar(
-                            child: Icon(Icons.person),
+                      leading: SizedBox(
+                        width: 50,
+                        child: Text(
+                          _leaderboardIndex(index + 1),
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
-                  ),
+                        ),
+                      ),
+                      title: Text(snapshot.data![index].username),
+                      // subtitle: Row(
+                      //   children: [
+                      //     Text('🪙: ${snapshot.data![index].points}'),
+                      //     const SizedBox(width: 8),
+                      //     Text('🔥: ${snapshot.data![index].streakCount}'),
+                      //   ],
+                      // ),
+                      subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const WidgetSpan(
+                                      child: Icon(Icons.whatshot_outlined,
+                                          size: 20, color: Colors.redAccent),
+                                    ),
+                                    TextSpan(
+                                      text: "${snapshot.data![index].streakCount}",
+                                      style: const TextStyle(
+                                        // fontSize: 20,
+                                        // fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const WidgetSpan(
+                                    child: Icon(LineAwesomeIcons.coins,
+                                        size: 20, color: Colors.amber),
+                                  ),
+                                  TextSpan(
+                                    text: "${snapshot.data![index].points} ",
+                                    style: const TextStyle(
+                                      // fontSize: 20,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]),
+                      trailing: snapshot.data?[index].imageLink != null
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  snapshot.data?[index].imageLink ?? ''),
+                            )
+                          : const CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                              ),
+                            )),
                 );
               },
             );
@@ -84,5 +139,17 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         },
       ),
     );
+  }
+
+  String _leaderboardIndex(int i) {
+    if (i == 1) {
+      return '$i🥇';
+    } else if (i == 2) {
+      return '$i🥈';
+    } else if (i == 3) {
+      return '$i🥉';
+    } else {
+      return '$i';
+    }
   }
 }

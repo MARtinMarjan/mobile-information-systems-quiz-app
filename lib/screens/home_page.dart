@@ -9,6 +9,7 @@ import 'package:quiz_app/screens/profile/settings_screen.dart';
 import 'package:quiz_app/screens/profile/stats_screen.dart';
 
 import 'alphabet/learn_alphabet_screen.dart';
+import 'lessons/lessons_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
     return [
       const LevelMapScreen(),
       const AlphabetScreen(),
+      const LessonsScreen(),
       const LeaderboardScreen(),
       const ProfileScreen()
     ];
@@ -40,6 +42,12 @@ class _HomePageState extends State<HomePage> {
       PersistentBottomNavBarItem(
         icon: const Icon(LineAwesomeIcons.language),
         title: ("Alphabet"),
+        activeColorPrimary: Colors.amber,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(LineAwesomeIcons.book),
+        title: ("Lessons"),
         activeColorPrimary: Colors.amber,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

@@ -55,8 +55,7 @@ class _SoundpoolInitializerState extends State<SoundpoolInitializer> {
 class SimpleApp extends StatefulWidget {
   final Soundpool pool;
   final ValueSetter<SoundpoolOptions> onOptionsChange;
-  SimpleApp({Key? key, required this.pool, required this.onOptionsChange})
-      : super(key: key);
+  const SimpleApp({super.key, required this.pool, required this.onOptionsChange});
 
   @override
   _SimpleAppState createState() => _SimpleAppState();
@@ -72,6 +71,7 @@ class _SimpleAppState extends State<SimpleApp> {
 
   Soundpool get _soundpool => widget.pool;
 
+  @override
   void initState() {
     super.initState();
 
@@ -161,7 +161,7 @@ class _SimpleAppState extends State<SimpleApp> {
                     },
                   ),
                 ),
-                Text('${_rate.toStringAsFixed(3)}'),
+                Text(_rate.toStringAsFixed(3)),
               ]),
               const SizedBox(height: 8.0),
               const Text('Volume'),
@@ -190,8 +190,8 @@ class _SimpleAppState extends State<SimpleApp> {
   }
 
   Future<void> _playSound() async {
-    var _alarmSound = await _soundId;
-    _alarmSoundStreamId = await _soundpool.play(_alarmSound);
+    var alarmSound = await _soundId;
+    _alarmSoundStreamId = await _soundpool.play(alarmSound);
   }
 
   Future<void> _pauseSound() async {
@@ -207,9 +207,9 @@ class _SimpleAppState extends State<SimpleApp> {
   }
 
   Future<void> _playCheering() async {
-    var _sound = await _cheeringId;
+    var sound = await _cheeringId;
     _cheeringStreamId = await _soundpool.play(
-      _sound,
+      sound,
       rate: _rate,
     );
   }
@@ -223,8 +223,8 @@ class _SimpleAppState extends State<SimpleApp> {
 
   Future<void> _updateVolume(newVolume) async {
     // if (_alarmSound >= 0){
-    var _cheeringSound = await _cheeringId;
-    _soundpool.setVolume(soundId: _cheeringSound, volume: newVolume);
+    var cheeringSound = await _cheeringId;
+    _soundpool.setVolume(soundId: cheeringSound, volume: newVolume);
     // }
   }
 }

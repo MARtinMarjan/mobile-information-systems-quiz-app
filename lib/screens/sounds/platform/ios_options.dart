@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundpool/soundpool.dart';
 
 class IosOptionsSelector extends StatefulWidget {
-  const IosOptionsSelector({Key? key}) : super(key: key);
+  const IosOptionsSelector({super.key});
 
   @override
   _IosOptionsSelectorState createState() => _IosOptionsSelectorState();
@@ -17,7 +17,7 @@ class _IosOptionsSelectorState extends State<IosOptionsSelector> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select options for Apple devices'),
+        title: const Text('Select options for Apple devices'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -28,10 +28,10 @@ class _IosOptionsSelectorState extends State<IosOptionsSelector> {
               onChanged: (enable) => setState(() {
                 _enableRate = enable ?? false;
               }),
-              title: Text('Enable rate'),
+              title: const Text('Enable rate'),
             ),
-            Divider(),
-            Text('Audio System Category'),
+            const Divider(),
+            const Text('Audio System Category'),
             DropdownButton<AudioSessionCategory>(
               items: AudioSessionCategory.values
                   .map((e) => DropdownMenuItem<AudioSessionCategory>(
@@ -55,7 +55,7 @@ class _IosOptionsSelectorState extends State<IosOptionsSelector> {
                   )
                   .toList(),
             ),
-            Text('Audio System Mode'),
+            const Text('Audio System Mode'),
             DropdownButton<AudioSessionMode>(
               items: AudioSessionMode.values
                   .map((e) => DropdownMenuItem<AudioSessionMode>(
@@ -82,8 +82,8 @@ class _IosOptionsSelectorState extends State<IosOptionsSelector> {
             Align(
               alignment: Alignment.center,
               child: OutlinedButton(
-                child: Text('Confirm'),
                 onPressed: _onConfirm,
+                child: const Text('Confirm'),
               ),
             ),
           ],

@@ -106,4 +106,14 @@ class AuthService {
   signInWithCredential(AuthCredential authCredential) {
     return _auth.signInWithCredential(authCredential);
   }
+
+  void deleteAccount() {
+    _firestore.collection('users').doc(_auth.currentUser?.uid).delete();
+    _auth.currentUser?.delete();
+    _auth.signOut();
+  }
+
+  Future<bool> isAlreadySignedIn() {
+    return _auth.currentUser != null ? Future.value(true) : Future.value(false);
+  }
 }

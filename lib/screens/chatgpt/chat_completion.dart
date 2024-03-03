@@ -156,7 +156,7 @@ class _ChatCompletionPageState extends State<ChatCompletionPage> {
             children: [
               if (!didReceiveData && didAskQuestion)
                 const LinearProgressIndicator(),
-              Image.asset('assets/images/quiz_logo_5_ai.png'),
+              Image.asset('assets/images/quiz_logo_6_on_laptop.png'),
               const SizedBox(height: 16),
               const Text(
                 'Let Miki make a quiz for you!',

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/screens/sounds/platform/ios_options.dart';
 
 class PlatformOptions extends StatelessWidget {
-  const PlatformOptions({Key? key}) : super(key: key);
+  const PlatformOptions({super.key});
 
   @override
   Widget build(BuildContext context) {
