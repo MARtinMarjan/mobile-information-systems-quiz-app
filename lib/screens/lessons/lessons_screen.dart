@@ -38,7 +38,6 @@ class _LessonsScreenState extends State<LessonsScreen> {
         ),
       ),
       body: _lessonService.isLoaded == false ||
-              _lessons == null ||
               _lessons.isEmpty
           ? const Center(
               child: CircularProgressIndicator(),

@@ -7,7 +7,6 @@ import 'package:quiz_app/models/question_matcher.dart';
 import '../../viewmodels/user.viewmodel.dart';
 import '../../widgets/profile_menu_widget.dart';
 import '../add_quiz/quiz_form_page.dart';
-import '../auth/forgotten_password_screen.dart';
 import '../chatgpt/chat_completion.dart';
 import '../quiz/matcher.dart';
 import '../sounds/sound_test.dart';

@@ -3,11 +3,10 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:quiz_app/screens/quiz/start_screen.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 
-
 Widget buildStartButton(BuildContext context, String levelNumber,
-    [int levelProgress = 0]) {
+    [double levelProgress = 0.0]) {
   ValueNotifier<double> valueNotifier = ValueNotifier(0.0);
-  valueNotifier.value = levelProgress.toDouble();
+  valueNotifier.value = levelProgress;
   return Container(
       alignment: Alignment.bottomRight,
       margin: const EdgeInsets.only(bottom: 20),

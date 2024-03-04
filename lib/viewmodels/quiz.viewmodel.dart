@@ -11,10 +11,10 @@ class QuizViewModel extends ChangeNotifier {
 
   List<QuestionSingleChoice> get questions => _questions;
 
-  getShuffledQuestions() {
-    _questions.shuffle();
-    return _questions;
-  }
+  // getShuffledQuestions() {
+  //   _questions.shuffle();
+  //   return _questions;
+  // }
 
   List<QuestionMatcher> _questionsMatcher = [];
 
@@ -52,19 +52,29 @@ class QuizViewModel extends ChangeNotifier {
 
   Future<void> getQuestionsByLevel(int level) async {
     isLoading = true;
-    Quiz? quiz = await questionService.getQuizByLevel(level);
-    _questions = quiz?.questions ?? [];
-    _questionsMatcher = quiz?.questionsMatcher ?? [];
-    quizLevelTitle = quiz?.title ?? "Welcome to the Quiz!";
+    Quiz quiz = await questionService.getQuizByLevel(level) ??
+        const Quiz(
+          "Welcome to the Quiz!",
+          [],
+          1,
+          [],
+        );
+    await getQuestionsFromQuiz(quiz);
     notifyListeners();
     isLoading = false;
   }
 
   Future<void> getQuestionsFromQuiz(Quiz quiz) async {
+    isLoading = true;
+
     _questions = quiz.questions;
     _questionsMatcher = quiz.questionsMatcher;
     quizLevelTitle = quiz.title;
+
+    // print("getQuestionsFromQuiz($_questions)...");
+    // print("getQuestionsFromQuiz($_questionsMatcher)...");
     notifyListeners();
+    isLoading = false;
   }
 
   void answerQuestion(String selectedAnswer, int questionIndex,

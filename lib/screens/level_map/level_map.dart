@@ -18,14 +18,13 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
   late UserViewModel _userViewModel;
   late QuizViewModel _quizViewModel;
 
-  Future<void> _loadCurrentLevel() async {
-    if (mounted) {
-      await _userViewModel.checkoutActivityStreak();
-      await _userViewModel.loadUserData().then((value) {
-        _quizViewModel.getQuestionsByLevel(_userViewModel.userData?.level ?? 1);
-      });
-    }
-  }
+  double levelValue = 1.0;
+  String title = "???";
+  int streak = 0;
+  String level = "?";
+  DateTime lastOpenedDate = DateTime.now();
+
+  double levelProgress = 0;
 
   @override
   void didChangeDependencies() {
@@ -34,13 +33,14 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
     _quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
   }
 
-  double levelValue = 1.0;
-  String title = "???";
-  int streak = 0;
-  String level = "?";
-  DateTime lastOpenedDate = DateTime.now();
-
-  int levelProgress = 0;
+  Future<void> _loadCurrentLevel() async {
+    if (mounted) {
+      await _userViewModel.checkoutActivityStreak();
+      await _userViewModel.loadUserData().then((value) {
+        _quizViewModel.getQuestionsByLevel(_userViewModel.userData?.level ?? 1);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,8 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                   lastOpenedDate =
                       _userViewModel.userData?.lastOpenedDate.toDate() ??
                           DateTime.now();
-                  levelProgress = _userViewModel.userData?.levelProgress ?? 0;
+                  levelProgress =
+                      _userViewModel.userData?.levelProgress.toDouble() ?? 0.0;
 
                   if (context.watch<UserViewModel>().isLoading ||
                       context.watch<QuizViewModel>().isLoading) {

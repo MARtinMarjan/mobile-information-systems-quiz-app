@@ -38,8 +38,9 @@ class _AIQuizStartScreenState extends State<AIQuizStartScreen> {
 
     List<IQuestion> allQuestions = [];
 
-    final List<QuestionSingleChoice> questions =
-        quizData.getShuffledQuestions();
+    List<QuestionSingleChoice> questions = quizData.questions;
+    questions.shuffle();
+
     final questionsMatcher = quizData.questionsMatcher;
 
     if (widget.runOnce == false) {

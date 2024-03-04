@@ -14,7 +14,10 @@ class Quiz {
     return Quiz(
       data['title'] as String? ?? '',
       (data['questions'] as List<dynamic>? ?? []).map((questionData) {
-        final questionType = questionData['type'] as String;
+        String questionType = questionData['type'] as String? ?? '';
+        if (questionType.isEmpty) {
+          questionType = questionData['questionType'] as String? ?? '';
+        }
         switch (questionType) {
           case 'single_choice' || 'listen_and_answer':
             return QuestionSingleChoice.fromMap(questionData, questionType);
@@ -34,8 +37,8 @@ class Quiz {
       'title': title,
       'questions': questions.map((question) => question.toMap()).toList(),
       'level': level,
-      'questionsMatcher': questionsMatcher.map((question) => question.toMap()).toList(),
+      'questionsMatcher':
+          questionsMatcher.map((question) => question.toMap()).toList(),
     };
   }
-
 }

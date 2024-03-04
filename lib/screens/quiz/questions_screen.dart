@@ -197,7 +197,44 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         _showQuestionResultDialog = true;
       }
 
-      if (!_isQuizPaused) {
+      if (widget.allQuestions.isEmpty) {
+        //ADD BACK BUTTON
+        return Container(
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/quiz_logo_4_sleeping.png',
+                  width: 200,
+                  height: 200,
+                ),
+                const Text(
+                  'No Questions Found',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                AnswerButton(
+                  answerText: 'Go Back',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  color: Colors.amber,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 50,
+                  fontSize: 20,
+                ),
+              ],
+            ),
+          ),
+        );
+      } else if (!_isQuizPaused) {
         return Scaffold(
             body: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -364,6 +401,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 child: AnswerButton(
                   answerText: 'Submit',
                   onTap: () {
+                    if (rememberSelectedAnswer.isEmpty &&
+                        currentQuestion is QuestionSingleChoice) {
+                      return;
+                    }
+                    if (currentQuestion is QuestionMatcher &&
+                        totalMatcherAnswers !=
+                            currentQuestion.questions.length) {
+                      return;
+                    }
                     saveAndGoNext(rememberSelectedAnswer, currentQuestion);
                     _pauseTimer();
                     _showResultDialog(quizData, currentQuestionIndex);
@@ -637,7 +683,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     });
 
     flutterTts.getLanguages.then((value) => {
-          print(value),
+          // print(value),
         });
     setState(() {
       // getLanguageDropDownMenuItems(languages);

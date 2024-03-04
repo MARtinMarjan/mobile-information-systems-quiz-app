@@ -44,8 +44,6 @@ class QuestionService {
         return null;
       }
 
-      print(documentSnapshot.data());
-
       // Convert document data to a Quiz object
       Quiz quiz = Quiz.fromMap(documentSnapshot.data() as Map<String, dynamic>);
       return quiz;

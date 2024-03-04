@@ -63,6 +63,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
   @override
   void dispose() {
     _controllerBottomCenter.dispose();
+
     super.dispose();
   }
 
@@ -235,6 +236,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
   Future<void> saveResults(BuildContext context) async {
     _saving = true;
 
+    if (widget.chosenAnswers.isEmpty) {
+      return;
+    }
+
     final quizViewModel = Provider.of<QuizViewModel>(context, listen: false);
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
 
@@ -249,12 +254,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
       numTotalQuestions - numCorrectQuestions,
       userViewModel.userData!.levelProgress,
     );
-
-    // await userViewModel.checkoutActivityStreak();
     await userViewModel.updateStreak();
 
     quizViewModel.resetQuiz();
-    await quizViewModel.getQuestionsByLevel(userViewModel.userData!.level);
+    // await quizViewModel.getQuestionsByLevel(userViewModel.userData!.level);
 
     _saving = false;
   }
@@ -265,10 +268,15 @@ class _ResultsScreenState extends State<ResultsScreen> {
   Widget build(BuildContext context) {
     numTotalQuestions = widget.chosenAnswers.length;
     Future.delayed(const Duration(milliseconds: 100), () {
-      setState(() {
-        numCorrectQuestions =
-            widget.chosenAnswers.where((answer) => answer.isCorrect).length;
-      });
+      if (mounted) {
+        setState(() {
+          if (widget.chosenAnswers.isEmpty || widget.chosenAnswers == null) {
+            return;
+          }
+          numCorrectQuestions =
+              widget.chosenAnswers.where((answer) => answer.isCorrect).length;
+        });
+      }
     });
     return ModalProgressHUD(
         inAsyncCall: _saving,

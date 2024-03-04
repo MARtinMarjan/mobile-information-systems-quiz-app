@@ -1,5 +1,6 @@
 import 'package:cupertino_onboarding/cupertino_onboarding.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/models/question_single_choice.dart';
@@ -21,14 +22,24 @@ class QuizStartScreen extends StatefulWidget {
 }
 
 class _QuizStartScreenState extends State<QuizStartScreen> {
+  bool isLoaded = false;
   late List<IQuestion> allQuestions;
 
   @override
   initState() {
     super.initState();
-    readData(context.read<QuizViewModel>()).then((value) {
+    _initiateData();
+  }
+
+  Future<void> _initiateData() async {
+    setState(() {
+      isLoaded = true;
+    });
+    QuizViewModel quizData = context.read<QuizViewModel>();
+    readData(quizData).then((value) {
       setState(() {
         allQuestions = value;
+        isLoaded = false;
       });
     });
   }
@@ -38,8 +49,13 @@ class _QuizStartScreenState extends State<QuizStartScreen> {
 
     List<IQuestion> allQuestions = [];
 
-    final List<QuestionSingleChoice> questions =
-        quizData.getShuffledQuestions();
+    List<QuestionSingleChoice> questions = quizData.questions;
+
+    if (questions.isNotEmpty) {
+      questions.shuffle();
+    }
+
+    // final List<QuestionSingleChoice> questions = quizData.questions;
     final questionsMatcher = quizData.questionsMatcher;
 
     if (widget.runOnce == false) {
@@ -51,11 +67,9 @@ class _QuizStartScreenState extends State<QuizStartScreen> {
             questions[i].answers.indexOf(correctAnswer);
       }
       widget.runOnce = true;
-      print("HOW MANY TIMES??");
     }
 
     for (var i = 0; i < questions.length; i++) {
-      print(questions[i].answers.toString());
       allQuestions.add(questions[i]);
       if (i < questionsMatcher.length) {
         allQuestions.add(questionsMatcher[i]);
@@ -63,6 +77,7 @@ class _QuizStartScreenState extends State<QuizStartScreen> {
     }
 
     allQuestions = allQuestions.reversed.toList();
+
     return allQuestions;
   }
 
@@ -75,8 +90,10 @@ class _QuizStartScreenState extends State<QuizStartScreen> {
             BorderRadius.circular(20),
             10,
           ),
-          bottomButtonChild: Text(
-              'Start Level ${context.watch<UserViewModel>().userData?.level}'),
+          bottomButtonChild: isLoaded
+              ? const CupertinoActivityIndicator(color: Colors.white,)
+              : Text(
+                  'Start Level ${context.watch<UserViewModel>().userData?.level}'),
           bottomButtonColor: CupertinoColors.systemRed.resolveFrom(context),
           onPressedOnLastPage: () => {
                 quizData.resetQuiz(),

@@ -102,9 +102,6 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<void> loadUserData() async {
-    // if (isLoading) {
-    //   return;
-    // }
     if (_user != null) {
       isLoading = true;
       _userData = await _dbService.getUserData(_user!.uid);

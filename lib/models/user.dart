@@ -9,11 +9,8 @@ class QuizUserData {
   final int correctAnswers;
   final int incorrectAnswers;
   final String imageLink;
-
   final Timestamp lastOpenedDate;
-
   final String role;
-
   final int levelProgress;
   final int streakCount;
 
